@@ -168,8 +168,13 @@ class Cube:
     def print_solve(self):
         max_y, max_x = self.stdscr.getmaxyx()
         self.pausing = True
-        okay = "Solved! 'Home' for Restart"
-        self.stdscr.addstr(int(max_y / 2 - 10), int(max_x / 2 - 1 - (len(okay) / 2)), okay)
+
+        if len(buf_undo) == 0:
+            appeal = "'Home' for Start!"
+        else:
+            appeal = "Solved. Congrats!"
+
+        self.stdscr.addstr(int(max_y / 2 - 10), int(max_x / 2 - 1 - (len(appeal) / 2)), appeal)
 
     def display_cubie(self, y, x, cubie):
         colors = {'W': 1, 'Y': 2, 'M': 3, 'R': 4, 'G': 5, 'B': 6}
