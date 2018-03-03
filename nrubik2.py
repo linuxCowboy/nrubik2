@@ -146,7 +146,12 @@ class Cube:
         self.stdscr.addstr(start_y + 15, max_x - 2 - end_x, "Escape - Quit")
 
     def solved(self):
-        return self.cube == self.solved_cube
+        for i in range(6):
+            if not self.cube[i][0][0] == self.cube[i][0][1] == self.cube[i][0][2] \
+                == self.cube[i][1][0] == self.cube[i][1][1] == self.cube[i][1][2] \
+                == self.cube[i][2][0] == self.cube[i][2][1] == self.cube[i][2][2]:
+                    return False
+        return True
 
     def print_solve(self):
         max_y, max_x = self.stdscr.getmaxyx()
