@@ -3,13 +3,21 @@ An N-Curses Based, Virtual Rubik's Cube (complete)
 
 This new version was inspired by the original **nrubik**.
 
-![start](nrubik2-start.jpg?raw=true)
+![Nrubik2](nrubik2.jpg?raw=true)
 
  - Full movements implemented
  - Full undo/redo support
  - Stoppable timer
+ - Two layouts
 
-![solved](nrubik2-solved.jpg?raw=true)
+![Mode1](nrubik2-mode1.jpg?raw=true)
+nrubik
+
+![Mode0](nrubik2-mode0.jpg?raw=true)
+nrubik b/w
+
+![Mode2](nrubik2-mode2.jpg?raw=true)
+nrubik2
 
  - Optimized for a 80x24 screen
  - Best played with a big font size (e.g. Monospace 20)
