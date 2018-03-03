@@ -183,27 +183,27 @@ class Cube:
 
         # top
         for i, line in enumerate(self.cube[0]):
-            for j in range(0, 3):
+            for j in range(3):
                 self.display_cubie(max_y / 2 - 6 + i, max_x / 2 - 4 + (j*2), line[j])
         # bottom
         for i, line in enumerate(self.cube[1]):
-            for j in range(0, 3):
+            for j in range(3):
                 self.display_cubie(max_y / 2 + 2 + i, max_x / 2 - 4 + (j*2), line[j])
         # left
         for i, line in enumerate(self.cube[2]):
-            for j in range(0, 3):
+            for j in range(3):
                 self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 12 + (j*2), line[j])
         # right
         for i, line in enumerate(self.cube[3]):
-            for j in range(0, 3):
+            for j in range(3):
                 self.display_cubie(max_y / 2 - 2 + i, max_x / 2 + 4 + (j*2), line[j])
         # front
         for i, line in enumerate(self.cube[4]):
-            for j in range(0, 3):
+            for j in range(3):
                 self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 4 + (j*2), line[j])
         # back
         for i, line in enumerate(self.cube[5]):
-            for j in range(0, 3):
+            for j in range(3):
                 self.display_cubie(max_y / 2 - 7 + i, max_x / 2 + 15 + (4-(2*j)), line[j])
 
         self.display_cubie(max_y / 2 - 6, max_x / 2 + 8, self.cube[5][0][0])
@@ -245,203 +245,203 @@ class Cube:
     def turn_top(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn top only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[0][i][j] = backup_cube[0][2-j][i]
         # turn rest
         for i, j in [(2, 4), (3, 5), (4, 3), (5, 2)]:
-            for k in range(0, 3):
+            for k in range(3):
                 self.cube[i][0][k] = backup_cube[j][0][k]
 
     def turn_top_rev(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn top only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[0][j][i] = backup_cube[0][i][2-j]
         # turn rest
         for i, j in [(2, 5), (3, 4), (4, 2), (5, 3)]:
-            for k in range(0, 3):
+            for k in range(3):
                 self.cube[i][0][k] = backup_cube[j][0][k]
 
     def turn_bottom(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn bottom only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[1][i][j] = backup_cube[1][2-j][i]
         # turn rest
         for i, j in [(2, 5), (3, 4), (4, 2), (5, 3)]:
-            for k in range(0, 3):
+            for k in range(3):
                 self.cube[i][2][k] = backup_cube[j][2][k]
 
     def turn_bottom_rev(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn bottom only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[1][j][i] = backup_cube[1][i][2-j]
         # turn rest
         for i, j in [(2, 4), (3, 5), (4, 3), (5, 2)]:
-            for k in range(0, 3):
+            for k in range(3):
                 self.cube[i][2][k] = backup_cube[j][2][k]
 
     def turn_left(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn left only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[2][i][j] = backup_cube[2][2-j][i]
         # change top-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][i][0] = backup_cube[5][2-i][2]
         # change bottom-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[1][i][0] = backup_cube[4][i][0]
         # change front-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[4][i][0] = backup_cube[0][i][0]
         # change back-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[5][i][2] = backup_cube[1][2-i][0]
 
     def turn_left_rev(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn left only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[2][j][i] = backup_cube[2][i][2-j]
         # change top-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][i][0] = backup_cube[4][i][0]
         # change bottom-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[1][i][0] = backup_cube[5][2-i][2]
         # change front-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[4][i][0] = backup_cube[1][i][0]
         # change back-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[5][i][2] = backup_cube[0][2-i][0]
 
     def turn_right(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn right only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[3][i][j] = backup_cube[3][2-j][i]
         # change top-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][i][2] = backup_cube[4][i][2]
         # change bottom-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[1][i][2] = backup_cube[5][2-i][0]
         # change front-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[4][i][2] = backup_cube[1][i][2]
         # change back-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[5][i][0] = backup_cube[0][2-i][2]
 
     def turn_right_rev(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn right only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[3][j][i] = backup_cube[3][i][2-j]
         # change top-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][i][2] = backup_cube[5][2-i][0]
         # change bottom-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[1][i][2] = backup_cube[4][i][2]
         # change front-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[4][i][2] = backup_cube[0][i][2]
         # change back-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[5][i][0] = backup_cube[1][2-i][2]
 
     def turn_front(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn front only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[4][i][j] = backup_cube[4][2-j][i]
         # change top-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][2][i] = backup_cube[2][2-i][2]
         # change bottom-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[1][0][i] = backup_cube[3][2-i][0]
         # change left-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[2][i][2] = backup_cube[1][0][i]
         # change right-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[3][i][0] = backup_cube[0][2][i]
 
     def turn_front_rev(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn front only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[4][j][i] = backup_cube[4][i][2-j]
         # change top-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][2][i] = backup_cube[3][i][0]
         # change bottom-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[1][0][i] = backup_cube[2][i][2]
         # change left-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[2][i][2] = backup_cube[0][2][2-i]
         # change right-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[3][i][0] = backup_cube[1][0][2-i]
 
     def turn_back(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn back only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[5][i][j] = backup_cube[5][2-j][i]
         # change top-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][0][i] = backup_cube[3][i][2]
         # change bottom-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[1][2][i] = backup_cube[2][i][0]
         # change left-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[2][i][0] = backup_cube[0][0][2-i]
         # change right-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[3][i][2] = backup_cube[1][2][2-i]
 
     def turn_back_rev(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn back only
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(3):
+            for j in range(3):
                 self.cube[5][j][i] = backup_cube[5][i][2-j]
         # change top-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][0][i] = backup_cube[2][2-i][0]
         # change bottom-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[1][2][i] = backup_cube[3][2-i][2]
         # change left-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[2][i][0] = backup_cube[1][2][i]
         # change right-part
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[3][i][2] = backup_cube[0][0][i]
 
     # r
     def turn_middle(self):
         backup_cube = copy.deepcopy(self.cube)
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][i][1] = backup_cube[4][i][1]
             self.cube[4][i][1] = backup_cube[1][i][1]
             self.cube[1][i][1] = backup_cube[5][2-i][1]
@@ -450,7 +450,7 @@ class Cube:
     # R
     def turn_middle_rev(self):
         backup_cube = copy.deepcopy(self.cube)
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][i][1] = backup_cube[5][2-i][1]
             self.cube[4][i][1] = backup_cube[0][i][1]
             self.cube[1][i][1] = backup_cube[4][i][1]
@@ -460,20 +460,20 @@ class Cube:
     def turn_equator(self):
         backup_cube = copy.deepcopy(self.cube)
         for i, j in [(2, 4), (4, 3), (3, 5), (5, 2)]:
-            for k in range(0, 3):
+            for k in range(3):
                 self.cube[i][1][k] = backup_cube[j][1][k]
 
     # U
     def turn_equator_rev(self):
         backup_cube = copy.deepcopy(self.cube)
         for i, j in [(2, 5), (4, 2), (3, 4), (5, 3)]:
-            for k in range(0, 3):
+            for k in range(3):
                 self.cube[i][1][k] = backup_cube[j][1][k]
 
     # f
     def turn_standing(self):
         backup_cube = copy.deepcopy(self.cube)
-        for k in range(0, 3):
+        for k in range(3):
             self.cube[0][1][k] = backup_cube[2][2-k][1]
             self.cube[2][k][1] = backup_cube[1][1][k]
             self.cube[1][1][k] = backup_cube[3][2-k][1]
@@ -482,7 +482,7 @@ class Cube:
     # F
     def turn_standing_rev(self):
         backup_cube = copy.deepcopy(self.cube)
-        for k in range(0, 3):
+        for k in range(3):
             self.cube[0][1][k] = backup_cube[3][k][1]
             self.cube[2][k][1] = backup_cube[0][1][2-k]
             self.cube[1][1][k] = backup_cube[2][k][1]
@@ -496,7 +496,7 @@ class Cube:
         self.turn_left_rev()
         # change middle
         backup_cube = copy.deepcopy(self.cube)
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][i][1] = backup_cube[4][i][1]
             self.cube[4][i][1] = backup_cube[1][i][1]
             self.cube[1][i][1] = backup_cube[5][2-i][1]
@@ -510,7 +510,7 @@ class Cube:
         self.turn_left()
         # change middle
         backup_cube = copy.deepcopy(self.cube)
-        for i in range(0, 3):
+        for i in range(3):
             self.cube[0][i][1] = backup_cube[5][2-i][1]
             self.cube[4][i][1] = backup_cube[0][i][1]
             self.cube[1][i][1] = backup_cube[4][i][1]
@@ -525,7 +525,7 @@ class Cube:
         # change equator
         backup_cube = copy.deepcopy(self.cube)
         for i, j in [(2, 4), (4, 3), (3, 5), (5, 2)]:
-            for k in range(0, 3):
+            for k in range(3):
                 self.cube[i][1][k] = backup_cube[j][1][k]
 
     # cube y-axis U/d
@@ -537,7 +537,7 @@ class Cube:
         # change equator
         backup_cube = copy.deepcopy(self.cube)
         for i, j in [(2, 5), (4, 2), (3, 4), (5, 3)]:
-            for k in range(0, 3):
+            for k in range(3):
                 self.cube[i][1][k] = backup_cube[j][1][k]
 
     # cube z-axis f/B
@@ -548,7 +548,7 @@ class Cube:
         self.turn_back_rev()
         # change standing
         backup_cube = copy.deepcopy(self.cube)
-        for k in range(0, 3):
+        for k in range(3):
             self.cube[0][1][k] = backup_cube[2][2-k][1]
             self.cube[2][k][1] = backup_cube[1][1][k]
             self.cube[1][1][k] = backup_cube[3][2-k][1]
@@ -562,7 +562,7 @@ class Cube:
         self.turn_back()
         # change standing
         backup_cube = copy.deepcopy(self.cube)
-        for k in range(0, 3):
+        for k in range(3):
             self.cube[0][1][k] = backup_cube[3][k][1]
             self.cube[2][k][1] = backup_cube[0][1][2-k]
             self.cube[1][1][k] = backup_cube[2][k][1]
@@ -572,7 +572,7 @@ class Cube:
         global buf_undo, buf_redo, watch
         functions = [self.turn_top, self.turn_bottom, self.turn_left,
                      self.turn_right, self.turn_front, self.turn_back]
-        for i in range(0, 30):
+        for i in range(30):
             functions[random.randint(0, 5)]()
 
         buf_undo = buf_redo =  ""
