@@ -149,13 +149,16 @@ class Cube:
         self.stdscr.addstr(start_y + 14, start_x + 0, cube_y + "," + cube_y.upper() + " - Cube Y")
         self.stdscr.addstr(start_y + 15, start_x + 0, cube_z + "," + cube_z.upper() + " - Cube Z")
 
-        self.stdscr.addstr(start_y + 9, max_x - 2 - end_x, "Home - Reset")
-        self.stdscr.addstr(start_y + 10, max_x - 2 - end_x, "End  - Solve")
-        self.stdscr.addstr(start_y + 11, max_x - 2 - end_x, "Backspace - Undo")
-        self.stdscr.addstr(start_y + 12, max_x - 2 - end_x, "Enter     - Redo")
-        self.stdscr.addstr(start_y + 13, max_x - 2 - end_x, "Delete    - Delete")
-        self.stdscr.addstr(start_y + 14, max_x - 2 - end_x, "Space  - Timer")
-        self.stdscr.addstr(start_y + 15, max_x - 2 - end_x, "Escape - Quit")
+        self.stdscr.addstr(start_y + 7, max_x - 2 - end_x, "Home - Reset")
+        self.stdscr.addstr(start_y + 8, max_x - 2 - end_x, "End  - Solve")
+
+        self.stdscr.addstr(start_y + 10, max_x - 2 - end_x, "Backspace - Undo")
+        self.stdscr.addstr(start_y + 11, max_x - 2 - end_x, "Enter     - Redo")
+        self.stdscr.addstr(start_y + 12, max_x - 2 - end_x, "Delete    - Delete")
+
+        self.stdscr.addstr(start_y + 14, max_x - 2 - end_x, "Insert - Layout")
+        self.stdscr.addstr(start_y + 15, max_x - 2 - end_x, "Space  - Timer")
+        self.stdscr.addstr(start_y + 16, max_x - 2 - end_x, "Escape - Quit")
 
     def solved(self):
         for i in range(6):
