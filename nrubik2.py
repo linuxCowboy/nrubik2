@@ -550,83 +550,39 @@ class Cube:
 
     # cube x-axis r/L
     def move_x(self):
-        # change right
         self.turn_right()
-        # change left
+        self.turn_middle()
         self.turn_left_rev()
-        # change middle
-        backup_cube = copy.deepcopy(self.cube)
-        for i in range(3):
-            self.cube[0][i][1] = backup_cube[4][i][1]
-            self.cube[4][i][1] = backup_cube[1][i][1]
-            self.cube[1][i][1] = backup_cube[5][2-i][1]
-            self.cube[5][i][1] = backup_cube[0][2-i][1]
 
-    # cube x-axis R/l
+    # R/l
     def move_x_rev(self):
-        # change right
         self.turn_right_rev()
-        # change left
+        self.turn_middle_rev()
         self.turn_left()
-        # change middle
-        backup_cube = copy.deepcopy(self.cube)
-        for i in range(3):
-            self.cube[0][i][1] = backup_cube[5][2-i][1]
-            self.cube[4][i][1] = backup_cube[0][i][1]
-            self.cube[1][i][1] = backup_cube[4][i][1]
-            self.cube[5][i][1] = backup_cube[1][2-i][1]
 
     # cube y-axis u/D
     def move_y(self):
-        # change top
         self.turn_top()
-        # change bottom
+        self.turn_equator()
         self.turn_bottom_rev()
-        # change equator
-        backup_cube = copy.deepcopy(self.cube)
-        for i, j in [(2, 4), (4, 3), (3, 5), (5, 2)]:
-            for k in range(3):
-                self.cube[i][1][k] = backup_cube[j][1][k]
 
-    # cube y-axis U/d
+    # U/d
     def move_y_rev(self):
-        # change top
         self.turn_top_rev()
-        # change bottom
+        self.turn_equator_rev()
         self.turn_bottom()
-        # change equator
-        backup_cube = copy.deepcopy(self.cube)
-        for i, j in [(2, 5), (4, 2), (3, 4), (5, 3)]:
-            for k in range(3):
-                self.cube[i][1][k] = backup_cube[j][1][k]
 
     # cube z-axis f/B
     def move_z(self):
-        # change front
         self.turn_front()
-        # change back
+        self.turn_standing()
         self.turn_back_rev()
-        # change standing
-        backup_cube = copy.deepcopy(self.cube)
-        for k in range(3):
-            self.cube[0][1][k] = backup_cube[2][2-k][1]
-            self.cube[2][k][1] = backup_cube[1][1][k]
-            self.cube[1][1][k] = backup_cube[3][2-k][1]
-            self.cube[3][k][1] = backup_cube[0][1][k]
 
-    # cube z-axis F/b
+    # F/b
     def move_z_rev(self):
-        # change front
         self.turn_front_rev()
-        # change back
+        self.turn_standing_rev()
         self.turn_back()
-        # change standing
-        backup_cube = copy.deepcopy(self.cube)
-        for k in range(3):
-            self.cube[0][1][k] = backup_cube[3][k][1]
-            self.cube[2][k][1] = backup_cube[0][1][2-k]
-            self.cube[1][1][k] = backup_cube[2][k][1]
-            self.cube[3][k][1] = backup_cube[1][1][2-k]
 
     def scramble(self):
         global buf_undo, buf_redo, watch
