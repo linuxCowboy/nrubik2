@@ -29,8 +29,8 @@ front = 'f'
 back  = 'b'
 
 ## ruf rule rulez
-middle   = 'm'  # r
-equator  = 'e'  # u
+middle   = 'm'  # r (but reversed: l!)
+equator  = 'e'  # u (but reversed: d!)
 standing = 's'  # f
 
 cube_x = 'x'  # r
@@ -265,6 +265,7 @@ class Cube:
                 for j in range(3):
                     self.display_cubie(max_y / 2 - 7 + i, max_x / 2 + 15 + (4-(2*j)), line[j])
 
+            # mirror
             self.display_cubie(max_y / 2 - 6, max_x / 2 + 8, self.cube[5][0][0])
             self.display_cubie(max_y / 2 - 8, max_x / 2 - 2, self.cube[5][0][1])
             self.display_cubie(max_y / 2 - 6, max_x / 2 - 12, self.cube[5][0][2])
@@ -751,23 +752,25 @@ class Cube:
                 buf_undo += key + " "
             self.turn_back_rev()
 
+        # inconsistently reversed!
         elif key == middle:
             if not dismiss:
                 buf_undo += key + " "
-            self.turn_middle()
+            self.turn_middle_rev()
         elif key == middle.upper():
             if not dismiss:
                 buf_undo += key + " "
-            self.turn_middle_rev()
+            self.turn_middle()
 
+        # inconsistently reversed!
         elif key == equator:
             if not dismiss:
                 buf_undo += key + " "
-            self.turn_equator()
+            self.turn_equator_rev()
         elif key == equator.upper():
             if not dismiss:
                 buf_undo += key + " "
-            self.turn_equator_rev()
+            self.turn_equator()
 
         elif key == standing:
             if not dismiss:
