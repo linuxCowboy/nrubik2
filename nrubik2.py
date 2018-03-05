@@ -63,8 +63,8 @@ class Cube:
 
     looping = True
     pausing = True
-    time_last = time.time()
     watch = 0
+    time_last = time.time()
 
     solved_cube = [
         [
@@ -592,6 +592,7 @@ class Cube:
 
         buf_undo = buf_redo =  ""
         self.watch = 0
+        self.time_last = time.time()
         self.pausing = False
 
     def get_input(self):
