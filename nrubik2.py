@@ -130,7 +130,7 @@ class Cube:
         end_x = 18
 
         head = "nrubik2 - An N-Curses Based, Virtual Rubik's Cube"
-        self.stdscr.addstr(0, int(max_x / 2 - 1 - len(head) / 2), head)
+        self.stdscr.addstr(0, int(max_x / 2 - len(head) / 2 - 1), head)
 
         self.stdscr.addstr(start_y + 0, start_x + 0, "Keybindings:")
 
@@ -177,7 +177,7 @@ class Cube:
         else:
             appeal = "Solved. Congrats!"
 
-        self.stdscr.addstr(int(max_y / 2 - 10), int(max_x / 2 - 1 - (len(appeal) / 2)), appeal)
+        self.stdscr.addstr(int(max_y / 2 - 10), int(max_x / 2 - len(appeal) / 2 - 1), appeal)
 
     def display_cubie(self, y, x, cubie):
         colors = {'W': 1, 'Y': 2, 'M': 3, 'R': 4, 'G': 5, 'B': 6}
