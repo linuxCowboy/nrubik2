@@ -166,11 +166,12 @@ class Cube:
                 == self.cube[i][1][0] == self.cube[i][1][1] == self.cube[i][1][2] \
                 == self.cube[i][2][0] == self.cube[i][2][1] == self.cube[i][2][2]:
                     return False
+
+        self.pausing = True
         return True
 
-    def print_solve(self):
+    def print_appeal(self):
         max_y, max_x = self.stdscr.getmaxyx()
-        self.pausing = True
 
         if len(buf_undo) == 0:
             appeal = "'Home' for Start!"
@@ -772,7 +773,7 @@ class Cube:
             self.stdscr.erase()
             self.helper()
             if self.solved() is True:
-                self.print_solve()
+                self.print_appeal()
             self.display_cube()
             self.stdscr.refresh()
             self.get_input()
