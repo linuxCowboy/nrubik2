@@ -58,7 +58,7 @@ buf_undo = buf_redo = ""
 
 class Cube:
 
-    # mode 0: b/w  mode 1: original nrubik  mode 2: nrubik2
+    # mode 0: nrubik b/w  mode 1: nrubik  mode 2: nrubik2
     mode = 2
 
     looping = True
@@ -122,6 +122,8 @@ class Cube:
                 curses.init_pair(4, curses.COLOR_RED, curses.COLOR_RED)
                 curses.init_pair(5, curses.COLOR_GREEN, curses.COLOR_GREEN)
                 curses.init_pair(6, curses.COLOR_BLUE, curses.COLOR_BLUE)
+        else:
+            self.mode = 0
 
     def helper(self):
         max_y, max_x = self.stdscr.getmaxyx()
@@ -188,7 +190,7 @@ class Cube:
         else:
             cub = cubie
 
-        if curses.has_colors() == False or self.mode == 0:
+        if not curses.has_colors() or self.mode == 0:
             self.stdscr.addstr(int(y), int(x), cub)
         else:
             self.stdscr.addstr(int(y), int(x), cub, curses.color_pair(colors[cubie]))
