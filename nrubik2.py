@@ -37,17 +37,17 @@ cube_x = 'x'  # r
 cube_y = 'y'  # u
 cube_z = 'z'  # f
 
-######################
+########################
 
+undo   = 'KEY_BACKSPACE'
+redo   = chr(10)
 delete = 'KEY_DC'
-undo = 'KEY_BACKSPACE'
-redo = chr(10)
 
-reset = 'KEY_HOME'
-solve = 'KEY_END'
+reset  = 'KEY_HOME'
+solve  = 'KEY_END'
 layout = 'KEY_IC'
-pause = ' '
-quit = chr(27)
+pause  = ' '
+quit   = chr(27)
 
 import curses
 import copy
@@ -109,19 +109,19 @@ class Cube:
 
         if curses.has_colors():
             if self.mode <= 1:
-                curses.init_pair(1, curses.COLOR_WHITE, -1)
-                curses.init_pair(2, curses.COLOR_YELLOW, -1)
+                curses.init_pair(1, curses.COLOR_WHITE,   -1)
+                curses.init_pair(2, curses.COLOR_YELLOW,  -1)
                 curses.init_pair(3, curses.COLOR_MAGENTA, -1)
-                curses.init_pair(4, curses.COLOR_RED, -1)
-                curses.init_pair(5, curses.COLOR_GREEN, -1)
-                curses.init_pair(6, curses.COLOR_BLUE, -1)
+                curses.init_pair(4, curses.COLOR_RED,     -1)
+                curses.init_pair(5, curses.COLOR_GREEN,   -1)
+                curses.init_pair(6, curses.COLOR_BLUE,    -1)
             else:
-                curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_WHITE)
-                curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_YELLOW)
+                curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
+                curses.init_pair(2, curses.COLOR_YELLOW,  curses.COLOR_YELLOW)
                 curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)
-                curses.init_pair(4, curses.COLOR_RED, curses.COLOR_RED)
-                curses.init_pair(5, curses.COLOR_GREEN, curses.COLOR_GREEN)
-                curses.init_pair(6, curses.COLOR_BLUE, curses.COLOR_BLUE)
+                curses.init_pair(4, curses.COLOR_RED,     curses.COLOR_RED)
+                curses.init_pair(5, curses.COLOR_GREEN,   curses.COLOR_GREEN)
+                curses.init_pair(6, curses.COLOR_BLUE,    curses.COLOR_BLUE)
         else:
             self.mode = 0
 
@@ -129,43 +129,43 @@ class Cube:
         max_y, max_x = self.stdscr.getmaxyx()
         start_y = 2
         start_x = 2
-        end_x = 18
+        end_x   = 2 + 18
 
         head = "nrubik2 - An N-Curses Based, Virtual Rubik's Cube"
         self.stdscr.addstr(0, int(max_x / 2 - len(head) / 2 - 1), head)
 
-        self.stdscr.addstr(start_y + 0, start_x + 0, "Keybindings:")
+        self.stdscr.addstr(start_y + 0,  start_x, "Keybindings:")
 
-        self.stdscr.addstr(start_y + 2, start_x + 0, up + "," + up.upper() + " - Up")
-        self.stdscr.addstr(start_y + 3, start_x + 0, down + "," + down.upper() + " - Down")
-        self.stdscr.addstr(start_y + 4, start_x + 0, left + "," + left.upper() + " - Left")
-        self.stdscr.addstr(start_y + 5, start_x + 0, right + "," + right.upper() + " - Right")
-        self.stdscr.addstr(start_y + 6, start_x + 0, front + "," + front.upper() + " - Front")
-        self.stdscr.addstr(start_y + 7, start_x + 0, back + "," + back.upper() + " - Back")
+        self.stdscr.addstr(start_y + 2,  start_x, up + ","    + up.upper()    + " - Up")
+        self.stdscr.addstr(start_y + 3,  start_x, down + ","  + down.upper()  + " - Down")
+        self.stdscr.addstr(start_y + 4,  start_x, left + ","  + left.upper()  + " - Left")
+        self.stdscr.addstr(start_y + 5,  start_x, right + "," + right.upper() + " - Right")
+        self.stdscr.addstr(start_y + 6,  start_x, front + "," + front.upper() + " - Front")
+        self.stdscr.addstr(start_y + 7,  start_x, back + ","  + back.upper()  + " - Back")
 
-        self.stdscr.addstr(start_y + 9, start_x + 0, middle + "," + middle.upper() + " - Middle")
-        self.stdscr.addstr(start_y + 10, start_x + 0, equator + "," + equator.upper() + " - Equator")
-        self.stdscr.addstr(start_y + 11, start_x + 0, standing + "," + standing.upper() + " - Standing")
+        self.stdscr.addstr(start_y + 9,  start_x, middle + ","   + middle.upper()   + " - Middle")
+        self.stdscr.addstr(start_y + 10, start_x, equator + ","  + equator.upper()  + " - Equator")
+        self.stdscr.addstr(start_y + 11, start_x, standing + "," + standing.upper() + " - Standing")
 
-        self.stdscr.addstr(start_y + 13, start_x + 0, cube_x + "," + cube_x.upper() + " - Cube X")
-        self.stdscr.addstr(start_y + 14, start_x + 0, cube_y + "," + cube_y.upper() + " - Cube Y")
-        self.stdscr.addstr(start_y + 15, start_x + 0, cube_z + "," + cube_z.upper() + " - Cube Z")
+        self.stdscr.addstr(start_y + 13, start_x, cube_x + "," + cube_x.upper() + " - Cube X")
+        self.stdscr.addstr(start_y + 14, start_x, cube_y + "," + cube_y.upper() + " - Cube Y")
+        self.stdscr.addstr(start_y + 15, start_x, cube_z + "," + cube_z.upper() + " - Cube Z")
 
-        self.stdscr.addstr(start_y + 7, max_x - 2 - end_x, "Home - Reset")
-        self.stdscr.addstr(start_y + 8, max_x - 2 - end_x, "End  - Solve")
+        self.stdscr.addstr(start_y + 7,  max_x - end_x, "Home - Reset")
+        self.stdscr.addstr(start_y + 8,  max_x - end_x, "End  - Solve")
 
-        self.stdscr.addstr(start_y + 10, max_x - 2 - end_x, "Backspace - Undo")
-        self.stdscr.addstr(start_y + 11, max_x - 2 - end_x, "Enter     - Redo")
-        self.stdscr.addstr(start_y + 12, max_x - 2 - end_x, "Delete    - Delete")
+        self.stdscr.addstr(start_y + 10, max_x - end_x, "Backspace - Undo")
+        self.stdscr.addstr(start_y + 11, max_x - end_x, "Enter     - Redo")
+        self.stdscr.addstr(start_y + 12, max_x - end_x, "Delete    - Delete")
 
-        self.stdscr.addstr(start_y + 14, max_x - 2 - end_x, "Insert - Layout")
-        self.stdscr.addstr(start_y + 15, max_x - 2 - end_x, "Space  - Timer")
-        self.stdscr.addstr(start_y + 16, max_x - 2 - end_x, "Escape - Quit")
+        self.stdscr.addstr(start_y + 14, max_x - end_x, "Insert - Layout")
+        self.stdscr.addstr(start_y + 15, max_x - end_x, "Space  - Timer")
+        self.stdscr.addstr(start_y + 16, max_x - end_x, "Escape - Quit")
 
     def solved(self):
         for i in range(6):
-            if not self.cube[i][0][0] == self.cube[i][0][1] == self.cube[i][0][2] \
-                == self.cube[i][1][0] == self.cube[i][1][1] == self.cube[i][1][2] \
+            if not self.cube[i][0][0] == self.cube[i][0][1] == self.cube[i][0][2]\
+                == self.cube[i][1][0] == self.cube[i][1][1] == self.cube[i][1][2]\
                 == self.cube[i][2][0] == self.cube[i][2][1] == self.cube[i][2][2]:
                     return False
 
@@ -228,10 +228,10 @@ class Cube:
         # nrubik2
         else:
             # bars
-            self.stdscr.addstr(int(max_y / 2 - 9), int(max_x / 2 - 1), " __________________")
+            self.stdscr.addstr(int(max_y / 2 - 9), int(max_x / 2 - 1),  " __________________")
             self.stdscr.addstr(int(max_y / 2 - 8), int(max_x / 2 + 17), "||")
             self.stdscr.addstr(int(max_y / 2 - 7), int(max_x / 2 - 10), "______  ||  ______")
-            self.stdscr.addstr(int(max_y / 2 - 6), int(max_x / 2 - 7), "___......___")
+            self.stdscr.addstr(int(max_y / 2 - 6), int(max_x / 2 - 7),  "___......___")
             self.stdscr.addstr(int(max_y / 2 - 5), int(max_x / 2 - 12), "|   /___......___\\   |")
             self.stdscr.addstr(int(max_y / 2 - 4), int(max_x / 2 - 12), "|  /    ......    \\  |")
             self.stdscr.addstr(int(max_y / 2 - 3), int(max_x / 2 - 12), "| ||   +  ||  +   || |")
@@ -240,43 +240,43 @@ class Cube:
             self.stdscr.addstr(int(max_y / 2 + 2), int(max_x / 2 - 12), "|  \\ ___......___ /  |")
             self.stdscr.addstr(int(max_y / 2 + 3), int(max_x / 2 - 12), "|   \\___......___/   |")
             self.stdscr.addstr(int(max_y / 2 + 4), int(max_x / 2 - 10), "______  ||  ______")
-            self.stdscr.addstr(int(max_y / 2 + 5), int(max_x / 2 - 2), "||")
+            self.stdscr.addstr(int(max_y / 2 + 5), int(max_x / 2 - 2),  "||")
 
             # top
             for i, line in enumerate(self.cube[0]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 6 + i, max_x / 2 - 4 + (j*2), line[j])
+                    self.display_cubie(max_y / 2 - 6 + i, max_x / 2 - 4 + (j*2),      line[j])
             # bottom
             for i, line in enumerate(self.cube[1]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 + 2 + i, max_x / 2 - 4 + (j*2), line[j])
+                    self.display_cubie(max_y / 2 + 2 + i, max_x / 2 - 4 + (j*2),      line[j])
             # left
             for i, line in enumerate(self.cube[2]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 12 + (j*2), line[j])
+                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 12 + (j*2),     line[j])
             # right
             for i, line in enumerate(self.cube[3]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 + 4 + (j*2), line[j])
+                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 + 4 + (j*2),      line[j])
             # front
             for i, line in enumerate(self.cube[4]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 4 + (j*2), line[j])
+                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 4 + (j*2),      line[j])
             # back
             for i, line in enumerate(self.cube[5]):
                 for j in range(3):
                     self.display_cubie(max_y / 2 - 7 + i, max_x / 2 + 15 + (4-(2*j)), line[j])
 
             # mirror
-            self.display_cubie(max_y / 2 - 6, max_x / 2 + 8, self.cube[5][0][0])
-            self.display_cubie(max_y / 2 - 8, max_x / 2 - 2, self.cube[5][0][1])
+            self.display_cubie(max_y / 2 - 6, max_x / 2 + 8,  self.cube[5][0][0])
+            self.display_cubie(max_y / 2 - 8, max_x / 2 - 2,  self.cube[5][0][1])
             self.display_cubie(max_y / 2 - 6, max_x / 2 - 12, self.cube[5][0][2])
 
             self.display_cubie(max_y / 2 - 1, max_x / 2 + 12, self.cube[5][1][0])
             self.display_cubie(max_y / 2 - 1, max_x / 2 - 16, self.cube[5][1][2])
 
-            self.display_cubie(max_y / 2 + 4, max_x / 2 + 8, self.cube[5][2][0])
-            self.display_cubie(max_y / 2 + 6, max_x / 2 - 2, self.cube[5][2][1])
+            self.display_cubie(max_y / 2 + 4, max_x / 2 + 8,  self.cube[5][2][0])
+            self.display_cubie(max_y / 2 + 6, max_x / 2 - 2,  self.cube[5][2][1])
             self.display_cubie(max_y / 2 + 4, max_x / 2 - 12, self.cube[5][2][2])
 
         # trace redo
@@ -636,19 +636,19 @@ class Cube:
             self.mode = (self.mode + 1) % 3
 
             if self.mode <= 1:
-                curses.init_pair(1, curses.COLOR_WHITE, -1)
-                curses.init_pair(2, curses.COLOR_YELLOW, -1)
+                curses.init_pair(1, curses.COLOR_WHITE,   -1)
+                curses.init_pair(2, curses.COLOR_YELLOW,  -1)
                 curses.init_pair(3, curses.COLOR_MAGENTA, -1)
-                curses.init_pair(4, curses.COLOR_RED, -1)
-                curses.init_pair(5, curses.COLOR_GREEN, -1)
-                curses.init_pair(6, curses.COLOR_BLUE, -1)
+                curses.init_pair(4, curses.COLOR_RED,     -1)
+                curses.init_pair(5, curses.COLOR_GREEN,   -1)
+                curses.init_pair(6, curses.COLOR_BLUE,    -1)
             else:
-                curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_WHITE)
-                curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_YELLOW)
+                curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
+                curses.init_pair(2, curses.COLOR_YELLOW,  curses.COLOR_YELLOW)
                 curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)
-                curses.init_pair(4, curses.COLOR_RED, curses.COLOR_RED)
-                curses.init_pair(5, curses.COLOR_GREEN, curses.COLOR_GREEN)
-                curses.init_pair(6, curses.COLOR_BLUE, curses.COLOR_BLUE)
+                curses.init_pair(4, curses.COLOR_RED,     curses.COLOR_RED)
+                curses.init_pair(5, curses.COLOR_GREEN,   curses.COLOR_GREEN)
+                curses.init_pair(6, curses.COLOR_BLUE,    curses.COLOR_BLUE)
 
         elif key == pause:
             self.pausing = not self.pausing
