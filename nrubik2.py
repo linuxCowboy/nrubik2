@@ -20,6 +20,11 @@
 #
 #######################################################################
 
+import curses
+import copy
+import random
+import time
+
 # lowercase chars for moves
 up    = 'u'
 down  = 'd'
@@ -49,10 +54,10 @@ layout = 'KEY_IC'
 pause  = ' '
 quit   = chr(27)
 
-import curses
-import copy
-import random
-import time
+moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x, cube_y, cube_z]
+
+for m in moves[:]:
+    moves.append(m.upper())
 
 buf_undo = buf_redo = ""
 
@@ -265,7 +270,7 @@ class Cube:
             # back
             for i, line in enumerate(self.cube[5]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 7 + i, max_x / 2 + 15 + (4-(2*j)), line[j])
+                    self.display_cubie(max_y / 2 - 7 + i, max_x / 2 + 15 + (4-(j*2)), line[j])
 
             # mirror
             self.display_cubie(max_y / 2 - 6, max_x / 2 + 8,  self.cube[5][0][0])
@@ -607,26 +612,24 @@ class Cube:
         except curses.error:
             pass
 
-        # trace buffer
-        if key == delete:
+        # control
+        if key == undo:
             key = buf_undo[-2:-1]
             key = key.lower() if key == key.upper() else key.upper()
-            buf_undo = buf_undo[:-2]
-            dismiss = True
 
-        elif key == undo:
-            key = buf_undo[-2:-1]
-            key = key.lower() if key == key.upper() else key.upper()
             buf_redo += buf_undo[-2:]
             buf_undo = buf_undo[:-2]
             dismiss = True
 
         elif key == redo:
             key = buf_redo[-2:-1]
+
             buf_redo = buf_redo[:-2]
 
-        # controls
-        if key == reset:
+        elif key == delete:
+            buf_undo = buf_undo[:-2]
+
+        elif key == reset:
             self.scramble()
 
         elif key == solve:
@@ -656,116 +659,71 @@ class Cube:
         elif key == quit:
             self.looping = False
 
+        # trace buffer
+        if key in moves and not dismiss:
+            buf_undo += key + " "
+
         # moves
-        elif key == up:
-            if not dismiss:
-                buf_undo += key + " "
+        if key == up:
             self.turn_top()
         elif key == up.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_top_rev()
 
         elif key == down:
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_bottom()
         elif key == down.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_bottom_rev()
 
         elif key == left:
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_left()
         elif key == left.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_left_rev()
 
         elif key == right:
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_right()
         elif key == right.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_right_rev()
 
         elif key == front:
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_front()
         elif key == front.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_front_rev()
 
         elif key == back:
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_back()
         elif key == back.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_back_rev()
 
         # inconsistently reversed!
         elif key == middle:
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_middle_rev()
         elif key == middle.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_middle()
 
         # inconsistently reversed!
         elif key == equator:
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_equator_rev()
         elif key == equator.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_equator()
 
         elif key == standing:
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_standing()
         elif key == standing.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.turn_standing_rev()
 
-        # turns
         elif key == cube_x:
-            if not dismiss:
-                buf_undo += key + " "
             self.move_x()
         elif key == cube_x.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.move_x_rev()
 
         elif key == cube_y:
-            if not dismiss:
-                buf_undo += key + " "
             self.move_y()
         elif key == cube_y.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.move_y_rev()
 
         elif key == cube_z:
-            if not dismiss:
-                buf_undo += key + " "
             self.move_z()
         elif key == cube_z.upper():
-            if not dismiss:
-                buf_undo += key + " "
             self.move_z_rev()
 
         time.sleep(0.02)
