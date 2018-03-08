@@ -47,6 +47,8 @@ cube_z = 'z'  # f
 undo   = 'KEY_BACKSPACE'
 redo   = chr(10)
 delete = 'KEY_DC'
+toredo = 'KEY_PPAGE'
+tonull = 'KEY_NPAGE'
 
 reset  = 'KEY_HOME'
 solve  = 'KEY_END'
@@ -151,9 +153,9 @@ class Cube:
         self.stdscr.addstr(start_y + 9,  start_x, middle + ","   + middle.upper()   + " - Middle")
         self.stdscr.addstr(start_y + 10, start_x, equator + ","  + equator.upper()  + " - Equator")
         self.stdscr.addstr(start_y + 11, start_x, standing + "," + standing.upper() + " - Standing")
-        self.stdscr.addstr(start_y + 12, start_x, cube_x + "," + cube_x.upper() + " - Cube X")
-        self.stdscr.addstr(start_y + 13, start_x, cube_y + "," + cube_y.upper() + " - Cube Y")
-        self.stdscr.addstr(start_y + 14, start_x, cube_z + "," + cube_z.upper() + " - Cube Z")
+        self.stdscr.addstr(start_y + 12, start_x, cube_x + ","   + cube_x.upper()   + " - Cube X")
+        self.stdscr.addstr(start_y + 13, start_x, cube_y + ","   + cube_y.upper()   + " - Cube Y")
+        self.stdscr.addstr(start_y + 14, start_x, cube_z + ","   + cube_z.upper()   + " - Cube Z")
 
         self.stdscr.addstr(start_y + 16, start_x, "Home - Reset")
 
@@ -628,6 +630,17 @@ class Cube:
             buf_redo = buf_redo[:-2]
 
         elif key == delete:
+            key = buf_undo[-2:-1]
+            key = key.lower() if key == key.upper() else key.upper()
+
+            buf_undo = buf_undo[:-2]
+            dismiss = True
+
+        elif key == toredo:
+            buf_redo += buf_undo[-2:]
+            buf_undo = buf_undo[:-2]
+
+        elif key == tonull:
             buf_undo = buf_undo[:-2]
 
         elif key == reset:
