@@ -56,6 +56,9 @@ layout = 'KEY_IC'
 pause  = ' '
 quit   = chr(27)
 
+# cheat
+solve_1 = '1'
+
 moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x, cube_y, cube_z]
 
 for m in moves[:]:
@@ -606,6 +609,9 @@ class Cube:
         self.time_last = time.time()
         self.pausing = False
 
+    def solve_1(self):
+        pass
+
     def get_input(self):
         global buf_undo, buf_redo
         key = None
@@ -648,6 +654,9 @@ class Cube:
 
         elif key == solve:
             self.cube = copy.deepcopy(self.solved_cube)
+
+        elif key == solve_1:
+            self.solve_1()
 
         elif key == layout:
             self.mode = (self.mode + 1) % 3
