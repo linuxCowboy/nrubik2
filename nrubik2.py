@@ -151,18 +151,19 @@ class Cube:
         self.stdscr.addstr(start_y + 9,  start_x, middle + ","   + middle.upper()   + " - Middle")
         self.stdscr.addstr(start_y + 10, start_x, equator + ","  + equator.upper()  + " - Equator")
         self.stdscr.addstr(start_y + 11, start_x, standing + "," + standing.upper() + " - Standing")
+        self.stdscr.addstr(start_y + 12, start_x, cube_x + "," + cube_x.upper() + " - Cube X")
+        self.stdscr.addstr(start_y + 13, start_x, cube_y + "," + cube_y.upper() + " - Cube Y")
+        self.stdscr.addstr(start_y + 14, start_x, cube_z + "," + cube_z.upper() + " - Cube Z")
 
-        self.stdscr.addstr(start_y + 13, start_x, cube_x + "," + cube_x.upper() + " - Cube X")
-        self.stdscr.addstr(start_y + 14, start_x, cube_y + "," + cube_y.upper() + " - Cube Y")
-        self.stdscr.addstr(start_y + 15, start_x, cube_z + "," + cube_z.upper() + " - Cube Z")
+        self.stdscr.addstr(start_y + 16, start_x, "Home - Reset")
 
-        self.stdscr.addstr(start_y + 7,  max_x - end_x, "Home - Reset")
-        self.stdscr.addstr(start_y + 8,  max_x - end_x, "End  - Solve")
+        self.stdscr.addstr(start_y + 7,  max_x - end_x, "Backspace - Undo")
+        self.stdscr.addstr(start_y + 8,  max_x - end_x, "Enter     - Redo")
+        self.stdscr.addstr(start_y + 9,  max_x - end_x, "Delete    - Delete")
+        self.stdscr.addstr(start_y + 10, max_x - end_x, "Page Up   - 2 Redo")
+        self.stdscr.addstr(start_y + 11, max_x - end_x, "Page Down - 2 Null")
 
-        self.stdscr.addstr(start_y + 10, max_x - end_x, "Backspace - Undo")
-        self.stdscr.addstr(start_y + 11, max_x - end_x, "Enter     - Redo")
-        self.stdscr.addstr(start_y + 12, max_x - end_x, "Delete    - Delete")
-
+        self.stdscr.addstr(start_y + 13, max_x - end_x, "End    - Solve")
         self.stdscr.addstr(start_y + 14, max_x - end_x, "Insert - Layout")
         self.stdscr.addstr(start_y + 15, max_x - end_x, "Space  - Timer")
         self.stdscr.addstr(start_y + 16, max_x - end_x, "Escape - Quit")
