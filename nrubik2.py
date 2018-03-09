@@ -609,6 +609,122 @@ class Cube:
         self.time_last = time.time()
         self.pausing = False
 
+    def search_edge(self, cubie1, cubie2):
+        found = []
+
+        if self.cube[0][0][1] == cubie1 and self.cube[5][0][1] == cubie2: found.extend((0, 0, 1))
+        if self.cube[0][1][0] == cubie1 and self.cube[2][0][1] == cubie2: found.extend((0, 1, 0))
+        if self.cube[0][1][2] == cubie1 and self.cube[3][0][1] == cubie2: found.extend((0, 1, 2))
+        if self.cube[0][2][1] == cubie1 and self.cube[4][0][1] == cubie2: found.extend((0, 2, 1))
+
+        if self.cube[1][0][1] == cubie1 and self.cube[4][2][1] == cubie2: found.extend((1, 0, 1))
+        if self.cube[1][1][0] == cubie1 and self.cube[2][2][1] == cubie2: found.extend((1, 1, 0))
+        if self.cube[1][1][2] == cubie1 and self.cube[3][2][1] == cubie2: found.extend((1, 1, 2))
+        if self.cube[1][2][1] == cubie1 and self.cube[5][2][1] == cubie2: found.extend((1, 2, 1))
+
+        if self.cube[2][0][1] == cubie1 and self.cube[0][1][0] == cubie2: found.extend((2, 0, 1))
+        if self.cube[2][1][0] == cubie1 and self.cube[5][1][2] == cubie2: found.extend((2, 1, 0))
+        if self.cube[2][1][2] == cubie1 and self.cube[4][1][0] == cubie2: found.extend((2, 1, 2))
+        if self.cube[2][2][1] == cubie1 and self.cube[1][1][0] == cubie2: found.extend((2, 2, 1))
+
+        if self.cube[3][0][1] == cubie1 and self.cube[0][1][2] == cubie2: found.extend((3, 0, 1))
+        if self.cube[3][1][0] == cubie1 and self.cube[4][1][2] == cubie2: found.extend((3, 1, 0))
+        if self.cube[3][1][2] == cubie1 and self.cube[5][1][0] == cubie2: found.extend((3, 1, 2))
+        if self.cube[3][2][1] == cubie1 and self.cube[1][1][2] == cubie2: found.extend((3, 2, 1))
+
+        if self.cube[4][0][1] == cubie1 and self.cube[0][2][1] == cubie2: found.extend((4, 0, 1))
+        if self.cube[4][1][0] == cubie1 and self.cube[2][1][2] == cubie2: found.extend((4, 1, 0))
+        if self.cube[4][1][2] == cubie1 and self.cube[3][1][0] == cubie2: found.extend((4, 1, 2))
+        if self.cube[4][2][1] == cubie1 and self.cube[1][0][1] == cubie2: found.extend((4, 2, 1))
+
+        if self.cube[5][0][1] == cubie1 and self.cube[0][0][1] == cubie2: found.extend((5, 0, 1))
+        if self.cube[5][1][0] == cubie1 and self.cube[3][1][2] == cubie2: found.extend((5, 1, 0))
+        if self.cube[5][1][2] == cubie1 and self.cube[2][1][0] == cubie2: found.extend((5, 1, 2))
+        if self.cube[5][2][1] == cubie1 and self.cube[1][2][1] == cubie2: found.extend((5, 2, 1))
+
+        return found
+
+    def move_edge(self, cubie):
+        functions = [self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,\
+                     self.turn_left, self.turn_left_rev, self.turn_right, self.turn_right_rev,\
+                     self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev]
+
+        if cubie[0] == 0:
+            funcs = [0, 1]
+            if cubie[1] == 0:
+                funcs += [10, 11]
+            elif cubie[1] == 1:
+                if cubie[2] == 0:
+                    funcs += [4, 5]
+                else:
+                    funcs += [6, 7]
+            else:
+                funcs += [8, 9]
+
+        elif cubie[0] == 1:
+            funcs = [2, 3]
+            if cubie[1] == 0:
+                funcs += [8, 9]
+            elif cubie[1] == 1:
+                if cubie[2] == 0:
+                    funcs += [4, 5]
+                else:
+                    funcs += [6, 7]
+            else:
+                funcs += [10, 11]
+
+        elif cubie[0] == 2:
+            funcs = [4, 5]
+            if cubie[1] == 0:
+                funcs += [0, 1]
+            elif cubie[1] == 1:
+                if cubie[2] == 0:
+                    funcs += [10, 11]
+                else:
+                    funcs += [8, 9]
+            else:
+                funcs += [2, 3]
+
+        elif cubie[0] == 3:
+            funcs = [6, 7]
+            if cubie[1] == 0:
+                funcs += [0, 1]
+            elif cubie[1] == 1:
+                if cubie[2] == 0:
+                    funcs += [8, 9]
+                else:
+                    funcs += [10, 11]
+            else:
+                funcs += [2, 3]
+
+        elif cubie[0] == 4:
+            funcs = [8, 9]
+            if cubie[1] == 0:
+                funcs += [0, 1]
+            elif cubie[1] == 1:
+                if cubie[2] == 0:
+                    funcs += [4, 5]
+                else:
+                    funcs += [6, 7]
+            else:
+                funcs += [2, 3]
+
+        elif cubie[0] == 5:
+            funcs = [10, 11]
+            if cubie[1] == 0:
+                funcs += [0, 1]
+            elif cubie[1] == 1:
+                if cubie[2] == 0:
+                    funcs += [6, 7]
+                else:
+                    funcs += [4, 5]
+            else:
+                funcs += [2, 3]
+
+        random.shuffle(funcs)
+
+        functions[funcs[0]]()
+
     def solve_1(self):
         i = 0
         while self.cube[0][1][1] != 'W':
@@ -618,15 +734,34 @@ class Cube:
                 self.move_z()
             i += 1
 
-        functions = [self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,\
-                     self.turn_left, self.turn_left_rev, self.turn_right, self.turn_right_rev,\
-                     self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev]
+        while self.cube[4][1][1] != 'B':
+                self.move_y()
 
-        while not (self.cube[0][0][1] == self.cube[0][1][0] == self.cube[0][1][2] == 'W' and
-                   self.cube[2][0][1] == self.cube[2][1][1] and
-                   self.cube[3][0][1] == self.cube[3][1][1] and
-                   self.cube[5][0][1] == self.cube[5][1][1]):
-                        functions[random.randint(0, 11)]()
+        while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == 'W' and
+                   self.cube[4][0][1] == 'B' and
+                   self.cube[3][0][1] == 'M' and
+                   self.cube[5][0][1] == 'G' and
+                   self.cube[2][0][1] == 'R'):
+
+            while not (self.cube[0][2][1] == 'W' and self.cube[4][0][1] == 'B'):
+                cubie = self.search_edge('W', 'B')
+
+                self.move_edge(cubie)
+
+            while not (self.cube[0][1][2] == 'W' and self.cube[3][0][1] == 'M'):
+                cubie = self.search_edge('W', 'M')
+
+                self.move_edge(cubie)
+
+            while not (self.cube[0][0][1] == 'W' and self.cube[5][0][1] == 'G'):
+                cubie = self.search_edge('W', 'G')
+
+                self.move_edge(cubie)
+
+            while not (self.cube[0][1][0] == 'W' and self.cube[2][0][1] == 'R'):
+                cubie = self.search_edge('W', 'R')
+
+                self.move_edge(cubie)
 
     def get_input(self):
         global buf_undo, buf_redo
