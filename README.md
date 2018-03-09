@@ -11,22 +11,14 @@ This new version was inspired by the original **nrubik**.
  - Two layouts
  - Three challenges
 
-![Mode1](nrubik2-mode1.jpg?raw=true)
-*nrubik*
+![Solved](nrubik2-solved.jpg?raw=true)
 
-![Mode0](nrubik2-mode0.jpg?raw=true)
-*nrubik b/w*
-
-![Mode2](nrubik2-mode2.jpg?raw=true)
-*nrubik2*
-
- - Optimized for a 80x24 screen
- - Best played with a big font size (e.g. Monospace 20)
+ - Optimized for an 80x24 screen
+ - Best played with big font sizes (e.g. Monospace 20)
  - Works with both python2 and python3
 
 New feature: to redo + to null
 
-Experiment with (new) moves!
 ```
 Undo:    delete from undo, add to redo, play reverse move   
 Redo:    delete from redo, add to undo, play move   
@@ -34,3 +26,4 @@ Delete:  delete from undo, play reverse move
 2 Redo:  delete from undo, add to redo   
 2 Null:  delete from undo   
 ```
+Experiment with (new) moves!
