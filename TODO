@@ -1,5 +1,7 @@
 cheat (undocumented)
  - key '1': solve first layer
+    done: brute force white cross + edges
+ 
  - key '2': solve first + second layer
 
 pause blocks turns/moves/trace?
@@ -7,4 +9,3 @@ pause blocks turns/moves/trace?
 fix:  trace buffer python3 (rewrite?)
 
 fix:  center nrubik
-
