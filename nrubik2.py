@@ -610,7 +610,23 @@ class Cube:
         self.pausing = False
 
     def solve_1(self):
-        pass
+        i = 0
+        while self.cube[0][1][1] != 'W':
+            if i < 3:
+                self.move_x()
+            else:
+                self.move_z()
+            i += 1
+
+        functions = [self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,\
+                     self.turn_left, self.turn_left_rev, self.turn_right, self.turn_right_rev,\
+                     self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev]
+
+        while not (self.cube[0][0][1] == self.cube[0][1][0] == self.cube[0][1][2] == 'W' and
+                   self.cube[2][0][1] == self.cube[2][1][1] and
+                   self.cube[3][0][1] == self.cube[3][1][1] and
+                   self.cube[5][0][1] == self.cube[5][1][1]):
+                        functions[random.randint(0, 11)]()
 
     def get_input(self):
         global buf_undo, buf_redo
