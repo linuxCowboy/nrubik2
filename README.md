@@ -13,6 +13,8 @@ This new version was inspired by the original **nrubik**.
 
 ![Solved](nrubik2-solved.jpg?raw=true)
 
+_See constantly the whole cube!_
+
  - Optimized for an 80x24 screen
  - Best played with big font sizes (e.g. Monospace 20)
  - Works with both python2 and python3
