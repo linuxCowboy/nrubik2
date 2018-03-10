@@ -612,35 +612,39 @@ class Cube:
     def search_edge(self, cubie1, cubie2):
         found = []
 
-        if self.cube[0][0][1] == cubie1 and self.cube[5][0][1] == cubie2: found.extend((0, 0, 1))
-        if self.cube[0][1][0] == cubie1 and self.cube[2][0][1] == cubie2: found.extend((0, 1, 0))
-        if self.cube[0][1][2] == cubie1 and self.cube[3][0][1] == cubie2: found.extend((0, 1, 2))
-        if self.cube[0][2][1] == cubie1 and self.cube[4][0][1] == cubie2: found.extend((0, 2, 1))
+        edges = (
+        ((0, 0, 1), (5, 0, 1)),
+        ((0, 1, 0), (2, 0, 1)),
+        ((0, 1, 2), (3, 0, 1)),
+        ((0, 2, 1), (4, 0, 1)),
+        ((1, 0, 1), (4, 2, 1)),
+        ((1, 1, 0), (2, 2, 1)),
+        ((1, 1, 2), (3, 2, 1)),
+        ((1, 2, 1), (5, 2, 1)),
+        ((2, 0, 1), (0, 1, 0)),
+        ((2, 1, 0), (5, 1, 2)),
+        ((2, 1, 2), (4, 1, 0)),
+        ((2, 2, 1), (1, 1, 0)),
+        ((3, 0, 1), (0, 1, 2)),
+        ((3, 1, 0), (4, 1, 2)),
+        ((3, 1, 2), (5, 1, 0)),
+        ((3, 2, 1), (1, 1, 2)),
+        ((4, 0, 1), (0, 2, 1)),
+        ((4, 1, 0), (2, 1, 2)),
+        ((4, 1, 2), (3, 1, 0)),
+        ((4, 2, 1), (1, 0, 1)),
+        ((5, 0, 1), (0, 0, 1)),
+        ((5, 1, 0), (3, 1, 2)),
+        ((5, 1, 2), (2, 1, 0)),
+        ((5, 2, 1), (1, 2, 1)))
 
-        if self.cube[1][0][1] == cubie1 and self.cube[4][2][1] == cubie2: found.extend((1, 0, 1))
-        if self.cube[1][1][0] == cubie1 and self.cube[2][2][1] == cubie2: found.extend((1, 1, 0))
-        if self.cube[1][1][2] == cubie1 and self.cube[3][2][1] == cubie2: found.extend((1, 1, 2))
-        if self.cube[1][2][1] == cubie1 and self.cube[5][2][1] == cubie2: found.extend((1, 2, 1))
+        for c in range(24):
+            i, j, k = edges[c][0]
+            l, m, n = edges[c][1]
 
-        if self.cube[2][0][1] == cubie1 and self.cube[0][1][0] == cubie2: found.extend((2, 0, 1))
-        if self.cube[2][1][0] == cubie1 and self.cube[5][1][2] == cubie2: found.extend((2, 1, 0))
-        if self.cube[2][1][2] == cubie1 and self.cube[4][1][0] == cubie2: found.extend((2, 1, 2))
-        if self.cube[2][2][1] == cubie1 and self.cube[1][1][0] == cubie2: found.extend((2, 2, 1))
-
-        if self.cube[3][0][1] == cubie1 and self.cube[0][1][2] == cubie2: found.extend((3, 0, 1))
-        if self.cube[3][1][0] == cubie1 and self.cube[4][1][2] == cubie2: found.extend((3, 1, 0))
-        if self.cube[3][1][2] == cubie1 and self.cube[5][1][0] == cubie2: found.extend((3, 1, 2))
-        if self.cube[3][2][1] == cubie1 and self.cube[1][1][2] == cubie2: found.extend((3, 2, 1))
-
-        if self.cube[4][0][1] == cubie1 and self.cube[0][2][1] == cubie2: found.extend((4, 0, 1))
-        if self.cube[4][1][0] == cubie1 and self.cube[2][1][2] == cubie2: found.extend((4, 1, 0))
-        if self.cube[4][1][2] == cubie1 and self.cube[3][1][0] == cubie2: found.extend((4, 1, 2))
-        if self.cube[4][2][1] == cubie1 and self.cube[1][0][1] == cubie2: found.extend((4, 2, 1))
-
-        if self.cube[5][0][1] == cubie1 and self.cube[0][0][1] == cubie2: found.extend((5, 0, 1))
-        if self.cube[5][1][0] == cubie1 and self.cube[3][1][2] == cubie2: found.extend((5, 1, 0))
-        if self.cube[5][1][2] == cubie1 and self.cube[2][1][0] == cubie2: found.extend((5, 1, 2))
-        if self.cube[5][2][1] == cubie1 and self.cube[1][2][1] == cubie2: found.extend((5, 2, 1))
+            if self.cube[i][j][k] == cubie1 and self.cube[l][m][n] == cubie2:
+                found.extend((i, j, k))
+                break
 
         return found
 
