@@ -117,6 +117,10 @@ class Cube:
 
         self.cube = copy.deepcopy(self.solved_cube)
 
+        self.functions = [self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,\
+                          self.turn_left, self.turn_left_rev, self.turn_right, self.turn_right_rev,\
+                          self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev]
+
         if curses.has_colors():
             if self.mode <= 1:
                 curses.init_pair(1, curses.COLOR_WHITE,   -1)
@@ -599,12 +603,11 @@ class Cube:
 
     def scramble(self):
         global buf_undo, buf_redo
-        functions = [self.turn_top, self.turn_bottom, self.turn_left,
-                     self.turn_right, self.turn_front, self.turn_back]
-        for i in range(30):
-            functions[random.randint(0, 5)]()
 
-        buf_undo = buf_redo =  ""
+        for i in range(17):
+            self.functions[random.randint(0, 11)]()
+
+        buf_undo = buf_redo = ""
         self.watch = 0
         self.time_last = time.time()
         self.pausing = False
@@ -649,10 +652,6 @@ class Cube:
         return found
 
     def move_edge(self, cubie):
-        functions = [self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,\
-                     self.turn_left, self.turn_left_rev, self.turn_right, self.turn_right_rev,\
-                     self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev]
-
         if cubie[0] == 0:
             funcs = [0, 1]
             if cubie[1] == 0:
@@ -727,7 +726,7 @@ class Cube:
 
         random.shuffle(funcs)
 
-        functions[funcs[0]]()
+        self.functions[funcs[0]]()
 
     def solve_1(self):
         i = 0
