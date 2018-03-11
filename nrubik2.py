@@ -20,6 +20,7 @@
 #
 #######################################################################
 
+import sys
 import curses
 import copy
 import random
@@ -58,6 +59,14 @@ quit   = chr(27)
 
 # cheat
 solve_1 = '1'
+
+search_deep = 6
+if sys.argv[1:]:
+    search_deep = int(sys.argv[1])
+
+scramble_moves = 17
+if sys.argv[2:]:
+    scramble_moves = int(sys.argv[2])
 
 moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x, cube_y, cube_z]
 
@@ -604,7 +613,7 @@ class Cube:
     def scramble(self):
         global buf_undo, buf_redo
 
-        for i in range(17):
+        for i in range(scramble_moves):
             self.functions[random.randint(0, 11)]()
 
         buf_undo = buf_redo = ""
@@ -740,7 +749,6 @@ class Cube:
         while self.cube[4][1][1] != 'B':
                 self.move_y()
 
-        l = 6
         while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == 'W' and
                    self.cube[4][0][1] == 'B' and
                    self.cube[3][0][1] == 'M' and
@@ -752,7 +760,7 @@ class Cube:
                 if i == 0:
                     backup_cube = copy.deepcopy(self.cube)
 
-                elif i == l:
+                elif i == search_deep:
                     self.cube = copy.deepcopy(backup_cube)
                     i = 0
 
@@ -766,7 +774,7 @@ class Cube:
                 if i == 0:
                     backup_cube = copy.deepcopy(self.cube)
 
-                elif i == l:
+                elif i == search_deep:
                     self.cube = copy.deepcopy(backup_cube)
                     i = 0
 
@@ -780,7 +788,7 @@ class Cube:
                 if i == 0:
                     backup_cube = copy.deepcopy(self.cube)
 
-                elif i == l:
+                elif i == search_deep:
                     self.cube = copy.deepcopy(backup_cube)
                     i = 0
 
@@ -794,7 +802,7 @@ class Cube:
                 if i == 0:
                     backup_cube = copy.deepcopy(self.cube)
 
-                elif i == l:
+                elif i == search_deep:
                     self.cube = copy.deepcopy(backup_cube)
                     i = 0
 
