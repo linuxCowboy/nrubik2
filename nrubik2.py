@@ -741,31 +741,68 @@ class Cube:
         while self.cube[4][1][1] != 'B':
                 self.move_y()
 
+        l = 6
         while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == 'W' and
                    self.cube[4][0][1] == 'B' and
                    self.cube[3][0][1] == 'M' and
                    self.cube[5][0][1] == 'G' and
                    self.cube[2][0][1] == 'R'):
 
+            i = 0
             while not (self.cube[0][2][1] == 'W' and self.cube[4][0][1] == 'B'):
+                if i == 0:
+                    backup_cube = copy.deepcopy(self.cube)
+
+                elif i == l:
+                    self.cube = copy.deepcopy(backup_cube)
+                    i = 0
+
                 cubie = self.search_edge('W', 'B')
 
                 self.move_edge(cubie)
+                i += 1
 
+            i = 0
             while not (self.cube[0][1][2] == 'W' and self.cube[3][0][1] == 'M'):
+                if i == 0:
+                    backup_cube = copy.deepcopy(self.cube)
+
+                elif i == l:
+                    self.cube = copy.deepcopy(backup_cube)
+                    i = 0
+
                 cubie = self.search_edge('W', 'M')
 
                 self.move_edge(cubie)
+                i += 1
 
+            i = 0
             while not (self.cube[0][0][1] == 'W' and self.cube[5][0][1] == 'G'):
+                if i == 0:
+                    backup_cube = copy.deepcopy(self.cube)
+
+                elif i == l:
+                    self.cube = copy.deepcopy(backup_cube)
+                    i = 0
+
                 cubie = self.search_edge('W', 'G')
 
                 self.move_edge(cubie)
+                i += 1
 
+            i = 0
             while not (self.cube[0][1][0] == 'W' and self.cube[2][0][1] == 'R'):
+                if i == 0:
+                    backup_cube = copy.deepcopy(self.cube)
+
+                elif i == l:
+                    self.cube = copy.deepcopy(backup_cube)
+                    i = 0
+
                 cubie = self.search_edge('W', 'R')
 
                 self.move_edge(cubie)
+                i += 1
 
     def get_input(self):
         global buf_undo, buf_redo
