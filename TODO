@@ -9,3 +9,8 @@ pause blocks turns/moves/trace?
 fix:  trace buffer python3 (rewrite?)
 
 fix:  center nrubik
+
+adjust time.sleep()
+
+fix:  solved_cube[] instead fix cubies
+
