@@ -228,27 +228,27 @@ class Cube:
             # top
             for i, line in enumerate(self.cube[0]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 5 + i, max_x / 2 - 1 + j, line[j])
+                    self.display_cubie(max_y / 2 - 6 + i, max_x / 2 - 2 + j, line[j])
             # bottom
             for i, line in enumerate(self.cube[1]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 + 3 + i, max_x / 2 - 1 + j, line[j])
+                    self.display_cubie(max_y / 2 + 2 + i, max_x / 2 - 2 + j, line[j])
             # left
             for i, line in enumerate(self.cube[2]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 1 + i, max_x / 2 - 5 + j, line[j])
+                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 6 + j, line[j])
             # right
             for i, line in enumerate(self.cube[3]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 1 + i, max_x / 2 + 3 + j, line[j])
+                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 + 2 + j, line[j])
             # front
             for i, line in enumerate(self.cube[4]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 1 + i, max_x / 2 - 1 + j, line[j])
+                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 2 + j, line[j])
             # back
             for i, line in enumerate(self.cube[5]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 6 + i, max_x / 2 + 4 + j, line[j])
+                    self.display_cubie(max_y / 2 - 7 + i, max_x / 2 + 3 + j, line[j])
         # nrubik2
         else:
             # bars
