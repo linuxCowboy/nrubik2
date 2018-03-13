@@ -949,7 +949,7 @@ class Cube:
         elif key == cube_z.upper():
             self.move_z_rev()
 
-        time.sleep(0.02)
+        time.sleep(0.05)
 
     def loop(self):
         while self.looping:
