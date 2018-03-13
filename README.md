@@ -29,3 +29,5 @@ Delete:  delete from undo, play reverse move
 2 Null:  delete from undo   
 ```
 Experiment with (new) moves!
+
+![Pattern](checkerboard.jpg?raw=true)
