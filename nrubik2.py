@@ -304,19 +304,19 @@ class Cube:
             self.display_cubie(max_y / 2 + 4, max_x / 2 - 12, self.cube[5][2][2])
 
         # trace redo
-        max = int((max_x - 12 - 6) / 2 * 2)
+        max = int(max_x - 13 - 6)
         buf = buf_redo[::-1]
         if len(buf) > max:
             buf = buf[:max]
             buf += " ...  "
-        self.stdscr.addstr(int(max_y / 2 + 6 + 2), 0, "Redo ({:.0f}):{:s}".format(len(buf_redo) / 2, buf))
+        self.stdscr.addstr(int(max_y / 2 + 6 + 2), 0, "Redo ({:d}): {:s}".format(len(buf_redo), buf))
 
         # trace undo
-        max = int((max_x + max_x / 2 - 14 - 4 + 2) / 2 * 2)
+        max = int(max_x + max_x / 2 - 14 - 4)
         buf = buf_undo[-max:]
         if len(buf_undo) > max:
             buf = "... " + buf
-        self.stdscr.addstr(int(max_y / 2 + 6 + 3), 0, "Trace ({:.0f}): {:s}".format(len(buf_undo) / 2, buf))
+        self.stdscr.addstr(int(max_y / 2 + 6 + 3), 0, "Trace ({:d}): {:s}".format(len(buf_undo), buf))
 
         # timer
         time_curr = time.time()
@@ -823,31 +823,30 @@ class Cube:
 
         # control
         if key == undo:
-            key = buf_undo[-2:-1]
-            key = key.lower() if key == key.upper() else key.upper()
+            key = buf_undo[-1:]
+            buf_redo += key
+            buf_undo = buf_undo[:-1]
 
-            buf_redo += buf_undo[-2:]
-            buf_undo = buf_undo[:-2]
+            key = key.lower() if key == key.upper() else key.upper()
             dismiss = True
 
         elif key == redo:
-            key = buf_redo[-2:-1]
-
-            buf_redo = buf_redo[:-2]
+            key = buf_redo[-1:]
+            buf_redo = buf_redo[:-1]
 
         elif key == delete:
-            key = buf_undo[-2:-1]
-            key = key.lower() if key == key.upper() else key.upper()
+            key = buf_undo[-1:]
+            buf_undo = buf_undo[:-1]
 
-            buf_undo = buf_undo[:-2]
+            key = key.lower() if key == key.upper() else key.upper()
             dismiss = True
 
         elif key == toredo:
-            buf_redo += buf_undo[-2:]
-            buf_undo = buf_undo[:-2]
+            buf_redo += buf_undo[-1:]
+            buf_undo = buf_undo[:-1]
 
         elif key == tonull:
-            buf_undo = buf_undo[:-2]
+            buf_undo = buf_undo[:-1]
 
         elif key == reset:
             self.scramble()
@@ -884,7 +883,7 @@ class Cube:
 
         # trace buffer
         if key in moves and not dismiss:
-            buf_undo += key + " "
+            buf_undo += key
 
         # moves
         if key == up:
