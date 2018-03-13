@@ -739,24 +739,25 @@ class Cube:
 
     def solve_1(self):
         i = 0
-        while self.cube[0][1][1] != 'W':
+        while self.cube[0][1][1] != self.solved_cube[0][1][1]:
             if i < 3:
                 self.move_x()
             else:
                 self.move_z()
             i += 1
 
-        while self.cube[4][1][1] != 'B':
+        while self.cube[4][1][1] != self.solved_cube[4][1][1]:
                 self.move_y()
 
-        while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == 'W' and
-                   self.cube[4][0][1] == 'B' and
-                   self.cube[3][0][1] == 'M' and
-                   self.cube[5][0][1] == 'G' and
-                   self.cube[2][0][1] == 'R'):
+        while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0]\
+                                      == self.solved_cube[0][1][1] and
+                   self.cube[4][0][1] == self.solved_cube[4][0][1] and
+                   self.cube[3][0][1] == self.solved_cube[3][0][1] and
+                   self.cube[5][0][1] == self.solved_cube[5][0][1] and
+                   self.cube[2][0][1] == self.solved_cube[2][0][1]):
 
             i = 0
-            while not (self.cube[0][2][1] == 'W' and self.cube[4][0][1] == 'B'):
+            while not (self.cube[0][2][1] == self.solved_cube[0][2][1] and self.cube[4][0][1] == self.solved_cube[4][0][1]):
                 if i == 0:
                     backup_cube = copy.deepcopy(self.cube)
 
@@ -764,13 +765,13 @@ class Cube:
                     self.cube = copy.deepcopy(backup_cube)
                     i = 0
 
-                cubie = self.search_edge('W', 'B')
+                cubie = self.search_edge(self.solved_cube[0][2][1], self.solved_cube[4][0][1])
 
                 self.move_edge(cubie)
                 i += 1
 
             i = 0
-            while not (self.cube[0][1][2] == 'W' and self.cube[3][0][1] == 'M'):
+            while not (self.cube[0][1][2] == self.solved_cube[0][1][2] and self.cube[3][0][1] == self.solved_cube[3][0][1]):
                 if i == 0:
                     backup_cube = copy.deepcopy(self.cube)
 
@@ -778,13 +779,13 @@ class Cube:
                     self.cube = copy.deepcopy(backup_cube)
                     i = 0
 
-                cubie = self.search_edge('W', 'M')
+                cubie = self.search_edge(self.solved_cube[0][1][2], self.solved_cube[3][0][1])
 
                 self.move_edge(cubie)
                 i += 1
 
             i = 0
-            while not (self.cube[0][0][1] == 'W' and self.cube[5][0][1] == 'G'):
+            while not (self.cube[0][0][1] == self.solved_cube[0][0][1] and self.cube[5][0][1] == self.solved_cube[5][0][1]):
                 if i == 0:
                     backup_cube = copy.deepcopy(self.cube)
 
@@ -792,13 +793,13 @@ class Cube:
                     self.cube = copy.deepcopy(backup_cube)
                     i = 0
 
-                cubie = self.search_edge('W', 'G')
+                cubie = self.search_edge(self.solved_cube[0][0][1], self.solved_cube[5][0][1])
 
                 self.move_edge(cubie)
                 i += 1
 
             i = 0
-            while not (self.cube[0][1][0] == 'W' and self.cube[2][0][1] == 'R'):
+            while not (self.cube[0][1][0] == self.solved_cube[0][1][0] and self.cube[2][0][1] == self.solved_cube[2][0][1]):
                 if i == 0:
                     backup_cube = copy.deepcopy(self.cube)
 
@@ -806,7 +807,7 @@ class Cube:
                     self.cube = copy.deepcopy(backup_cube)
                     i = 0
 
-                cubie = self.search_edge('W', 'R')
+                cubie = self.search_edge(self.solved_cube[0][1][0], self.solved_cube[2][0][1])
 
                 self.move_edge(cubie)
                 i += 1
