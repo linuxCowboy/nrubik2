@@ -82,8 +82,8 @@ class Cube:
 
     looping = True
     pausing = True
-    watch = 0
-    time_last = time.time()
+
+    watch = time_last = 0
 
     solved_cube = [
         [
@@ -303,21 +303,6 @@ class Cube:
             self.display_cubie(max_y / 2 + 6, max_x / 2 - 2,  self.cube[5][2][1])
             self.display_cubie(max_y / 2 + 4, max_x / 2 - 12, self.cube[5][2][2])
 
-        # trace redo
-        max = int(max_x - 13 - 6)
-        buf = buf_redo[::-1]
-        if len(buf) > max:
-            buf = buf[:max]
-            buf += " ...  "
-        self.stdscr.addstr(int(max_y / 2 + 6 + 2), 0, "Redo ({:d}): {:s}".format(len(buf_redo), buf))
-
-        # trace undo
-        max = int(max_x + max_x / 2 - 14 - 4)
-        buf = buf_undo[-max:]
-        if len(buf_undo) > max:
-            buf = "... " + buf
-        self.stdscr.addstr(int(max_y / 2 + 6 + 3), 0, "Trace ({:d}): {:s}".format(len(buf_undo), buf))
-
         # timer
         time_curr = time.time()
         if self.pausing is False:
@@ -327,6 +312,21 @@ class Cube:
         self.stdscr.addstr(int(2), int(max_x - 2 - 8),
                 '{:02}:{:02}:{:02}'.format(int(self.watch/60/60%24), int(self.watch/60%60), int(self.watch%60)),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing == True else curses.A_NORMAL)
+
+        # trace redo
+        max = int(max_x - 13 - 6)
+        buf = buf_redo[::-1]
+        if len(buf) > max:
+            buf = buf[:max]
+            buf += " ...  "
+        self.stdscr.addstr(int(max_y / 2 + 8), 0, "Redo ({}): {}".format(len(buf_redo), buf))
+
+        # trace undo
+        max = int(max_x + max_x / 2 - 14 - 4)
+        buf = buf_undo[-max:]
+        if len(buf_undo) > max:
+            buf = "... " + buf
+        self.stdscr.addstr(int(max_y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
 
     def turn_top(self):
         backup_cube = copy.deepcopy(self.cube)
@@ -827,7 +827,7 @@ class Cube:
             buf_redo += key
             buf_undo = buf_undo[:-1]
 
-            key = key.lower() if key == key.upper() else key.upper()
+            key = key.upper() if key.islower() else key.lower()
             dismiss = True
 
         elif key == redo:
@@ -838,7 +838,7 @@ class Cube:
             key = buf_undo[-1:]
             buf_undo = buf_undo[:-1]
 
-            key = key.lower() if key == key.upper() else key.upper()
+            key = key.upper() if key.islower() else key.lower()
             dismiss = True
 
         elif key == toredo:
@@ -948,7 +948,7 @@ class Cube:
         elif key == cube_z.upper():
             self.move_z_rev()
 
-        time.sleep(0.05)
+        time.sleep(0.04)
 
     def loop(self):
         while self.looping:
