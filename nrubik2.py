@@ -83,7 +83,7 @@ class Cube:
     looping = True
     pausing = True
 
-    watch = time_last = 0
+    watch = time_last = solve_moves = solve_time = show_stat = 0
 
     solved_cube = [
         [
@@ -312,6 +312,12 @@ class Cube:
         self.stdscr.addstr(int(2), int(max_x - 2 - 8),
                 '{:02}:{:02}:{:02}'.format(int(self.watch/60/60%24), int(self.watch/60%60), int(self.watch%60)),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing == True else curses.A_NORMAL)
+
+        # solve stat
+        if self.show_stat > time_curr:
+            buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
+
+            self.stdscr.addstr(int(max_y / 2 + 7), int(max_x / 2 - len(buf) / 2 - 1), buf)
 
         # trace redo
         max = int(max_x - 13 - 6)
@@ -749,6 +755,9 @@ class Cube:
         while self.cube[4][1][1] != self.solved_cube[4][1][1]:
                 self.move_y()
 
+        self.solve_moves = 0
+        self.solve_time = time.time()
+
         while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0]\
                                       == self.solved_cube[0][1][1] and
                    self.cube[4][0][1] == self.solved_cube[4][0][1] and
@@ -768,7 +777,9 @@ class Cube:
                 cubie = self.search_edge(self.solved_cube[0][2][1], self.solved_cube[4][0][1])
 
                 self.move_edge(cubie)
+
                 i += 1
+                self.solve_moves += 1
 
             i = 0
             while not (self.cube[0][1][2] == self.solved_cube[0][1][2] and self.cube[3][0][1] == self.solved_cube[3][0][1]):
@@ -782,7 +793,9 @@ class Cube:
                 cubie = self.search_edge(self.solved_cube[0][1][2], self.solved_cube[3][0][1])
 
                 self.move_edge(cubie)
+
                 i += 1
+                self.solve_moves += 1
 
             i = 0
             while not (self.cube[0][0][1] == self.solved_cube[0][0][1] and self.cube[5][0][1] == self.solved_cube[5][0][1]):
@@ -796,7 +809,9 @@ class Cube:
                 cubie = self.search_edge(self.solved_cube[0][0][1], self.solved_cube[5][0][1])
 
                 self.move_edge(cubie)
+
                 i += 1
+                self.solve_moves += 1
 
             i = 0
             while not (self.cube[0][1][0] == self.solved_cube[0][1][0] and self.cube[2][0][1] == self.solved_cube[2][0][1]):
@@ -810,7 +825,13 @@ class Cube:
                 cubie = self.search_edge(self.solved_cube[0][1][0], self.solved_cube[2][0][1])
 
                 self.move_edge(cubie)
+
                 i += 1
+                self.solve_moves += 1
+
+        self.show_stat = time.time()
+        self.solve_time = self.show_stat - self.solve_time  # call time.time() only once
+        self.show_stat += 7
 
     def get_input(self):
         global buf_undo, buf_redo
