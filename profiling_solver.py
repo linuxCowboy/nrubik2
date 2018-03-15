@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #
 # profiling_solver for nrubik2
 #
@@ -396,10 +396,12 @@ def move_edge(cubie):
 
 def solve():
     global cube
+
     for i in range(scramble_moves):
         functions[random.randint(0, 11)]()
 
-    while not (cube[0][2][1] == cube[0][1][2] == cube[0][0][1] == cube[0][1][0] == solved_cube[0][1][1] and
+    while not (cube[0][2][1] == cube[0][1][2] == cube[0][0][1] == cube[0][1][0]\
+                             == solved_cube[0][1][1] and
                cube[4][0][1] == solved_cube[4][0][1] and
                cube[3][0][1] == solved_cube[3][0][1] and
                cube[5][0][1] == solved_cube[5][0][1] and
@@ -467,7 +469,7 @@ if __name__ == '__main__':
     for i in range(4, 11):
         search_deep = i
 
-        # globals() need python 3.5
-        t = timeit.repeat('solve()', number=tests_per_run, repeat=runs, globals=globals())
-        print("%2d: " % i, "  ".join("%.2f" % d for d in t))
+        l = timeit.repeat('solve()', number=tests_per_run, repeat=runs, setup="from __main__ import solve")
+
+        print("%2d:  " % i + "  ".join("%.2f" % t for t in l))
 
