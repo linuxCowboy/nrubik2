@@ -4,5 +4,7 @@ cheat (undocumented)
  
  - key '2': solve first + second layer
 
-pause blocks turns/moves/trace?
+Timer runs constantly, but can be switched off
+
+Space inserts gaps in trace buffer
 
