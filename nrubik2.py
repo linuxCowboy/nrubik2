@@ -121,6 +121,7 @@ class Cube:
     def __init__(self, stdscr):
         self.stdscr = stdscr
         self.stdscr.nodelay(True)
+        self.stdscr.scrollok(True)
         curses.use_default_colors()
         curses.curs_set(False)
 
@@ -221,7 +222,6 @@ class Cube:
 
     def display_cube(self):
         max_y, max_x = self.stdscr.getmaxyx()
-        self.stdscr.scrollok(1)
 
         # nrubik + b/w
         if self.mode <= 1:
