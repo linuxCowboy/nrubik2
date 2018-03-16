@@ -83,7 +83,7 @@ class Cube:
     looping = True
     pausing = True
 
-    watch = time_last = solve_moves = solve_time = show_stat = 0
+    watch = watch_backup = time_last = solve_moves = solve_time = show_stat = 0
 
     solved_cube = [
         [
@@ -638,8 +638,9 @@ class Cube:
             self.functions[random.randint(0, 11)]()
 
         buf_undo = buf_redo = ""
-        self.watch = 0
+        self.watch = self.watch_backup = 0
         self.time_last = time.time()
+
         self.pausing = False
 
     def search_edge(self, cubie1, cubie2):
@@ -895,6 +896,18 @@ class Cube:
 
         elif key == layout:
             self.mode = (self.mode + 1) % 4
+
+            if self.mode == 3:
+                if self.watch:
+                    self.watch_backup = self.watch
+
+                self.watch = 0
+                self.pausing = True
+
+            elif self.mode == 0:
+                if self.watch_backup:
+                    self.watch = self.watch_backup
+                    self.pausing = False
 
             if self.mode == 2:
                 curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
