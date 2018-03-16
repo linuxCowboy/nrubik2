@@ -77,7 +77,7 @@ buf_undo = buf_redo = ""
 
 class Cube:
 
-    # mode 0: nrubik b/w  mode 1: nrubik  mode 2: nrubik2
+    # mode 0: nrubik b/w  mode 1: nrubik  mode 2: nrubik2  mode 3: timer
     mode = 2
 
     looping = True
@@ -132,20 +132,20 @@ class Cube:
                           self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev]
 
         if curses.has_colors():
-            if self.mode <= 1:
-                curses.init_pair(1, curses.COLOR_WHITE,   -1)
-                curses.init_pair(2, curses.COLOR_YELLOW,  -1)
-                curses.init_pair(3, curses.COLOR_MAGENTA, -1)
-                curses.init_pair(4, curses.COLOR_RED,     -1)
-                curses.init_pair(5, curses.COLOR_GREEN,   -1)
-                curses.init_pair(6, curses.COLOR_BLUE,    -1)
-            else:
+            if self.mode == 2:
                 curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
                 curses.init_pair(2, curses.COLOR_YELLOW,  curses.COLOR_YELLOW)
                 curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)
                 curses.init_pair(4, curses.COLOR_RED,     curses.COLOR_RED)
                 curses.init_pair(5, curses.COLOR_GREEN,   curses.COLOR_GREEN)
                 curses.init_pair(6, curses.COLOR_BLUE,    curses.COLOR_BLUE)
+            else:
+                curses.init_pair(1, curses.COLOR_WHITE,   -1)
+                curses.init_pair(2, curses.COLOR_YELLOW,  -1)
+                curses.init_pair(3, curses.COLOR_MAGENTA, -1)
+                curses.init_pair(4, curses.COLOR_RED,     -1)
+                curses.init_pair(5, curses.COLOR_GREEN,   -1)
+                curses.init_pair(6, curses.COLOR_BLUE,    -1)
         else:
             self.mode = 0
 
@@ -250,7 +250,7 @@ class Cube:
                 for j in range(3):
                     self.display_cubie(max_y / 2 - 7 + i, max_x / 2 + 3 + j, line[j])
         # nrubik2
-        else:
+        elif self.mode == 2:
             # bars
             self.stdscr.addstr(int(max_y / 2 - 9), int(max_x / 2 - 1),  " __________________")
             self.stdscr.addstr(int(max_y / 2 - 8), int(max_x / 2 + 17), "||")
@@ -304,35 +304,43 @@ class Cube:
             self.display_cubie(max_y / 2 + 4, max_x / 2 - 12, self.cube[5][2][2])
 
         # timer
-        time_curr = time.time()
-        if self.pausing is False:
-            self.watch += time_curr - self.time_last
-        self.time_last = time_curr
+        else:
+            pass
 
-        self.stdscr.addstr(int(2), int(max_x - 2 - 8),
-                '{:02}:{:02}:{:02}'.format(int(self.watch/60/60%24), int(self.watch/60%60), int(self.watch%60)),
-                    curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing == True else curses.A_NORMAL)
 
-        # solve stat
-        if self.show_stat > time_curr:
-            buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
 
-            self.stdscr.addstr(int(max_y / 2 + 7), int(max_x / 2 - len(buf) / 2 - 1), buf)
 
-        # trace redo
-        max = int(max_x - 13 - 6)
-        buf = buf_redo[::-1]
-        if len(buf) > max:
-            buf = buf[:max]
-            buf += " ...  "
-        self.stdscr.addstr(int(max_y / 2 + 8), 0, "Redo ({}): {}".format(len(buf_redo), buf))
+        if self.mode <= 2:
+            # watch
+            time_curr = time.time()
+            if self.pausing is False:
+                self.watch += time_curr - self.time_last
+            self.time_last = time_curr
 
-        # trace undo
-        max = int(max_x + max_x / 2 - 14 - 4)
-        buf = buf_undo[-max:]
-        if len(buf_undo) > max:
-            buf = "... " + buf
-        self.stdscr.addstr(int(max_y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
+            self.stdscr.addstr(int(2), int(max_x - 2 - 8),
+                    '{:02}:{:02}:{:02}'.format(int(self.watch/60/60%24), int(self.watch/60%60), int(self.watch%60)),
+                        curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing == True else curses.A_NORMAL)
+
+            # solve stat
+            if self.show_stat > time_curr:
+                buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
+
+                self.stdscr.addstr(int(max_y / 2 + 7), int(max_x / 2 - len(buf) / 2 - 1), buf)
+
+            # trace redo
+            max = int(max_x - 13 - 6)
+            buf = buf_redo[::-1]
+            if len(buf) > max:
+                buf = buf[:max]
+                buf += " ...  "
+            self.stdscr.addstr(int(max_y / 2 + 8), 0, "Redo ({}): {}".format(len(buf_redo), buf))
+
+            # trace undo
+            max = int(max_x + max_x / 2 - 14 - 4)
+            buf = buf_undo[-max:]
+            if len(buf_undo) > max:
+                buf = "... " + buf
+            self.stdscr.addstr(int(max_y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
 
     def turn_top(self):
         backup_cube = copy.deepcopy(self.cube)
@@ -879,22 +887,22 @@ class Cube:
             self.solve_1()
 
         elif key == layout:
-            self.mode = (self.mode + 1) % 3
+            self.mode = (self.mode + 1) % 4
 
-            if self.mode <= 1:
-                curses.init_pair(1, curses.COLOR_WHITE,   -1)
-                curses.init_pair(2, curses.COLOR_YELLOW,  -1)
-                curses.init_pair(3, curses.COLOR_MAGENTA, -1)
-                curses.init_pair(4, curses.COLOR_RED,     -1)
-                curses.init_pair(5, curses.COLOR_GREEN,   -1)
-                curses.init_pair(6, curses.COLOR_BLUE,    -1)
-            else:
+            if self.mode == 2:
                 curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
                 curses.init_pair(2, curses.COLOR_YELLOW,  curses.COLOR_YELLOW)
                 curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)
                 curses.init_pair(4, curses.COLOR_RED,     curses.COLOR_RED)
                 curses.init_pair(5, curses.COLOR_GREEN,   curses.COLOR_GREEN)
                 curses.init_pair(6, curses.COLOR_BLUE,    curses.COLOR_BLUE)
+            else:
+                curses.init_pair(1, curses.COLOR_WHITE,   -1)
+                curses.init_pair(2, curses.COLOR_YELLOW,  -1)
+                curses.init_pair(3, curses.COLOR_MAGENTA, -1)
+                curses.init_pair(4, curses.COLOR_RED,     -1)
+                curses.init_pair(5, curses.COLOR_GREEN,   -1)
+                curses.init_pair(6, curses.COLOR_BLUE,    -1)
 
         elif key == pause:
             self.pausing = not self.pausing
