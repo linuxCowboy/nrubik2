@@ -194,7 +194,9 @@ class Cube:
                 == self.cube[i][2][0] == self.cube[i][2][1] == self.cube[i][2][2]:
                     return False
 
-        self.pausing = True
+        if not self.mode == 3:
+            self.pausing = True
+
         return True
 
     def print_appeal(self):
@@ -222,6 +224,13 @@ class Cube:
 
     def display_cube(self):
         max_y, max_x = self.stdscr.getmaxyx()
+
+        time_curr = time.time()
+
+        if not self.pausing:
+            self.watch += time_curr - self.time_last
+
+        self.time_last = time_curr
 
         # nrubik + b/w
         if self.mode <= 1:
@@ -305,21 +314,15 @@ class Cube:
 
         # timer
         else:
-            pass
-
-
-
+            self.stdscr.addstr(int(max_y / 2), int(max_x / 2 - 4),
+                '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
+                    curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
         if self.mode <= 2:
             # watch
-            time_curr = time.time()
-            if self.pausing is False:
-                self.watch += time_curr - self.time_last
-            self.time_last = time_curr
-
             self.stdscr.addstr(int(2), int(max_x - 2 - 8),
-                    '{:02}:{:02}:{:02}'.format(int(self.watch/60/60%24), int(self.watch/60%60), int(self.watch%60)),
-                        curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing == True else curses.A_NORMAL)
+                '{:02}:{:02}:{:02}'.format(int(self.watch/60/60%24), int(self.watch/60%60), int(self.watch%60)),
+                    curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
             # solve stat
             if self.show_stat > time_curr:
@@ -330,16 +333,20 @@ class Cube:
             # trace redo
             max = int(max_x - 13 - 6)
             buf = buf_redo[::-1]
+
             if len(buf) > max:
                 buf = buf[:max]
                 buf += " ...  "
+
             self.stdscr.addstr(int(max_y / 2 + 8), 0, "Redo ({}): {}".format(len(buf_redo), buf))
 
             # trace undo
             max = int(max_x + max_x / 2 - 14 - 4)
             buf = buf_undo[-max:]
+
             if len(buf_undo) > max:
                 buf = "... " + buf
+
             self.stdscr.addstr(int(max_y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
 
     def turn_top(self):
@@ -907,6 +914,10 @@ class Cube:
         elif key == pause:
             self.pausing = not self.pausing
 
+            if self.mode == 3 and not self.pausing:
+                self.watch = 0
+                self.time_last = time.time()
+
         elif key == quit:
             self.looping = False
 
@@ -982,10 +993,13 @@ class Cube:
     def loop(self):
         while self.looping:
             self.stdscr.erase()
+
             self.helper()
             if self.solved() is True:
                 self.print_appeal()
+
             self.display_cube()
+
             self.stdscr.refresh()
             self.get_input()
 
