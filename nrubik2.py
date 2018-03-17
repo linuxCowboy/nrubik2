@@ -153,7 +153,7 @@ class Cube:
         max_y, max_x = self.stdscr.getmaxyx()
         start_y = 2
         start_x = 2
-        end_x   = 2 + 18
+        end_x   = max_x - 2 - 18
 
         head = "nrubik2 - An N-Curses Based, Virtual Rubik's Cube"
         self.stdscr.addstr(0, int(max_x / 2 - len(head) / 2 - 1), head)
@@ -176,16 +176,16 @@ class Cube:
 
         self.stdscr.addstr(start_y + 16, start_x, "Home - Reset")
 
-        self.stdscr.addstr(start_y + 7,  max_x - end_x, "Backspace - Undo")
-        self.stdscr.addstr(start_y + 8,  max_x - end_x, "Enter     - Redo")
-        self.stdscr.addstr(start_y + 9,  max_x - end_x, "Delete    - Delete")
-        self.stdscr.addstr(start_y + 10, max_x - end_x, "Page Up   - 2 Redo")
-        self.stdscr.addstr(start_y + 11, max_x - end_x, "Page Down - 2 Null")
+        self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
+        self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
+        self.stdscr.addstr(start_y + 9,  end_x, "Delete    - Delete")
+        self.stdscr.addstr(start_y + 10, end_x, "Page Up   - 2 Redo")
+        self.stdscr.addstr(start_y + 11, end_x, "Page Down - 2 Null")
 
-        self.stdscr.addstr(start_y + 13, max_x - end_x, "End    - Solve")
-        self.stdscr.addstr(start_y + 14, max_x - end_x, "Insert - Layout")
-        self.stdscr.addstr(start_y + 15, max_x - end_x, "Space  - Timer")
-        self.stdscr.addstr(start_y + 16, max_x - end_x, "Escape - Quit")
+        self.stdscr.addstr(start_y + 13, end_x, "End    - Solve")
+        self.stdscr.addstr(start_y + 14, end_x, "Insert - Layout")
+        self.stdscr.addstr(start_y + 15, end_x, "Space  - Timer")
+        self.stdscr.addstr(start_y + 16, end_x, "Escape - Quit")
 
     def solved(self):
         for i in range(6):
