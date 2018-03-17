@@ -25,6 +25,7 @@ import curses
 import copy
 import random
 import time
+import os
 
 # lowercase chars for moves
 up    = 'u'
@@ -68,6 +69,14 @@ scramble_moves = 17
 if sys.argv[2:]:
     scramble_moves = int(sys.argv[2])
 
+player     = 'aplay'     # cmdline audio player (alsa-utils)
+option     = '--quiet'   # suppress any output
+tick_file  = 'tick.wav'
+timer_tick = 20          # repeat every x seconds
+
+if not os.path.isfile(tick_file):
+    timer_tick = 0
+
 moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x, cube_y, cube_z]
 
 for m in moves[:]:
@@ -84,6 +93,7 @@ class Cube:
     pausing = True
 
     watch = watch_backup = time_last = solve_moves = solve_time = show_stat = 0
+    tick = timer_tick
 
     solved_cube = [
         [
@@ -317,6 +327,11 @@ class Cube:
             self.stdscr.addstr(int(max_y / 2), int(max_x / 2 - 4),
                 '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
+
+            if self.tick and self.watch > self.tick:
+                    os.spawnlp(os.P_NOWAIT, player, player, option, tick_file)
+
+                    self.tick += timer_tick
 
         if self.mode <= 2:
             # watch
@@ -901,6 +916,7 @@ class Cube:
                         self.watch_backup = self.watch
 
                     self.watch = 0
+                    self.tick = timer_tick
                     self.pausing = True
 
                 elif self.mode == 0:
@@ -928,6 +944,7 @@ class Cube:
 
                 if self.mode == 3 and not self.pausing:
                     self.watch = 0
+                    self.tick = timer_tick
                     self.time_last = time.time()
 
             elif key == quit:
