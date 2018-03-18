@@ -72,10 +72,10 @@ if sys.argv[2:]:
 player     = 'aplay'     # cmdline audio player (alsa-utils)
 option     = '--quiet'   # suppress any output
 tick_file  = 'tick.wav'
-timer_tick = 20          # repeat every x seconds
+timer_ticks = (20, 45, 90, 120)
 
 if not os.path.isfile(tick_file):
-    timer_tick = 0
+    timer_ticks = ()
 
 moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x, cube_y, cube_z]
 
@@ -92,8 +92,7 @@ class Cube:
     looping = True
     pausing = True
 
-    watch = watch_backup = time_last = solve_moves = solve_time = show_stat = 0
-    tick = timer_tick
+    watch = watch_backup = time_last = solve_moves = solve_time = show_stat = tick = 0
 
     solved_cube = [
         [
@@ -328,10 +327,10 @@ class Cube:
                 '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
-            if self.tick and self.watch > self.tick:
+            if timer_ticks[self.tick:] and self.watch > timer_ticks[self.tick]:
                     os.spawnlp(os.P_NOWAIT, player, player, option, tick_file)
 
-                    self.tick += timer_tick
+                    self.tick += 1
 
         if self.mode <= 2:
             # watch
@@ -915,8 +914,7 @@ class Cube:
                     if self.watch:
                         self.watch_backup = self.watch
 
-                    self.watch = 0
-                    self.tick = timer_tick
+                    self.watch = self.tick = 0
                     self.pausing = True
 
                 elif self.mode == 0:
@@ -943,8 +941,7 @@ class Cube:
                 self.pausing = not self.pausing
 
                 if self.mode == 3 and not self.pausing:
-                    self.watch = 0
-                    self.tick = timer_tick
+                    self.watch = self.tick = 0
                     self.time_last = time.time()
 
             elif key == quit:
