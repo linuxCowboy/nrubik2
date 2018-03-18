@@ -853,153 +853,155 @@ class Cube:
         global buf_undo, buf_redo
         key = None
         dismiss = False
+
         try:
             key = self.stdscr.getkey()
+
+            # control
+            if key == undo:
+                key = buf_undo[-1:]
+                buf_redo += key
+                buf_undo = buf_undo[:-1]
+
+                key = key.upper() if key.islower() else key.lower()
+                dismiss = True
+
+            elif key == redo:
+                key = buf_redo[-1:]
+                buf_redo = buf_redo[:-1]
+
+            elif key == delete:
+                key = buf_undo[-1:]
+                buf_undo = buf_undo[:-1]
+
+                key = key.upper() if key.islower() else key.lower()
+                dismiss = True
+
+            elif key == toredo:
+                buf_redo += buf_undo[-1:]
+                buf_undo = buf_undo[:-1]
+
+            elif key == tonull:
+                buf_undo = buf_undo[:-1]
+
+            elif key == reset:
+                self.scramble()
+
+            elif key == solve:
+                self.cube = copy.deepcopy(self.solved_cube)
+
+            elif key == solve_1:
+                self.solve_1()
+
+            elif key == layout:
+                self.mode = (self.mode + 1) % 4
+
+                if self.mode == 3:
+                    if self.watch:
+                        self.watch_backup = self.watch
+
+                    self.watch = 0
+                    self.pausing = True
+
+                elif self.mode == 0:
+                    if self.watch_backup:
+                        self.watch = self.watch_backup
+                        self.pausing = False
+
+                if self.mode == 2:
+                    curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
+                    curses.init_pair(2, curses.COLOR_YELLOW,  curses.COLOR_YELLOW)
+                    curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)
+                    curses.init_pair(4, curses.COLOR_RED,     curses.COLOR_RED)
+                    curses.init_pair(5, curses.COLOR_GREEN,   curses.COLOR_GREEN)
+                    curses.init_pair(6, curses.COLOR_BLUE,    curses.COLOR_BLUE)
+                else:
+                    curses.init_pair(1, curses.COLOR_WHITE,   -1)
+                    curses.init_pair(2, curses.COLOR_YELLOW,  -1)
+                    curses.init_pair(3, curses.COLOR_MAGENTA, -1)
+                    curses.init_pair(4, curses.COLOR_RED,     -1)
+                    curses.init_pair(5, curses.COLOR_GREEN,   -1)
+                    curses.init_pair(6, curses.COLOR_BLUE,    -1)
+
+            elif key == pause:
+                self.pausing = not self.pausing
+
+                if self.mode == 3 and not self.pausing:
+                    self.watch = 0
+                    self.time_last = time.time()
+
+            elif key == quit:
+                self.looping = False
+
+            # trace buffer
+            if key in moves and not dismiss:
+                buf_undo += key
+
+            # moves
+            if key == up:
+                self.turn_top()
+            elif key == up.upper():
+                self.turn_top_rev()
+
+            elif key == down:
+                self.turn_bottom()
+            elif key == down.upper():
+                self.turn_bottom_rev()
+
+            elif key == left:
+                self.turn_left()
+            elif key == left.upper():
+                self.turn_left_rev()
+
+            elif key == right:
+                self.turn_right()
+            elif key == right.upper():
+                self.turn_right_rev()
+
+            elif key == front:
+                self.turn_front()
+            elif key == front.upper():
+                self.turn_front_rev()
+
+            elif key == back:
+                self.turn_back()
+            elif key == back.upper():
+                self.turn_back_rev()
+
+            # inconsistently reversed!
+            elif key == middle:
+                self.turn_middle_rev()
+            elif key == middle.upper():
+                self.turn_middle()
+
+            # inconsistently reversed!
+            elif key == equator:
+                self.turn_equator_rev()
+            elif key == equator.upper():
+                self.turn_equator()
+
+            elif key == standing:
+                self.turn_standing()
+            elif key == standing.upper():
+                self.turn_standing_rev()
+
+            elif key == cube_x:
+                self.move_x()
+            elif key == cube_x.upper():
+                self.move_x_rev()
+
+            elif key == cube_y:
+                self.move_y()
+            elif key == cube_y.upper():
+                self.move_y_rev()
+
+            elif key == cube_z:
+                self.move_z()
+            elif key == cube_z.upper():
+                self.move_z_rev()
+
         except curses.error:
             pass
-
-        # control
-        if key == undo:
-            key = buf_undo[-1:]
-            buf_redo += key
-            buf_undo = buf_undo[:-1]
-
-            key = key.upper() if key.islower() else key.lower()
-            dismiss = True
-
-        elif key == redo:
-            key = buf_redo[-1:]
-            buf_redo = buf_redo[:-1]
-
-        elif key == delete:
-            key = buf_undo[-1:]
-            buf_undo = buf_undo[:-1]
-
-            key = key.upper() if key.islower() else key.lower()
-            dismiss = True
-
-        elif key == toredo:
-            buf_redo += buf_undo[-1:]
-            buf_undo = buf_undo[:-1]
-
-        elif key == tonull:
-            buf_undo = buf_undo[:-1]
-
-        elif key == reset:
-            self.scramble()
-
-        elif key == solve:
-            self.cube = copy.deepcopy(self.solved_cube)
-
-        elif key == solve_1:
-            self.solve_1()
-
-        elif key == layout:
-            self.mode = (self.mode + 1) % 4
-
-            if self.mode == 3:
-                if self.watch:
-                    self.watch_backup = self.watch
-
-                self.watch = 0
-                self.pausing = True
-
-            elif self.mode == 0:
-                if self.watch_backup:
-                    self.watch = self.watch_backup
-                    self.pausing = False
-
-            if self.mode == 2:
-                curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
-                curses.init_pair(2, curses.COLOR_YELLOW,  curses.COLOR_YELLOW)
-                curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)
-                curses.init_pair(4, curses.COLOR_RED,     curses.COLOR_RED)
-                curses.init_pair(5, curses.COLOR_GREEN,   curses.COLOR_GREEN)
-                curses.init_pair(6, curses.COLOR_BLUE,    curses.COLOR_BLUE)
-            else:
-                curses.init_pair(1, curses.COLOR_WHITE,   -1)
-                curses.init_pair(2, curses.COLOR_YELLOW,  -1)
-                curses.init_pair(3, curses.COLOR_MAGENTA, -1)
-                curses.init_pair(4, curses.COLOR_RED,     -1)
-                curses.init_pair(5, curses.COLOR_GREEN,   -1)
-                curses.init_pair(6, curses.COLOR_BLUE,    -1)
-
-        elif key == pause:
-            self.pausing = not self.pausing
-
-            if self.mode == 3 and not self.pausing:
-                self.watch = 0
-                self.time_last = time.time()
-
-        elif key == quit:
-            self.looping = False
-
-        # trace buffer
-        if key in moves and not dismiss:
-            buf_undo += key
-
-        # moves
-        if key == up:
-            self.turn_top()
-        elif key == up.upper():
-            self.turn_top_rev()
-
-        elif key == down:
-            self.turn_bottom()
-        elif key == down.upper():
-            self.turn_bottom_rev()
-
-        elif key == left:
-            self.turn_left()
-        elif key == left.upper():
-            self.turn_left_rev()
-
-        elif key == right:
-            self.turn_right()
-        elif key == right.upper():
-            self.turn_right_rev()
-
-        elif key == front:
-            self.turn_front()
-        elif key == front.upper():
-            self.turn_front_rev()
-
-        elif key == back:
-            self.turn_back()
-        elif key == back.upper():
-            self.turn_back_rev()
-
-        # inconsistently reversed!
-        elif key == middle:
-            self.turn_middle_rev()
-        elif key == middle.upper():
-            self.turn_middle()
-
-        # inconsistently reversed!
-        elif key == equator:
-            self.turn_equator_rev()
-        elif key == equator.upper():
-            self.turn_equator()
-
-        elif key == standing:
-            self.turn_standing()
-        elif key == standing.upper():
-            self.turn_standing_rev()
-
-        elif key == cube_x:
-            self.move_x()
-        elif key == cube_x.upper():
-            self.move_x_rev()
-
-        elif key == cube_y:
-            self.move_y()
-        elif key == cube_y.upper():
-            self.move_y_rev()
-
-        elif key == cube_z:
-            self.move_z()
-        elif key == cube_z.upper():
-            self.move_z_rev()
 
         time.sleep(0.04)
 
