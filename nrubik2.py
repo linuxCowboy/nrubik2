@@ -69,12 +69,12 @@ scramble_moves = 17
 if sys.argv[2:]:
     scramble_moves = int(sys.argv[2])
 
-player     = 'aplay'     # cmdline audio player (alsa-utils)
-option     = '--quiet'   # suppress any output
+player     = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
+option     = '--quiet'         # suppress any output
 tick_file  = 'tick.wav'
 timer_ticks = (20, 45, 90, 120)
 
-if not os.path.isfile(tick_file):
+if not os.access(player, os.X_OK) or not os.path.isfile(tick_file):
     timer_ticks = ()
 
 moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x, cube_y, cube_z]
