@@ -949,6 +949,9 @@ class Cube:
                     self.watch = self.tick = 0
                     self.time_last = time.time()
 
+                    if timer_ticks:
+                        os.spawnlp(os.P_NOWAIT, player, player, option, tick_file)
+
             elif key == quit:
                 self.looping = False
 
