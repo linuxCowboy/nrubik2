@@ -323,6 +323,11 @@ class Cube:
 
         # timer
         else:
+            buf = "{}".format(timer_ticks)
+
+            self.stdscr.addstr(int(max_y / 2 - 5), int(max_x / 2 - 6), "Timer Ticks:")
+            self.stdscr.addstr(int(max_y / 2 - 3), int(max_x / 2 - len(buf) / 2 - 1), buf)
+
             self.stdscr.addstr(int(max_y / 2), int(max_x / 2 - 4),
                 '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
