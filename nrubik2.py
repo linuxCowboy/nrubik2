@@ -650,18 +650,6 @@ class Cube:
         self.turn_standing_rev()
         self.turn_back()
 
-    def scramble(self):
-        global buf_undo, buf_redo
-
-        for i in range(scramble_moves):
-            self.functions[random.randint(0, 11)]()
-
-        buf_undo = buf_redo = ""
-        self.watch = self.watch_backup = 0
-        self.time_last = time.time()
-
-        self.pausing = False
-
     def search_edge(self, cubie1, cubie2):
         found = []
 
@@ -866,7 +854,19 @@ class Cube:
 
         self.show_stat = time.time()
         self.solve_time = self.show_stat - self.solve_time  # call time.time() only once
-        self.show_stat += 7
+        self.show_stat += 7  # display stat 7s
+
+    def scramble(self):
+        global buf_undo, buf_redo
+
+        for i in range(scramble_moves):
+            self.functions[random.randint(0, 11)]()
+
+        buf_undo = buf_redo = ""
+        self.watch = self.watch_backup = 0
+        self.time_last = time.time()
+
+        self.pausing = False
 
     def get_input(self):
         global buf_undo, buf_redo
