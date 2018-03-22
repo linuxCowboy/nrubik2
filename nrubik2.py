@@ -71,11 +71,18 @@ if sys.argv[2:]:
 
 player     = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option     = '--quiet'         # suppress any output
-tick_file  = 'tick.wav'
-timer_ticks = (20, 45, 90, 120)
 
-if not os.access(player, os.X_OK) or not os.path.isfile(tick_file):
+tick_files  = 'tick1.wav', 'tick2.wav', 'tick3.wav'
+timer_ticks = (0,   tick_files[0]), (20, tick_files[0]), (45, tick_files[0]),\
+              (90,  tick_files[1]),\
+              (120, tick_files[2])
+
+if not os.access(player, os.X_OK):
     timer_ticks = ()
+
+for i in range(len(tick_files)):
+    if not os.path.isfile(tick_files[i]):
+        timer_ticks = ()
 
 moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x, cube_y, cube_z]
 
@@ -323,7 +330,7 @@ class Cube:
 
         # timer
         else:
-            buf = "{}".format(timer_ticks)
+            buf = "  ".join("%d" % timer_ticks[i][0] for i in range(len(timer_ticks)))
 
             self.stdscr.addstr(int(max_y / 2 - 5), int(max_x / 2 - 6), "Timer Ticks:")
             self.stdscr.addstr(int(max_y / 2 - 3), int(max_x / 2 - len(buf) / 2 - 1), buf)
@@ -332,8 +339,8 @@ class Cube:
                 '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
-            if timer_ticks[self.tick:] and self.watch > timer_ticks[self.tick]:
-                    os.spawnlp(os.P_NOWAIT, player, player, option, tick_file)
+            if timer_ticks[self.tick:] and self.watch > timer_ticks[self.tick][0]:
+                    os.spawnlp(os.P_NOWAIT, player, player, option, timer_ticks[self.tick][1])
 
                     self.tick += 1
 
@@ -948,9 +955,6 @@ class Cube:
                 if self.mode == 3 and not self.pausing:
                     self.watch = self.tick = 0
                     self.time_last = time.time()
-
-                    if timer_ticks:
-                        os.spawnlp(os.P_NOWAIT, player, player, option, tick_file)
 
             elif key == quit:
                 self.looping = False
