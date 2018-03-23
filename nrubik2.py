@@ -69,20 +69,30 @@ scramble_moves = 17
 if sys.argv[2:]:
     scramble_moves = int(sys.argv[2])
 
-player     = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
-option     = '--quiet'         # suppress any output
+player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
+option = '--quiet'         # suppress any output
 
-tick_files  = 'tick1.wav', 'tick2.wav', 'tick3.wav'
-timer_ticks = (0,   tick_files[0]), (20, tick_files[0]), (45, tick_files[0]),\
-              (90,  tick_files[1]),\
-              (120, tick_files[2])
+tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'
+tick_paths = './', '~/Music/'
+tick_times = (0, 0), (20, 0), (45, 0), (90, 1), (120, 2)  # (seconds, index)
 
-if not os.access(player, os.X_OK):
-    timer_ticks = ()
+timer_ticks = ()
+if os.access(player, os.X_OK):
+    i = 0
+    while tick_paths[i:]:
+        absent = False
+        path = os.path.expanduser(tick_paths[i])
 
-for i in range(len(tick_files)):
-    if not os.path.isfile(tick_files[i]):
-        timer_ticks = ()
+        for j in range(len(tick_files)):
+            if not os.path.isfile(path + tick_files[j]):
+                absent = True
+
+        if not absent:
+            for j in range(len(tick_times)):
+                timer_ticks += (tick_times[j][0], path + tick_files[tick_times[j][1]]),
+            break
+        else:
+            i += 1
 
 moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x, cube_y, cube_z]
 
