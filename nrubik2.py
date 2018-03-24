@@ -110,6 +110,7 @@ class Cube:
     pausing = True
 
     watch = watch_backup = time_last = solve_moves = solve_time = show_stat = tick = 0
+    max_y = max_x = 0
 
     solved_cube = [
         [
@@ -176,13 +177,12 @@ class Cube:
             self.mode = 0
 
     def helper(self):
-        max_y, max_x = self.stdscr.getmaxyx()
         start_y = 2
         start_x = 2
-        end_x   = max_x - 2 - 18
+        end_x   = self.max_x - 2 - 18
 
         head = "nrubik2 - An N-Curses Based, Virtual Rubik's Cube"
-        self.stdscr.addstr(0, int(max_x / 2 - len(head) / 2 - 1), head)
+        self.stdscr.addstr(0, int(self.max_x / 2 - len(head) / 2 - 1), head)
 
         self.stdscr.addstr(start_y + 0,  start_x, "Keybindings:")
 
@@ -226,14 +226,12 @@ class Cube:
         return True
 
     def print_appeal(self):
-        max_y, max_x = self.stdscr.getmaxyx()
-
         if len(buf_undo) == 0:
             appeal = "'Home' for Start!"
         else:
             appeal = "Solved. Congrats!"
 
-        self.stdscr.addstr(int(max_y / 2 - 10), int(max_x / 2 - len(appeal) / 2 - 1), appeal)
+        self.stdscr.addstr(int(self.max_y / 2 - 10), int(self.max_x / 2 - len(appeal) / 2 - 1), appeal)
 
     def display_cubie(self, y, x, cubie):
         colors = {'W': 1, 'Y': 2, 'M': 3, 'R': 4, 'G': 5, 'B': 6}
@@ -249,7 +247,8 @@ class Cube:
             self.stdscr.addstr(int(y), int(x), cub, curses.color_pair(colors[cubie]))
 
     def display_cube(self):
-        max_y, max_x = self.stdscr.getmaxyx()
+        max_y = self.max_y
+        max_x = self.max_x
 
         time_curr = time.time()
 
@@ -1044,6 +1043,7 @@ class Cube:
 
     def loop(self):
         while self.looping:
+            self.max_y, self.max_x = self.stdscr.getmaxyx()
             self.stdscr.erase()
 
             self.helper()
