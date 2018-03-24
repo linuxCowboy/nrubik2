@@ -246,10 +246,7 @@ class Cube:
         else:
             self.stdscr.addstr(int(y), int(x), cub, curses.color_pair(colors[cubie]))
 
-    def display_cube(self):
-        max_y = self.max_y
-        max_x = self.max_x
-
+    def display_cube(self, y, x):
         time_curr = time.time()
 
         if not self.pausing:
@@ -262,92 +259,92 @@ class Cube:
             # top
             for i, line in enumerate(self.cube[0]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 6 + i, max_x / 2 - 2 + j, line[j])
+                    self.display_cubie(y / 2 - 6 + i, x / 2 - 2 + j, line[j])
             # bottom
             for i, line in enumerate(self.cube[1]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 + 2 + i, max_x / 2 - 2 + j, line[j])
+                    self.display_cubie(y / 2 + 2 + i, x / 2 - 2 + j, line[j])
             # left
             for i, line in enumerate(self.cube[2]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 6 + j, line[j])
+                    self.display_cubie(y / 2 - 2 + i, x / 2 - 6 + j, line[j])
             # right
             for i, line in enumerate(self.cube[3]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 + 2 + j, line[j])
+                    self.display_cubie(y / 2 - 2 + i, x / 2 + 2 + j, line[j])
             # front
             for i, line in enumerate(self.cube[4]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 2 + j, line[j])
+                    self.display_cubie(y / 2 - 2 + i, x / 2 - 2 + j, line[j])
             # back
             for i, line in enumerate(self.cube[5]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 7 + i, max_x / 2 + 3 + j, line[j])
+                    self.display_cubie(y / 2 - 7 + i, x / 2 + 3 + j, line[j])
         # nrubik2
         elif self.mode == 2:
             # bars
-            self.stdscr.addstr(int(max_y / 2 - 9), int(max_x / 2 - 1),  " __________________")
-            self.stdscr.addstr(int(max_y / 2 - 8), int(max_x / 2 + 17), "||")
-            self.stdscr.addstr(int(max_y / 2 - 7), int(max_x / 2 - 10), "______  ||  ______")
-            self.stdscr.addstr(int(max_y / 2 - 6), int(max_x / 2 - 7),  "___......___")
-            self.stdscr.addstr(int(max_y / 2 - 5), int(max_x / 2 - 12), "|   /___......___\\   |")
-            self.stdscr.addstr(int(max_y / 2 - 4), int(max_x / 2 - 12), "|  /    ......    \\  |")
-            self.stdscr.addstr(int(max_y / 2 - 3), int(max_x / 2 - 12), "| ||   +  ||  +   || |")
-            self.stdscr.addstr(int(max_y / 2 - 1), int(max_x / 2 - 14), "--......--......--......--")
-            self.stdscr.addstr(int(max_y / 2 + 1), int(max_x / 2 - 12), "| ||   +  ||  +   || |")
-            self.stdscr.addstr(int(max_y / 2 + 2), int(max_x / 2 - 12), "|  \\ ___......___ /  |")
-            self.stdscr.addstr(int(max_y / 2 + 3), int(max_x / 2 - 12), "|   \\___......___/   |")
-            self.stdscr.addstr(int(max_y / 2 + 4), int(max_x / 2 - 10), "______  ||  ______")
-            self.stdscr.addstr(int(max_y / 2 + 5), int(max_x / 2 - 2),  "||")
+            self.stdscr.addstr(int(y / 2 - 9), int(x / 2 - 1),  " __________________")
+            self.stdscr.addstr(int(y / 2 - 8), int(x / 2 + 17), "||")
+            self.stdscr.addstr(int(y / 2 - 7), int(x / 2 - 10), "______  ||  ______")
+            self.stdscr.addstr(int(y / 2 - 6), int(x / 2 - 7),  "___......___")
+            self.stdscr.addstr(int(y / 2 - 5), int(x / 2 - 12), "|   /___......___\\   |")
+            self.stdscr.addstr(int(y / 2 - 4), int(x / 2 - 12), "|  /    ......    \\  |")
+            self.stdscr.addstr(int(y / 2 - 3), int(x / 2 - 12), "| ||   +  ||  +   || |")
+            self.stdscr.addstr(int(y / 2 - 1), int(x / 2 - 14), "--......--......--......--")
+            self.stdscr.addstr(int(y / 2 + 1), int(x / 2 - 12), "| ||   +  ||  +   || |")
+            self.stdscr.addstr(int(y / 2 + 2), int(x / 2 - 12), "|  \\ ___......___ /  |")
+            self.stdscr.addstr(int(y / 2 + 3), int(x / 2 - 12), "|   \\___......___/   |")
+            self.stdscr.addstr(int(y / 2 + 4), int(x / 2 - 10), "______  ||  ______")
+            self.stdscr.addstr(int(y / 2 + 5), int(x / 2 - 2),  "||")
 
             # top
             for i, line in enumerate(self.cube[0]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 6 + i, max_x / 2 - 4 + (j*2),      line[j])
+                    self.display_cubie(y / 2 - 6 + i, x / 2 - 4 + (j*2),      line[j])
             # bottom
             for i, line in enumerate(self.cube[1]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 + 2 + i, max_x / 2 - 4 + (j*2),      line[j])
+                    self.display_cubie(y / 2 + 2 + i, x / 2 - 4 + (j*2),      line[j])
             # left
             for i, line in enumerate(self.cube[2]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 12 + (j*2),     line[j])
+                    self.display_cubie(y / 2 - 2 + i, x / 2 - 12 + (j*2),     line[j])
             # right
             for i, line in enumerate(self.cube[3]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 + 4 + (j*2),      line[j])
+                    self.display_cubie(y / 2 - 2 + i, x / 2 + 4 + (j*2),      line[j])
             # front
             for i, line in enumerate(self.cube[4]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 2 + i, max_x / 2 - 4 + (j*2),      line[j])
+                    self.display_cubie(y / 2 - 2 + i, x / 2 - 4 + (j*2),      line[j])
             # back
             for i, line in enumerate(self.cube[5]):
                 for j in range(3):
-                    self.display_cubie(max_y / 2 - 7 + i, max_x / 2 + 15 + (4-(j*2)), line[j])
+                    self.display_cubie(y / 2 - 7 + i, x / 2 + 15 + (4-(j*2)), line[j])
 
             # mirror
-            self.display_cubie(max_y / 2 - 6, max_x / 2 + 8,  self.cube[5][0][0])
-            self.display_cubie(max_y / 2 - 8, max_x / 2 - 2,  self.cube[5][0][1])
-            self.display_cubie(max_y / 2 - 6, max_x / 2 - 12, self.cube[5][0][2])
+            self.display_cubie(y / 2 - 6, x / 2 + 8,  self.cube[5][0][0])
+            self.display_cubie(y / 2 - 8, x / 2 - 2,  self.cube[5][0][1])
+            self.display_cubie(y / 2 - 6, x / 2 - 12, self.cube[5][0][2])
 
-            self.display_cubie(max_y / 2 - 1, max_x / 2 + 12, self.cube[5][1][0])
-            self.display_cubie(max_y / 2 - 1, max_x / 2 - 16, self.cube[5][1][2])
+            self.display_cubie(y / 2 - 1, x / 2 + 12, self.cube[5][1][0])
+            self.display_cubie(y / 2 - 1, x / 2 - 16, self.cube[5][1][2])
 
-            self.display_cubie(max_y / 2 + 4, max_x / 2 + 8,  self.cube[5][2][0])
-            self.display_cubie(max_y / 2 + 6, max_x / 2 - 2,  self.cube[5][2][1])
-            self.display_cubie(max_y / 2 + 4, max_x / 2 - 12, self.cube[5][2][2])
+            self.display_cubie(y / 2 + 4, x / 2 + 8,  self.cube[5][2][0])
+            self.display_cubie(y / 2 + 6, x / 2 - 2,  self.cube[5][2][1])
+            self.display_cubie(y / 2 + 4, x / 2 - 12, self.cube[5][2][2])
 
         # timer
         else:
-            self.stdscr.addstr(int(max_y / 2), int(max_x / 2 - 4),
+            self.stdscr.addstr(int(y / 2), int(x / 2 - 4),
                 '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
             if timer_ticks:
                 buf = "  ".join("%d" % timer_ticks[i][0] for i in range(len(timer_ticks)))
 
-                self.stdscr.addstr(int(max_y / 2 - 5), int(max_x / 2 - 6), "Timer Ticks:")
-                self.stdscr.addstr(int(max_y / 2 - 3), int(max_x / 2 - len(buf) / 2), buf)
+                self.stdscr.addstr(int(y / 2 - 5), int(x / 2 - 6), "Timer Ticks:")
+                self.stdscr.addstr(int(y / 2 - 3), int(x / 2 - len(buf) / 2), buf)
 
                 if timer_ticks[self.tick:] and self.watch > timer_ticks[self.tick][0]:
                         os.spawnlp(os.P_NOWAIT, player, player, option, timer_ticks[self.tick][1])
@@ -356,7 +353,7 @@ class Cube:
 
         if self.mode <= 2:
             # watch
-            self.stdscr.addstr(int(2), int(max_x - 2 - 8),
+            self.stdscr.addstr(int(2), int(x - 2 - 8),
                 '{:02}:{:02}:{:02}'.format(int(self.watch/60/60%24), int(self.watch/60%60), int(self.watch%60)),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
@@ -364,26 +361,26 @@ class Cube:
             if self.show_stat > time_curr:
                 buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
 
-                self.stdscr.addstr(int(max_y / 2 + 7), int(max_x / 2 - len(buf) / 2 - 1), buf)
+                self.stdscr.addstr(int(y / 2 + 7), int(x / 2 - len(buf) / 2 - 1), buf)
 
             # trace redo
-            max = int(max_x - 13 - 6)
+            max = int(x - 13 - 6)
             buf = buf_redo[::-1]
 
             if len(buf) > max:
                 buf = buf[:max]
                 buf += " ...  "
 
-            self.stdscr.addstr(int(max_y / 2 + 8), 0, "Redo ({}): {}".format(len(buf_redo), buf))
+            self.stdscr.addstr(int(y / 2 + 8), 0, "Redo ({}): {}".format(len(buf_redo), buf))
 
             # trace undo
-            max = int(max_x + max_x / 2 - 14 - 4)
+            max = int(x + x / 2 - 14 - 4)
             buf = buf_undo[-max:]
 
             if len(buf_undo) > max:
                 buf = "... " + buf
 
-            self.stdscr.addstr(int(max_y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
+            self.stdscr.addstr(int(y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
 
     def turn_top(self):
         backup_cube = copy.deepcopy(self.cube)
@@ -1050,7 +1047,7 @@ class Cube:
             if self.solved() is True:
                 self.print_appeal()
 
-            self.display_cube()
+            self.display_cube(self.max_y, self.max_x)
 
             self.stdscr.refresh()
             self.get_input()
