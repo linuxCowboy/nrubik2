@@ -238,13 +238,22 @@ class Cube:
 
         return True
 
-    def print_appeal(self):
-        if len(buf_undo) == 0:
-            appeal = "'Home' for Start!"
+    def headline(self):
+        if self.mode <= 2:
+            if self.solved() is True:
+                if len(buf_undo) == 0:
+                    head = "'Home' for Start!"
+                else:
+                    head = "Solved. Congrats!"
+            else:
+                if self.mode <= 1:
+                    head = "nrubik"
+                else:
+                    head = "nrubik2"
         else:
-            appeal = "Solved. Congrats!"
+            head = "Speedcube Timer"
 
-        self.stdscr.addstr(int(self.max_y / 2 - 10), int(self.max_x / 2 - len(appeal) / 2 - 1), appeal)
+        self.stdscr.addstr(int(self.max_y / 2 - 10), int(self.max_x / 2 - len(head) / 2 - 1), head)
 
     def display_cubie(self, y, x, cubie):
         colors = {'W': 1, 'Y': 2, 'M': 3, 'R': 4, 'G': 5, 'B': 6}
@@ -1060,12 +1069,12 @@ class Cube:
                 self.max_y, self.max_x = self.stdscr.getmaxyx()
 
                 self.stdscr.erase()
-                self.helper()
 
-                if self.solved() is True:
-                    self.print_appeal()
+                self.helper()
+                self.headline()
 
                 self.display_cube(self.max_y, self.max_x)
+
                 self.stdscr.refresh()
 
                 if self.refresh:
