@@ -187,32 +187,39 @@ class Cube:
 
         self.stdscr.addstr(start_y + 0,  start_x, "Keybindings:")
 
-        self.stdscr.addstr(start_y + 2,  start_x, up + ","    + up.upper()    + " - Up")
-        self.stdscr.addstr(start_y + 3,  start_x, down + ","  + down.upper()  + " - Down")
-        self.stdscr.addstr(start_y + 4,  start_x, left + ","  + left.upper()  + " - Left")
-        self.stdscr.addstr(start_y + 5,  start_x, right + "," + right.upper() + " - Right")
-        self.stdscr.addstr(start_y + 6,  start_x, front + "," + front.upper() + " - Front")
-        self.stdscr.addstr(start_y + 7,  start_x, back + ","  + back.upper()  + " - Back")
+        if self.mode <= 2:
+            self.stdscr.addstr(start_y + 2,  start_x, up + ","    + up.upper()    + " - Up")
+            self.stdscr.addstr(start_y + 3,  start_x, down + ","  + down.upper()  + " - Down")
+            self.stdscr.addstr(start_y + 4,  start_x, left + ","  + left.upper()  + " - Left")
+            self.stdscr.addstr(start_y + 5,  start_x, right + "," + right.upper() + " - Right")
+            self.stdscr.addstr(start_y + 6,  start_x, front + "," + front.upper() + " - Front")
+            self.stdscr.addstr(start_y + 7,  start_x, back + ","  + back.upper()  + " - Back")
 
-        self.stdscr.addstr(start_y + 9,  start_x, middle + ","   + middle.upper()   + " - Middle")
-        self.stdscr.addstr(start_y + 10, start_x, equator + ","  + equator.upper()  + " - Equator")
-        self.stdscr.addstr(start_y + 11, start_x, standing + "," + standing.upper() + " - Standing")
-        self.stdscr.addstr(start_y + 12, start_x, cube_x + ","   + cube_x.upper()   + " - Cube X")
-        self.stdscr.addstr(start_y + 13, start_x, cube_y + ","   + cube_y.upper()   + " - Cube Y")
-        self.stdscr.addstr(start_y + 14, start_x, cube_z + ","   + cube_z.upper()   + " - Cube Z")
+            self.stdscr.addstr(start_y + 9,  start_x, middle + ","   + middle.upper()   + " - Middle")
+            self.stdscr.addstr(start_y + 10, start_x, equator + ","  + equator.upper()  + " - Equator")
+            self.stdscr.addstr(start_y + 11, start_x, standing + "," + standing.upper() + " - Standing")
+            self.stdscr.addstr(start_y + 12, start_x, cube_x + ","   + cube_x.upper()   + " - Cube X")
+            self.stdscr.addstr(start_y + 13, start_x, cube_y + ","   + cube_y.upper()   + " - Cube Y")
+            self.stdscr.addstr(start_y + 14, start_x, cube_z + ","   + cube_z.upper()   + " - Cube Z")
 
-        self.stdscr.addstr(start_y + 16, start_x, "Home - Reset")
+            self.stdscr.addstr(start_y + 16, start_x, "Home - Reset")
 
-        self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
-        self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
-        self.stdscr.addstr(start_y + 9,  end_x, "Delete    - Delete")
-        self.stdscr.addstr(start_y + 10, end_x, "Page Up   - 2 Redo")
-        self.stdscr.addstr(start_y + 11, end_x, "Page Down - 2 Null")
+            self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
+            self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
+            self.stdscr.addstr(start_y + 9,  end_x, "Delete    - Delete")
+            self.stdscr.addstr(start_y + 10, end_x, "Page Up   - 2 Redo")
+            self.stdscr.addstr(start_y + 11, end_x, "Page Down - 2 Null")
 
-        self.stdscr.addstr(start_y + 13, end_x, "End    - Solve")
-        self.stdscr.addstr(start_y + 14, end_x, "Insert - Layout")
-        self.stdscr.addstr(start_y + 15, end_x, "Space  - Timer")
-        self.stdscr.addstr(start_y + 16, end_x, "Escape - Quit")
+            self.stdscr.addstr(start_y + 13, end_x, "End    - Solve")
+            self.stdscr.addstr(start_y + 14, end_x, "Insert - Layout")
+            self.stdscr.addstr(start_y + 15, end_x, "Space  - Timer")
+            self.stdscr.addstr(start_y + 16, end_x, "Escape - Quit")
+
+        else:
+            self.stdscr.addstr(start_y + 2,  start_x, "Space  - Start/Stop")
+
+            self.stdscr.addstr(start_y + 4,  start_x, "Insert - Mode")
+            self.stdscr.addstr(start_y + 5,  start_x, "Escape - Quit")
 
     def timer(self):
         self.stdscr.addstr(int(self.max_y / 2), int(self.max_x / 2 - 4),
