@@ -61,14 +61,6 @@ quit   = chr(27)
 # cheat
 solve_1 = '1'
 
-search_deep = 6
-if sys.argv[1:]:
-    search_deep = int(sys.argv[1])
-
-scramble_moves = 17
-if sys.argv[2:]:
-    scramble_moves = int(sys.argv[2])
-
 player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
 
@@ -803,6 +795,8 @@ class Cube:
         self.solve_moves = 0
         self.solve_time = time.time()
 
+        search_deep = 6
+
         while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0]\
                                       == self.solved_cube[0][1][1] and
                    self.cube[4][0][1] == self.solved_cube[4][0][1] and
@@ -881,7 +875,7 @@ class Cube:
     def scramble(self):
         global buf_undo, buf_redo
 
-        for i in range(scramble_moves):
+        for i in range(17):  # scramble moves
             self.functions[random.randint(0, 11)]()
 
         buf_undo = buf_redo = ""
