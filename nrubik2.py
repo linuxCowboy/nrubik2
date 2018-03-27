@@ -64,10 +64,13 @@ solve_1 = '1'
 player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
 
-tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'
-tick_paths = './', '~/Music/'  # trailing slash
+tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'        # chimes
+tick_paths = './', '~/Music/'                             # trailing slash!
 tick_times = (0, 0), (20, 0), (45, 0), (90, 1), (120, 2)  # (seconds, index)
 
+############################################################################
+
+# Checks: if problems with player or files - simply no sound
 timer_ticks = ()
 if os.access(player, os.X_OK):
     i = 0
@@ -91,19 +94,26 @@ moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x
 for m in moves[:]:
     moves.append(m.upper())
 
-buf_undo = buf_redo = ""
+buf_undo = buf_redo = ""  # trace buffer
 
 class Cube:
 
     # mode 0: nrubik b/w  mode 1: nrubik  mode 2: nrubik2  mode 3: timer
     mode = 2
 
-    looping = True
-    pausing = True
-    refresh = False
+    looping = True   # False == exit
+    pausing = True   # pause game timer / speedcube timer
+    refresh = False  # refresh screen every second or after key press
 
-    watch = watch_backup = seconds_watch = time_last = solve_moves = solve_time = show_stat = tick = 0
-    max_y = max_x = 0
+    watch         = 0  # accurate to the second game timer
+    watch_backup  = 0  # save timer between mode switch
+    seconds_watch = 0  # buffer for watch increment
+    time_last     = 0  # buffer for speedcube/fullspeed timer
+    solve_moves   = 0  # moves in brute force solver
+    solve_time    = 0  # time in brute force solver
+    show_stat     = 0  # duration viewing brute force results
+    tick          = 0  # index in speedcube timer chimes list
+    max_y = max_x = 0  # curses max screen
 
     solved_cube = [
         [
@@ -213,6 +223,7 @@ class Cube:
             self.stdscr.addstr(start_y + 4,  start_x, "Insert - Mode")
             self.stdscr.addstr(start_y + 5,  start_x, "Escape - Quit")
 
+    # fullspeed timer, but displayed only in 1/10s
     def timer(self):
         self.stdscr.addstr(int(self.max_y / 2), int(self.max_x / 2 - 4),
             '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
@@ -341,7 +352,7 @@ class Cube:
             self.display_cubie(y / 2 + 6, x / 2 - 2,  self.cube[5][2][1])
             self.display_cubie(y / 2 + 4, x / 2 - 12, self.cube[5][2][2])
 
-        # timer
+        # timer mode
         else:
             self.timer()
 
@@ -352,7 +363,7 @@ class Cube:
                 self.stdscr.addstr(int(y / 2 - 3), int(x / 2 - len(buf) / 2), buf)
 
         if self.mode <= 2:
-            # watch
+            # game timer / watch - displayed in 1s
             self.stdscr.addstr(int(2), int(x - 2 - 8),
                 '{:02}:{:02}:{:02}'.format(int(self.watch/60/60%24), int(self.watch/60%60), int(self.watch%60)),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
@@ -780,6 +791,7 @@ class Cube:
 
         self.functions[funcs[0]]()
 
+    # cheat white cross
     def solve_1(self):
         i = 0
         while self.cube[0][1][1] != self.solved_cube[0][1][1]:
@@ -887,7 +899,7 @@ class Cube:
     def get_input(self):
         global buf_undo, buf_redo
         key = None
-        dismiss = False
+        dismiss = False  # dont save key in trace buffer
 
         try:
             key = self.stdscr.getkey()
@@ -1042,7 +1054,8 @@ class Cube:
             pass
 
     def loop(self):
-        seconds = counter = 0
+        seconds = 0  # buffer current second
+        counter = 0  # perpetual running divider
 
         while self.looping:
             time_curr = time.time()
