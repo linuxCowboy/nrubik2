@@ -73,7 +73,7 @@ player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
 
 tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'
-tick_paths = './', '~/Music/'
+tick_paths = './', '~/Music/'  # trailing slash
 tick_times = (0, 0), (20, 0), (45, 0), (90, 1), (120, 2)  # (seconds, index)
 
 timer_ticks = ()
@@ -108,8 +108,9 @@ class Cube:
 
     looping = True
     pausing = True
+    refresh = False
 
-    watch = watch_backup = time_last = solve_moves = solve_time = show_stat = tick = 0
+    watch = watch_backup = seconds_watch = time_last = solve_moves = solve_time = show_stat = tick = 0
     max_y = max_x = 0
 
     solved_cube = [
@@ -213,6 +214,11 @@ class Cube:
         self.stdscr.addstr(start_y + 15, end_x, "Space  - Timer")
         self.stdscr.addstr(start_y + 16, end_x, "Escape - Quit")
 
+    def timer(self):
+        self.stdscr.addstr(int(self.max_y / 2), int(self.max_x / 2 - 4),
+            '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
+                curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
+
     def solved(self):
         for i in range(6):
             if not self.cube[i][0][0] == self.cube[i][0][1] == self.cube[i][0][2]\
@@ -247,13 +253,6 @@ class Cube:
             self.stdscr.addstr(int(y), int(x), cub, curses.color_pair(colors[cubie]))
 
     def display_cube(self, y, x):
-        time_curr = time.time()
-
-        if not self.pausing:
-            self.watch += time_curr - self.time_last
-
-        self.time_last = time_curr
-
         # nrubik + b/w
         if self.mode <= 1:
             # top
@@ -336,20 +335,13 @@ class Cube:
 
         # timer
         else:
-            self.stdscr.addstr(int(y / 2), int(x / 2 - 4),
-                '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
-                    curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
+            self.timer()
 
             if timer_ticks:
                 buf = "  ".join("%d" % timer_ticks[i][0] for i in range(len(timer_ticks)))
 
                 self.stdscr.addstr(int(y / 2 - 5), int(x / 2 - 6), "Timer Ticks:")
                 self.stdscr.addstr(int(y / 2 - 3), int(x / 2 - len(buf) / 2), buf)
-
-                if timer_ticks[self.tick:] and self.watch > timer_ticks[self.tick][0]:
-                        os.spawnlp(os.P_NOWAIT, player, player, option, timer_ticks[self.tick][1])
-
-                        self.tick += 1
 
         if self.mode <= 2:
             # watch
@@ -358,7 +350,7 @@ class Cube:
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
             # solve stat
-            if self.show_stat > time_curr:
+            if self.show_stat > self.time_last:
                 buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
 
                 self.stdscr.addstr(int(y / 2 + 7), int(x / 2 - len(buf) / 2 - 1), buf)
@@ -877,7 +869,7 @@ class Cube:
             self.functions[random.randint(0, 11)]()
 
         buf_undo = buf_redo = ""
-        self.watch = self.watch_backup = 0
+        self.watch = self.watch_backup = self.seconds_watch = 0
         self.time_last = time.time()
 
         self.pausing = False
@@ -961,6 +953,7 @@ class Cube:
 
                 if self.mode == 3 and not self.pausing:
                     self.watch = self.tick = 0
+
                     self.time_last = time.time()
 
             elif key == quit:
@@ -1033,24 +1026,57 @@ class Cube:
             elif key == cube_z.upper():
                 self.move_z_rev()
 
+            self.refresh = True
+
         except curses.error:
             pass
 
-        time.sleep(0.04)
-
     def loop(self):
+        seconds = counter = 0
+
         while self.looping:
-            self.max_y, self.max_x = self.stdscr.getmaxyx()
-            self.stdscr.erase()
+            time_curr = time.time()
 
-            self.helper()
-            if self.solved() is True:
-                self.print_appeal()
+            if not self.pausing:
+                self.watch += time_curr - self.time_last
 
-            self.display_cube(self.max_y, self.max_x)
+                if int(self.watch) > self.seconds_watch:
+                    self.seconds_watch = int(self.watch)
 
-            self.stdscr.refresh()
+                    self.refresh = True
+
+            self.time_last = time_curr
+
             self.get_input()
+
+            if int(time_curr) > seconds or self.refresh:
+                self.max_y, self.max_x = self.stdscr.getmaxyx()
+
+                self.stdscr.erase()
+                self.helper()
+
+                if self.solved() is True:
+                    self.print_appeal()
+
+                self.display_cube(self.max_y, self.max_x)
+                self.stdscr.refresh()
+
+                if self.refresh:
+                    self.refresh = False
+                else:
+                    seconds = int(time_curr)
+
+            if self.mode == 3 and not counter % 25:  # display timer every 0.1s
+                self.timer()
+
+                if timer_ticks[self.tick:] and self.watch > timer_ticks[self.tick][0]:
+                    os.spawnlp(os.P_NOWAIT, player, player, option, timer_ticks[self.tick][1])
+
+                    self.tick += 1
+
+            counter += 1
+
+            time.sleep(0.004)  # timer precision
 
 def main(stdscr):
     cube = Cube(stdscr)
