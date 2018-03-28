@@ -103,17 +103,18 @@ class Cube:
     # mode 0: nrubik b/w  mode 1: nrubik  mode 2: nrubik2  mode 3: timer
     mode = 2
 
-    looping = True   # False == exit
-    pausing = True   # pause game timer / speedcube timer
-    refresh = False  # refresh screen every second or after key press
+    looping = True  # False == exit
+    pausing = True  # pause game timer / speedcube timer
+    refresh = True  # refresh screen every second or after key press
 
-    watch         = 0  # accurate to the second game timer
-    watch_backup  = 0  # save timer between mode switch
-    seconds_watch = 0  # buffer for watch increment
-    time_last     = 0  # buffer for speedcube/fullspeed timer
+    game_timer    = 0  # accurate to the second
+    speed_timer   = 0  # accurate to the 1/100s
+    previous_time = 0  # buffer for timer
+
     solve_moves   = 0  # moves in brute force solver
     solve_time    = 0  # time in brute force solver
-    show_stat     = 0  # duration viewing brute force results
+    solve_stat    = 0  # duration viewing brute force results
+
     tick          = 0  # index in speedcube timer chimes list
 
     solved_cube = [
@@ -158,9 +159,9 @@ class Cube:
 
         self.cube = copy.deepcopy(self.solved_cube)
 
-        self.functions = [self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,\
+        self.functions = (self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,\
                           self.turn_left, self.turn_left_rev, self.turn_right, self.turn_right_rev,\
-                          self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev]
+                          self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev)
 
         if curses.has_colors():
             if self.mode == 2:
@@ -188,7 +189,7 @@ class Cube:
         head = "nrubik2 - An N-Curses Based, Virtual Rubik's Cube"
         self.stdscr.addstr(0, int(max_x / 2 - len(head) / 2 - 1), head)
 
-        self.stdscr.addstr(start_y + 0,  start_x, "Keybindings:")
+        self.stdscr.addstr(start_y + 0, start_x, "Keybindings:")
 
         if self.mode <= 2:
             self.stdscr.addstr(start_y + 2,  start_x, up + ","    + up.upper()    + " - Up")
@@ -205,7 +206,7 @@ class Cube:
             self.stdscr.addstr(start_y + 13, start_x, cube_y + ","   + cube_y.upper()   + " - Cube Y")
             self.stdscr.addstr(start_y + 14, start_x, cube_z + ","   + cube_z.upper()   + " - Cube Z")
 
-            self.stdscr.addstr(start_y + 16, start_x, "Home - Reset")
+            self.stdscr.addstr(start_y + 16, start_x - 1, "Home - Reset")
 
             self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
             self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
@@ -219,15 +220,15 @@ class Cube:
             self.stdscr.addstr(start_y + 16, end_x, "Escape - Quit")
 
         else:
-            self.stdscr.addstr(start_y + 2,  start_x, "Space  - Start/Stop")
+            self.stdscr.addstr(start_y + 2, start_x, "Space  - Start/Stop")
 
-            self.stdscr.addstr(start_y + 4,  start_x, "Insert - Mode")
-            self.stdscr.addstr(start_y + 5,  start_x, "Escape - Quit")
+            self.stdscr.addstr(start_y + 4, start_x, "Insert - Mode")
+            self.stdscr.addstr(start_y + 5, start_x, "Escape - Quit")
 
     # fullspeed timer, but displayed only in 1/10s
     def timer(self):
-            '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
         self.stdscr.addstr(int(max_y / 2), int(max_x / 2 - 4),
+            '{:02}:{:05.2f}'.format(int(self.speed_timer / 60 % 60), self.speed_timer % 60),
                 curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
     def solved(self):
@@ -364,13 +365,13 @@ class Cube:
                 self.stdscr.addstr(int(y / 2 - 3), int(x / 2 - len(buf) / 2), buf)
 
         if self.mode <= 2:
-            # game timer / watch - displayed in 1s
-            self.stdscr.addstr(int(2), int(x - 2 - 8),
-                '{:02}:{:02}:{:02}'.format(int(self.watch/60/60%24), int(self.watch/60%60), int(self.watch%60)),
+            # game timer - displayed in 1s
+            self.stdscr.addstr(int(2), int(x - 2 - 8), '{:02}:{:02}:{:02}'.format(\
+                int(self.game_timer / 60 / 60 % 24), int(self.game_timer / 60 % 60), int(self.game_timer % 60)),
                     curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
             # solve stat
-            if self.show_stat > self.time_last:
+            if self.solve_stat > self.previous_time:
                 buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
 
                 self.stdscr.addstr(int(y / 2 + 7), int(x / 2 - len(buf) / 2 - 1), buf)
@@ -792,7 +793,7 @@ class Cube:
 
         self.functions[funcs[0]]()
 
-    # cheat white cross
+    # cheat white cross + edges
     def solve_1(self):
         i = 0
         while self.cube[0][1][1] != self.solved_cube[0][1][1]:
@@ -881,21 +882,23 @@ class Cube:
                 i += 1
                 self.solve_moves += 1
 
-        self.show_stat = time.time()
-        self.solve_time = self.show_stat - self.solve_time  # call time.time() only once
-        self.show_stat += 7  # display stat 7s
+        self.solve_stat = time.time()
+        self.solve_time = self.solve_stat - self.solve_time  # call time.time() only once
+        self.solve_stat += 7  # display stat 7s
 
     def scramble(self):
         global buf_undo, buf_redo
 
-        for i in range(17):  # scramble moves
-            self.functions[random.randint(0, 11)]()
+        if self.mode != 3:
+            for i in range(17):  # scramble moves
+                self.functions[random.randint(0, 11)]()
 
-        buf_undo = buf_redo = ""
-        self.watch = self.watch_backup = self.seconds_watch = 0
-        self.time_last = time.time()
+            buf_undo = buf_redo = ""
 
-        self.pausing = False
+            self.speed_timer = self.game_timer = 0
+            self.previous_time = time.time()
+
+            self.pausing = False
 
     def get_input(self):
         global buf_undo, buf_redo
@@ -945,16 +948,14 @@ class Cube:
                 self.mode = (self.mode + 1) % 4
 
                 if self.mode == 3:
-                    if self.watch:
-                        self.watch_backup = self.watch
+                    self.speed_timer = self.tick = 0
 
-                    self.watch = self.tick = 0
                     self.pausing = True
 
                 elif self.mode == 0:
-                    if self.watch_backup:
-                        self.watch = self.watch_backup
-                        self.pausing = False
+                    self.speed_timer = self.game_timer
+
+                    self.pausing = False
 
                 if self.mode == 2:
                     curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
@@ -975,9 +976,9 @@ class Cube:
                 self.pausing = not self.pausing
 
                 if self.mode == 3 and not self.pausing:
-                    self.watch = self.tick = 0
+                    self.speed_timer = self.tick = 0
 
-                    self.time_last = time.time()
+                    self.previous_time = time.time()
 
             elif key == quit:
                 self.looping = False
@@ -1055,26 +1056,27 @@ class Cube:
             pass
 
     def loop(self):
-        seconds = 0  # buffer current second
-        counter = 0  # perpetual running divider
         global max_y, max_x
 
+        loop_counter = 0  # dividend for timer refresh
+
         while self.looping:
-            time_curr = time.time()
+            current_time = time.time()
 
             if not self.pausing:
-                self.watch += time_curr - self.time_last
+                self.speed_timer += current_time - self.previous_time
 
-                if int(self.watch) > self.seconds_watch:
-                    self.seconds_watch = int(self.watch)
+                if not self.mode == 3:
+                    if int(self.speed_timer) > self.game_timer:
+                        self.game_timer = int(self.speed_timer)
 
-                    self.refresh = True
+                        self.refresh = True
 
-            self.time_last = time_curr
+            self.previous_time = current_time
 
             self.get_input()
 
-            if int(time_curr) > seconds or self.refresh:
+            if self.refresh:
                 max_y, max_x = self.stdscr.getmaxyx()
 
                 self.stdscr.erase()
@@ -1086,20 +1088,17 @@ class Cube:
 
                 self.stdscr.refresh()
 
-                if self.refresh:
-                    self.refresh = False
-                else:
-                    seconds = int(time_curr)
+                self.refresh = False
 
-            if self.mode == 3 and not counter % 25:  # display timer every 0.1s
+            if self.mode == 3 and not loop_counter % 25:  # display timer every 0.1s
                 self.timer()
 
-                if timer_ticks[self.tick:] and self.watch > timer_ticks[self.tick][0]:
+                if timer_ticks[self.tick:] and not self.pausing and self.speed_timer > timer_ticks[self.tick][0]:
                     os.spawnlp(os.P_NOWAIT, player, player, option, timer_ticks[self.tick][1])
 
                     self.tick += 1
 
-            counter += 1
+            loop_counter += 1
 
             time.sleep(0.004)  # timer precision
 
