@@ -96,6 +96,8 @@ for m in moves[:]:
 
 buf_undo = buf_redo = ""  # trace buffer
 
+max_y = max_x = 0  # curses max screen
+
 class Cube:
 
     # mode 0: nrubik b/w  mode 1: nrubik  mode 2: nrubik2  mode 3: timer
@@ -113,7 +115,6 @@ class Cube:
     solve_time    = 0  # time in brute force solver
     show_stat     = 0  # duration viewing brute force results
     tick          = 0  # index in speedcube timer chimes list
-    max_y = max_x = 0  # curses max screen
 
     solved_cube = [
         [
@@ -182,10 +183,10 @@ class Cube:
     def helper(self):
         start_y = 2
         start_x = 2
-        end_x   = self.max_x - 2 - 18
+        end_x   = max_x - 2 - 18
 
         head = "nrubik2 - An N-Curses Based, Virtual Rubik's Cube"
-        self.stdscr.addstr(0, int(self.max_x / 2 - len(head) / 2 - 1), head)
+        self.stdscr.addstr(0, int(max_x / 2 - len(head) / 2 - 1), head)
 
         self.stdscr.addstr(start_y + 0,  start_x, "Keybindings:")
 
@@ -225,8 +226,8 @@ class Cube:
 
     # fullspeed timer, but displayed only in 1/10s
     def timer(self):
-        self.stdscr.addstr(int(self.max_y / 2), int(self.max_x / 2 - 4),
             '{:02}:{:05.2f}'.format(int(self.watch/60%60), self.watch%60),
+        self.stdscr.addstr(int(max_y / 2), int(max_x / 2 - 4),
                 curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
     def solved(self):
@@ -256,7 +257,7 @@ class Cube:
         else:
             head = "Speedcube Timer"
 
-        self.stdscr.addstr(int(self.max_y / 2 - 10), int(self.max_x / 2 - len(head) / 2 - 1), head)
+        self.stdscr.addstr(int(max_y / 2 - 10), int(max_x / 2 - len(head) / 2 - 1), head)
 
     def display_cubie(self, y, x, cubie):
         colors = {'W': 1, 'Y': 2, 'M': 3, 'R': 4, 'G': 5, 'B': 6}
@@ -1056,6 +1057,7 @@ class Cube:
     def loop(self):
         seconds = 0  # buffer current second
         counter = 0  # perpetual running divider
+        global max_y, max_x
 
         while self.looping:
             time_curr = time.time()
@@ -1073,14 +1075,14 @@ class Cube:
             self.get_input()
 
             if int(time_curr) > seconds or self.refresh:
-                self.max_y, self.max_x = self.stdscr.getmaxyx()
+                max_y, max_x = self.stdscr.getmaxyx()
 
                 self.stdscr.erase()
 
                 self.helper()
                 self.headline()
 
-                self.display_cube(self.max_y, self.max_x)
+                self.display_cube(max_y, max_x)
 
                 self.stdscr.refresh()
 
