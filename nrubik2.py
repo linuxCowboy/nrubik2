@@ -51,11 +51,11 @@ redo   = chr(10)
 delete = 'KEY_DC'
 toredo = 'KEY_PPAGE'
 tonull = 'KEY_NPAGE'
+pause  = ' '
 
 reset  = 'KEY_HOME'
 solve  = 'KEY_END'
 layout = 'KEY_IC'
-pause  = ' '
 quit   = chr(27)
 
 # cheat
@@ -104,7 +104,7 @@ class Cube:
     mode = 2
 
     looping = True  # False == exit
-    pausing = True  # pause game timer / speedcube timer
+    pausing = True  # pause timer
     refresh = True  # refresh screen every second or after key press
 
     game_timer    = 0  # accurate to the second
@@ -213,10 +213,10 @@ class Cube:
             self.stdscr.addstr(start_y + 9,  end_x, "Delete    - Delete")
             self.stdscr.addstr(start_y + 10, end_x, "Page Up   - 2 Redo")
             self.stdscr.addstr(start_y + 11, end_x, "Page Down - 2 Null")
+            self.stdscr.addstr(start_y + 12, end_x, "Space     - Marker")
 
-            self.stdscr.addstr(start_y + 13, end_x, "End    - Solve")
-            self.stdscr.addstr(start_y + 14, end_x, "Insert - Layout")
-            self.stdscr.addstr(start_y + 15, end_x, "Space  - Timer")
+            self.stdscr.addstr(start_y + 14, end_x, "End    - Solve")
+            self.stdscr.addstr(start_y + 15, end_x, "Insert - Layout")
             self.stdscr.addstr(start_y + 16, end_x, "Escape - Quit")
 
         else:
@@ -973,6 +973,7 @@ class Cube:
                     curses.init_pair(6, curses.COLOR_BLUE,    -1)
 
             elif key == pause:
+                # pause speedcube timer only
                 if self.mode == 3:
                     self.pausing = not self.pausing
 
@@ -980,6 +981,9 @@ class Cube:
                         self.speed_timer = self.tick = 0
 
                         self.previous_time = time.time()
+                # insert a gap in trace buffer
+                else:
+                    buf_undo += key
 
             elif key == quit:
                 self.looping = False
