@@ -973,12 +973,13 @@ class Cube:
                     curses.init_pair(6, curses.COLOR_BLUE,    -1)
 
             elif key == pause:
-                self.pausing = not self.pausing
+                if self.mode == 3:
+                    self.pausing = not self.pausing
 
-                if self.mode == 3 and not self.pausing:
-                    self.speed_timer = self.tick = 0
+                    if not self.pausing:
+                        self.speed_timer = self.tick = 0
 
-                    self.previous_time = time.time()
+                        self.previous_time = time.time()
 
             elif key == quit:
                 self.looping = False
