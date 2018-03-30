@@ -58,6 +58,8 @@ solve  = 'KEY_END'
 layout = 'KEY_IC'
 quit   = chr(27)
 
+gtimer = 't'
+
 # cheat
 solve_1 = '1'
 
@@ -106,6 +108,7 @@ class Cube:
     looping = True  # False == exit
     pausing = True  # pause timer
     refresh = True  # refresh screen every second or after key press
+    show_gt = True  # switch game timer on/off
 
     game_timer    = 0  # accurate to the second
     speed_timer   = 0  # accurate to the 1/100s
@@ -207,6 +210,8 @@ class Cube:
             self.stdscr.addstr(start_y + 14, start_x, cube_z + ","   + cube_z.upper()   + " - Cube Z")
 
             self.stdscr.addstr(start_y + 16, start_x - 1, "Home - Reset")
+
+            self.stdscr.addstr(start_y + 5,  end_x + 8, "T - Timer")
 
             self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
             self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
@@ -366,9 +371,10 @@ class Cube:
 
         if self.mode <= 2:
             # game timer - displayed in 1s
-            self.stdscr.addstr(int(2), int(x - 2 - 8), '{:02}:{:02}:{:02}'.format(\
-                int(self.game_timer / 60 / 60 % 24), int(self.game_timer / 60 % 60), int(self.game_timer % 60)),
-                    curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
+            if self.show_gt:
+                self.stdscr.addstr(int(2), int(x - 2 - 8), '{:02}:{:02}:{:02}'.format(\
+                    int(self.game_timer / 60 / 60 % 24), int(self.game_timer / 60 % 60), int(self.game_timer % 60)),
+                        curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
             # solve stat
             if self.solve_stat > self.previous_time:
@@ -987,6 +993,9 @@ class Cube:
 
             elif key == quit:
                 self.looping = False
+
+            elif key == gtimer:
+                self.show_gt = not self.show_gt
 
             # trace buffer
             if key in moves and not dismiss:
