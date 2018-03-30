@@ -896,6 +896,8 @@ class Cube:
         global buf_undo, buf_redo
 
         if self.mode != 3:
+            self.cube = copy.deepcopy(self.solved_cube)
+
             for i in range(17):  # scramble moves
                 self.functions[random.randint(0, 11)]()
 
