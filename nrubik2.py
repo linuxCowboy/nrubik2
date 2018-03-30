@@ -927,6 +927,9 @@ class Cube:
                 key = buf_redo[-1:]
                 buf_redo = buf_redo[:-1]
 
+                if key == '_':
+                    buf_undo += key
+
             elif key == delete:
                 key = buf_undo[-1:]
                 buf_undo = buf_undo[:-1]
@@ -989,7 +992,7 @@ class Cube:
                         self.previous_time = time.time()
                 # insert a gap in trace buffer
                 else:
-                    buf_undo += key
+                    buf_undo += '_'
 
             elif key == quit:
                 self.looping = False
