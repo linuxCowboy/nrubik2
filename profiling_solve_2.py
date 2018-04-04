@@ -385,11 +385,8 @@ def move_edge(cubie):
 
     functions[funcs[0]]()
 
-def solve():
+def solve_1():
     global cube
-
-    for i in range(scramble_moves):
-        functions[random.randint(0, 11)]()
 
     while not (cube[0][2][1] == cube[0][1][2] == cube[0][0][1] == cube[0][1][0]\
                              == solved_cube[0][1][1] and
@@ -453,6 +450,29 @@ def solve():
 
             move_edge(cubie)
             i += 1
+
+def solve_2():
+    global cube
+
+    while not (cube[2][0][0] == solved_cube[2][0][0] and
+               cube[5][0][2] == solved_cube[5][0][2] and
+
+               cube[2][0][2] == solved_cube[2][0][2] and
+               cube[4][0][0] == solved_cube[4][0][0] and
+
+               cube[3][0][0] == solved_cube[3][0][0] and
+               cube[4][0][2] == solved_cube[4][0][2] and
+
+               cube[3][0][2] == solved_cube[3][0][2] and
+               cube[5][0][0] == solved_cube[5][0][0]):
+
+def solve():
+    for i in range(scramble_moves):
+        functions[random.randint(0, 11)]()
+
+    solve_1()
+
+    solve_2()
 
 if __name__ == '__main__':
     print("Run %d x %d tests with %d scramble moves... (search deep 4 - 10)" % (runs, tests_per_run, scramble_moves))
