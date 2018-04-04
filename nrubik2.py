@@ -51,13 +51,16 @@ redo   = chr(10)
 delete = 'KEY_DC'
 toredo = 'KEY_PPAGE'
 tonull = 'KEY_NPAGE'
-pause  = ' '
 
 reset  = 'KEY_HOME'
 solve  = 'KEY_END'
 layout = 'KEY_IC'
 quit   = chr(27)
 
+pause  = ' '
+marker = '_'
+
+# game timer
 gtimer = 't'
 
 # cheat
@@ -211,7 +214,7 @@ class Cube:
 
             self.stdscr.addstr(start_y + 16, start_x - 1, "Home - Reset")
 
-            self.stdscr.addstr(start_y + 5,  end_x + 8, "T - Timer")
+            self.stdscr.addstr(start_y + 5,  end_x + 8, "t - Timer")
 
             self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
             self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
@@ -376,7 +379,7 @@ class Cube:
                     int(self.game_timer / 60 / 60 % 24), int(self.game_timer / 60 % 60), int(self.game_timer % 60)),
                         curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
-            # solve stat
+            # solve statistic
             if self.solve_stat > self.previous_time:
                 buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
 
@@ -929,7 +932,7 @@ class Cube:
                 key = buf_redo[-1:]
                 buf_redo = buf_redo[:-1]
 
-                if key == '_':
+                if key == marker:
                     buf_undo += key
 
             elif key == delete:
@@ -992,9 +995,9 @@ class Cube:
                         self.speed_timer = self.tick = 0
 
                         self.previous_time = time.time()
-                # insert a gap in trace buffer
+                # insert a gap/marker in trace buffer
                 else:
-                    buf_undo += '_'
+                    buf_undo += marker
 
             elif key == quit:
                 self.looping = False
