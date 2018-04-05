@@ -451,10 +451,123 @@ def solve_1():
             move_edge(cubie)
             i += 1
 
+def search_corner(cubie1, cubie2):
+    found = []
+
+    corners = [
+    [[0, 2, 2], [3, 0, 0], [4, 0, 2]],
+    [[0, 0, 2], [5, 0, 0], [3, 0, 2]],
+    [[0, 0, 0], [2, 0, 0], [5, 0, 2]],
+    [[0, 2, 0], [4, 0, 0], [2, 0, 2]],
+
+    [[1, 0, 2], [4, 2, 2], [3, 2, 0]],
+    [[1, 2, 2], [3, 2, 2], [5, 2, 0]],
+    [[1, 2, 0], [5, 2, 2], [2, 2, 0]],
+    [[1, 0, 0], [2, 2, 2], [4, 2, 0]]]
+
+
+    for c in range(8):
+        i, j, k = corners[c][0]
+        l, m, n = corners[c][1]
+        o, p, q = corners[c][2]
+
+        if cube[i][j][k] == 'W':
+            if cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2 or
+               cube[l][m][n] == cubie2 and cube[o][p][q] == cubie1:
+                    found.extend((i, j, k))
+                    break
+
+        if cube[l][m][n] == 'W':
+            if cube[i][j][k] == cubie1 and cube[o][p][q] == cubie2 or
+               cube[i][j][k] == cubie2 and cube[o][p][q] == cubie1:
+                    found.extend((l, m, n))
+                    break
+
+        if cube[o][p][q] == 'W':
+            if cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2 or
+               cube[i][j][k] == cubie2 and cube[i][j][k] == cubie1:
+                    found.extend((o, p, q))
+                    break
+
+    return found
+
+def move_corner(cubie):
+    if cubie[0] == 0:
+        funcs = [0, 1]
+
+        if cubie[1] == 0:
+            funcs += [10, 11]
+
+            if cubie[2] == 0:
+                funcs += [4, 5]
+            else:
+                funcs += [6, 7]
+        else:
+            funcs += [8, 9]
+
+            if cubie[2] == 0:
+                funcs += [4, 5]
+            else:
+                funcs += [6, 7]
+
+
+
 def solve_2():
     global cube
 
-    while not (cube[2][0][0] == solved_cube[2][0][0] and
+    while not (cube[0][0][0] == cube[0][0][2] == cube[0][2][0] == cube[0][2][2]\
+                             == solved_cube[0][1][1] and
+               cube[2][0][0] == solved_cube[2][0][0] and
+               cube[3][0][0] == solved_cube[3][0][0] and
+               cube[4][0][0] == solved_cube[4][0][0] and
+               cube[5][0][0] == solved_cube[5][0][0] and
+               cube[2][0][2] == solved_cube[2][0][2] and
+               cube[3][0][2] == solved_cube[3][0][2] and
+               cube[4][0][2] == solved_cube[4][0][2] and
+               cube[5][0][2] == solved_cube[5][0][2]):
+
+        i = 0
+        while not (
+            cube[0][0][0] == solved_cube[0][0][0] and
+            cube[2][0][0] == solved_cube[2][0][0] and
+            cube[5][0][2] == solved_cube[5][0][2]):
+                if i == 0:
+                    backup_cube = copy.deepcopy(cube)
+                elif i == search_deep:
+                    cube = copy.deepcopy(backup_cube)
+                    i = 0
+
+            cubie = search_edge(solved_cube[0][2][1], solved_cube[4][0][1])
+
+            move_edge(cubie)
+            i += 1
+
+    for i in range(4):
+        for j in range(3):
+            k, l, m = corners[i][j]
+
+            n = 0
+            while cube[k][l][m] != solved_cube[k][l][m]:
+                if n == 0:
+                    backup_cube = copy.deepcopy(cube)
+
+                elif n == search_deep:
+                    cube = copy.deepcopy(backup_cube)
+                    n = 0
+
+                cubie = search_corner(corners[i][1], corners[i][2])
+
+                move_corner(cubie)
+                n += 1
+
+        print("k: {}  l: {}  m: {}".format(k, l, m))
+
+
+    for i in range(4):
+        for j in range(3):
+        cube[corners[i][j]] == solved_cube[corners[i][j]]
+
+              (cube[2][0][0] == solved_cube[2][0][0] and
                cube[5][0][2] == solved_cube[5][0][2] and
 
                cube[2][0][2] == solved_cube[2][0][2] and
