@@ -478,18 +478,9 @@ def search_corner(cubie1, cubie2):
         l, m, n = corners[c][1]
         o, p, q = corners[c][2]
 
-        if (cube[i][j][k] == 'W' and
-                (cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2) or
-                (cube[l][m][n] == cubie2 and cube[o][p][q] == cubie1)
-           ) or \
-           (cube[l][m][n] == 'W' and
-                (cube[i][j][k] == cubie1 and cube[o][p][q] == cubie2) or
-                (cube[i][j][k] == cubie2 and cube[o][p][q] == cubie1)
-           ) or \
-           (cube[o][p][q] == 'W' and
-                (cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2) or
-                (cube[i][j][k] == cubie2 and cube[l][m][n] == cubie1)
-           ):
+        if (cube[i][j][k] == 'W' and cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2) or \
+           (cube[l][m][n] == 'W' and cube[o][p][q] == cubie1 and cube[i][j][k] == cubie2) or \
+           (cube[o][p][q] == 'W' and cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2):
                 found.extend((i, j, k))
                 break
 
