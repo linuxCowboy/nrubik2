@@ -24,8 +24,8 @@ import copy
 import random
 import timeit
 
-tests_per_run = 10
-runs = 3
+tests_per_run = 1
+runs = 1
 scramble_moves = 17
 
 if sys.argv[1:]:
@@ -301,8 +301,8 @@ def search_edge(cubie1, cubie2):
         i, j, k = edges[c][0]
         l, m, n = edges[c][1]
 
-        if cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2 or \
-           cube[i][j][k] == cubie2 and cube[l][m][n] == cubie1:
+        if (cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2) or \
+           (cube[i][j][k] == cubie2 and cube[l][m][n] == cubie1):
                 found.extend((i, j, k))
                 break
 
@@ -388,6 +388,8 @@ def move_edge(cubie):
 def solve_1():
     global cube
 
+    search_deep_1 = 6
+
     while not (cube[0][2][1] == cube[0][1][2] == cube[0][0][1] == cube[0][1][0]\
                              == solved_cube[0][1][1] and
                cube[4][0][1] == solved_cube[4][0][1] and
@@ -400,7 +402,7 @@ def solve_1():
             if i == 0:
                 backup_cube = copy.deepcopy(cube)
 
-            elif i == search_deep:
+            elif i == search_deep_1:
                 cube = copy.deepcopy(backup_cube)
                 i = 0
 
@@ -414,7 +416,7 @@ def solve_1():
             if i == 0:
                 backup_cube = copy.deepcopy(cube)
 
-            elif i == search_deep:
+            elif i == search_deep_1:
                 cube = copy.deepcopy(backup_cube)
                 i = 0
 
@@ -428,7 +430,7 @@ def solve_1():
             if i == 0:
                 backup_cube = copy.deepcopy(cube)
 
-            elif i == search_deep:
+            elif i == search_deep_1:
                 cube = copy.deepcopy(backup_cube)
                 i = 0
 
@@ -442,7 +444,7 @@ def solve_1():
             if i == 0:
                 backup_cube = copy.deepcopy(cube)
 
-            elif i == search_deep:
+            elif i == search_deep_1:
                 cube = copy.deepcopy(backup_cube)
                 i = 0
 
@@ -465,55 +467,56 @@ def search_corner(cubie1, cubie2):
     [[1, 2, 0], [5, 2, 2], [2, 2, 0]],
     [[1, 0, 0], [2, 2, 2], [4, 2, 0]]]
 
-
     for c in range(8):
         i, j, k = corners[c][0]
         l, m, n = corners[c][1]
         o, p, q = corners[c][2]
 
-        if cube[i][j][k] == 'W':
-            if cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2 or
-               cube[l][m][n] == cubie2 and cube[o][p][q] == cubie1:
-                    found.extend((i, j, k))
-                    break
+        if (cube[i][j][k] == 'W' and
+                (cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2) or
+                (cube[l][m][n] == cubie2 and cube[o][p][q] == cubie1)
+           ) or
+           (cube[l][m][n] == 'W' and
+                (cube[i][j][k] == cubie1 and cube[o][p][q] == cubie2) or
+                (cube[i][j][k] == cubie2 and cube[o][p][q] == cubie1)
+           ) or
+           (cube[o][p][q] == 'W' and
+                (cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2) or
+                (cube[i][j][k] == cubie2 and cube[l][m][n] == cubie1)
+           ):
+                found.extend((i, j, k))
+                break
 
-        if cube[l][m][n] == 'W':
-            if cube[i][j][k] == cubie1 and cube[o][p][q] == cubie2 or
-               cube[i][j][k] == cubie2 and cube[o][p][q] == cubie1:
-                    found.extend((l, m, n))
-                    break
-
-        if cube[o][p][q] == 'W':
-            if cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2 or
-               cube[i][j][k] == cubie2 and cube[i][j][k] == cubie1:
-                    found.extend((o, p, q))
-                    break
-
-    return found
+        return found
 
 def move_corner(cubie):
     if cubie[0] == 0:
         funcs = [0, 1]
+    else:
+        funcs = [2, 3]
 
-        if cubie[1] == 0:
-            funcs += [10, 11]
+    if cubie[1] == 0:
+        funcs += [10, 11]
+    else:
+        funcs += [8, 9]
 
-            if cubie[2] == 0:
-                funcs += [4, 5]
-            else:
-                funcs += [6, 7]
-        else:
-            funcs += [8, 9]
+    if cubie[2] == 0:
+        funcs += [4, 5]
+    else:
+        funcs += [6, 7]
 
-            if cubie[2] == 0:
-                funcs += [4, 5]
-            else:
-                funcs += [6, 7]
+    random.shuffle(funcs)
 
-
+    functions[funcs[0]]()
 
 def solve_2():
     global cube
+
+    corners = [
+    [[0, 2, 2], [3, 0, 0], [4, 0, 2]],
+    [[0, 0, 2], [5, 0, 0], [3, 0, 2]],
+    [[0, 0, 0], [2, 0, 0], [5, 0, 2]],
+    [[0, 2, 0], [4, 0, 0], [2, 0, 2]]]
 
     while not (cube[0][0][0] == cube[0][0][2] == cube[0][2][0] == cube[0][2][2]\
                              == solved_cube[0][1][1] and
@@ -526,58 +529,26 @@ def solve_2():
                cube[4][0][2] == solved_cube[4][0][2] and
                cube[5][0][2] == solved_cube[5][0][2]):
 
-        i = 0
-        while not (
-            cube[0][0][0] == solved_cube[0][0][0] and
-            cube[2][0][0] == solved_cube[2][0][0] and
-            cube[5][0][2] == solved_cube[5][0][2]):
-                if i == 0:
-                    backup_cube = copy.deepcopy(cube)
-                elif i == search_deep:
-                    cube = copy.deepcopy(backup_cube)
-                    i = 0
+        for c in range(4):
+            i, j, k = corners[c][0]
+            l, m, n = corners[c][1]
+            o, p, q = corners[c][2]
 
-            cubie = search_edge(solved_cube[0][2][1], solved_cube[4][0][1])
+            r = 0
+            while not (cube[i][j][k] == solved_cube[i][j][k] and
+                       cube[l][m][n] == solved_cube[l][m][n] and
+                       cube[o][p][q] == solved_cube[o][p][q]):
+                            if r == 0:
+                                backup_cube = copy.deepcopy(cube)
 
-            move_edge(cubie)
-            i += 1
+                            elif r == search_deep:
+                                cube = copy.deepcopy(backup_cube)
+                                r = 0
 
-    for i in range(4):
-        for j in range(3):
-            k, l, m = corners[i][j]
+                            cubie = search_corner(solved_cube[l][m][n], solved_cube[o][p][q])
 
-            n = 0
-            while cube[k][l][m] != solved_cube[k][l][m]:
-                if n == 0:
-                    backup_cube = copy.deepcopy(cube)
-
-                elif n == search_deep:
-                    cube = copy.deepcopy(backup_cube)
-                    n = 0
-
-                cubie = search_corner(corners[i][1], corners[i][2])
-
-                move_corner(cubie)
-                n += 1
-
-        print("k: {}  l: {}  m: {}".format(k, l, m))
-
-
-    for i in range(4):
-        for j in range(3):
-        cube[corners[i][j]] == solved_cube[corners[i][j]]
-
-              (cube[2][0][0] == solved_cube[2][0][0] and
-               cube[5][0][2] == solved_cube[5][0][2] and
-
-               cube[2][0][2] == solved_cube[2][0][2] and
-               cube[4][0][0] == solved_cube[4][0][0] and
-
-               cube[3][0][0] == solved_cube[3][0][0] and
-               cube[4][0][2] == solved_cube[4][0][2] and
-
-               cube[3][0][2] == solved_cube[3][0][2] and
-               cube[5][0][0] == solved_cube[5][0][0]):
+                            move_corner(cubie)
+                            r += 1
 
 def solve():
     for i in range(scramble_moves):
@@ -590,7 +561,7 @@ def solve():
 if __name__ == '__main__':
     print("Run %d x %d tests with %d scramble moves... (search deep 4 - 10)" % (runs, tests_per_run, scramble_moves))
 
-    for i in range(4, 11):
+    for i in range(8, 12):
         search_deep = i
 
         l = timeit.repeat('solve()', number=tests_per_run, repeat=runs, setup="from __main__ import solve")
