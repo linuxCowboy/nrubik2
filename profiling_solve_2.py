@@ -25,13 +25,16 @@ import random
 import timeit
 
 tests_per_run = 1
-runs = 1
+runs = 3
+search_deep_end = 14
+search_deep_start = 4
+
 scramble_moves = 17
 
 if sys.argv[1:]:
     if sys.argv[1] == '--help':
-        print("\n    %s [tests_per_run{%d} [runs{%d} [scramble_moves{%d}]]]\n" % \
-                (sys.argv[0], tests_per_run, runs, scramble_moves))
+        print("\n    %s [tests_per_run{%d} [runs{%d} [search_deep_end{%d} [search_deep_start{%d}]]]]\n" % \
+                (sys.argv[0], tests_per_run, runs, search_deep_end, search_deep_start))
         sys.exit(0)
 
 if sys.argv[1:]:
@@ -41,7 +44,10 @@ if sys.argv[2:]:
     runs = int(sys.argv[2])
 
 if sys.argv[3:]:
-    scramble_moves = int(sys.argv[3])
+    search_deep_end = int(sys.argv[3])
+
+if sys.argv[4:]:
+    search_deep_start = int(sys.argv[4])
 
 solved_cube = [
     [
@@ -475,11 +481,11 @@ def search_corner(cubie1, cubie2):
         if (cube[i][j][k] == 'W' and
                 (cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2) or
                 (cube[l][m][n] == cubie2 and cube[o][p][q] == cubie1)
-           ) or
+           ) or \
            (cube[l][m][n] == 'W' and
                 (cube[i][j][k] == cubie1 and cube[o][p][q] == cubie2) or
                 (cube[i][j][k] == cubie2 and cube[o][p][q] == cubie1)
-           ) or
+           ) or \
            (cube[o][p][q] == 'W' and
                 (cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2) or
                 (cube[i][j][k] == cubie2 and cube[l][m][n] == cubie1)
@@ -487,7 +493,7 @@ def search_corner(cubie1, cubie2):
                 found.extend((i, j, k))
                 break
 
-        return found
+    return found
 
 def move_corner(cubie):
     if cubie[0] == 0:
@@ -559,9 +565,9 @@ def solve():
     solve_2()
 
 if __name__ == '__main__':
-    print("Run %d x %d tests with %d scramble moves... (search deep 4 - 10)" % (runs, tests_per_run, scramble_moves))
+    print("Run %d x %d tests with search deep %d - %d)" % (runs, tests_per_run, search_deep_start, search_deep_end))
 
-    for i in range(8, 12):
+    for i in range(search_deep_start, search_deep_end + 1):
         search_deep = i
 
         l = timeit.repeat('solve()', number=tests_per_run, repeat=runs, setup="from __main__ import solve")
