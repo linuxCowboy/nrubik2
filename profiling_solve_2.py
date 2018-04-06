@@ -515,16 +515,12 @@ def solve_2():
     ((0, 0, 0), (2, 0, 0), (5, 0, 2)),
     ((0, 2, 0), (4, 0, 0), (2, 0, 2)))
 
-    while not (cube[0][0][0] == cube[0][0][2] == cube[0][2][0] == cube[0][2][2]\
-                             == solved_cube[0][1][1] and
-               cube[2][0][0] == solved_cube[2][0][0] and
-               cube[3][0][0] == solved_cube[3][0][0] and
-               cube[4][0][0] == solved_cube[4][0][0] and
-               cube[5][0][0] == solved_cube[5][0][0] and
-               cube[2][0][2] == solved_cube[2][0][2] and
-               cube[3][0][2] == solved_cube[3][0][2] and
-               cube[4][0][2] == solved_cube[4][0][2] and
-               cube[5][0][2] == solved_cube[5][0][2]):
+    while not (cube[0][0][0] == cube[0][0][2] == solved_cube[0][1][1] and
+               cube[0][2][0] == cube[0][2][2] == solved_cube[0][1][1] and
+               cube[2][0][0] == cube[2][0][2] == solved_cube[2][1][1] and
+               cube[3][0][0] == cube[3][0][2] == solved_cube[3][1][1] and
+               cube[4][0][0] == cube[4][0][2] == solved_cube[4][1][1] and
+               cube[5][0][0] == cube[5][0][2] == solved_cube[5][1][1]):
 
         for c in range(4):
             i, j, k = corners[c][0]
