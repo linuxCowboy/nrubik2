@@ -852,6 +852,8 @@ class Cube:
         else:
             funcs += [6, 7]
 
+        funcs += [6, 7]
+
         random.shuffle(funcs)
 
         self.functions[funcs[0]]()
@@ -886,6 +888,13 @@ class Cube:
             self.move_corner(cubie)
             i += 1
             self.solve_moves += 1
+
+        if self.cube[1][0][2] == 'W':
+            self.turn_right_rev()
+            self.turn_bottom()
+            self.turn_right()
+            self.turn_bottom()
+            self.turn_bottom()
 
         i = 0
         while not (self.cube[0][2][2] == 'W' and self.cube[3][0][0] == 'R' and
