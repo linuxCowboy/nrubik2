@@ -816,9 +816,6 @@ class Cube:
         while self.cube[4][1][1] != self.solved_cube[4][1][1]:
                 self.move_y()
 
-        self.solve_moves = 0
-        self.solve_time = time.time()
-
         search_deep = 6
 
         while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0]\
@@ -891,10 +888,6 @@ class Cube:
 
                 i += 1
                 self.solve_moves += 1
-
-        self.solve_stat = time.time()
-        self.solve_time = self.solve_stat - self.solve_time  # call time.time() only once
-        self.solve_stat += 7  # display stat 7s
 
     def search_corner(self, cubie1, cubie2):
         found = []
@@ -979,6 +972,7 @@ class Cube:
 
                                 self.move_corner(cubie)
                                 r += 1
+                                self.solve_moves += 1
 
     def scramble(self):
         global buf_undo, buf_redo
@@ -1040,11 +1034,18 @@ class Cube:
             elif key == solve:
                 self.cube = copy.deepcopy(self.solved_cube)
 
-            elif key == solve_1:
+            elif key in (solve_1, solve_2):
+                self.solve_moves = 0
+                self.solve_time = time.time()
+
                 self.solve_1()
 
-            elif key == solve_2:
-                self.solve_2()
+                if key == solve_2:
+                    self.solve_2()
+
+                self.solve_stat = time.time()
+                self.solve_time = self.solve_stat - self.solve_time  # call time.time() only once
+                self.solve_stat += 7  # display stat 7s
 
             elif key == layout:
                 self.mode = (self.mode + 1) % 4
