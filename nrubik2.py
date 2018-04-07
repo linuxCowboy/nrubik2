@@ -857,54 +857,28 @@ class Cube:
     def solve_2(self):
         search_deep = 6
 
-        corners = (((0, 2, 2), (3, 0, 0), (4, 0, 2)),
-                   ((0, 0, 2), (5, 0, 0), (3, 0, 2)),
-                   ((0, 0, 0), (2, 0, 0), (5, 0, 2)),
-                   ((0, 2, 0), (4, 0, 0), (2, 0, 2)))
+        i = 0
+        while not (self.cube[0][2][2] == 'W' and self.cube[4][0][2] == 'G' and
 
-        okay = (0, 0, 0), (0, 0, 1), (0, 0, 2), (0, 1, 0),
-               (0, 2, 0), (0, 2, 1), (0, 2, 2), (0, 1, 2),
-               (2, 0, 0), (3, 0, 0), (4, 0, 0), (5, 0, 0),
-               (2, 0, 2), (3, 0, 2), (4, 0, 2), (5, 0, 2),
-               (2, 0, 1), (3, 0, 1), (4, 0, 1), (5, 0, 1)
+                   self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == self.cube[0][2][1] == 'W' and
 
-        while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] ==\
-                   self.cube[0][0][0] == self.cube[0][0][2] == self.cube[0][2][0] == self.cube[0][2][2] ==\
-                                         self.solved_cube[0][1][1] and
+                   self.cube[3][0][1] == 'R' and
+                   self.cube[5][0][1] == 'B' and
+                   self.cube[2][0][1] == 'M' and
+                   self.cube[4][0][1] == 'G'):
 
-                   self.cube[2][0][1] == self.solved_cube[2][0][1] and
-                   self.cube[3][0][1] == self.solved_cube[3][0][1] and
-                   self.cube[4][0][1] == self.solved_cube[4][0][1] and
-                   self.cube[5][0][1] == self.solved_cube[5][0][1] and
+            if i == 0:
+                backup_cube = copy.deepcopy(self.cube)
 
-                   self.cube[2][0][0] == self.cube[2][0][2] == self.solved_cube[2][1][1] and
-                   self.cube[3][0][0] == self.cube[3][0][2] == self.solved_cube[3][1][1] and
-                   self.cube[4][0][0] == self.cube[4][0][2] == self.solved_cube[4][1][1] and
-                   self.cube[5][0][0] == self.cube[5][0][2] == self.solved_cube[5][1][1]):
+            elif i == search_deep:
+                self.cube = copy.deepcopy(backup_cube)
+                i = 0
 
-            self.solve_1()
+            cubie = self.search_corner('R', 'G')
 
-            for c in range(4):
-                i, j, k = corners[c][0]
-                l, m, n = corners[c][1]
-                o, p, q = corners[c][2]
-
-                r = 0
-                while not (self.cube[i][j][k] == self.solved_cube[i][j][k] and
-                           self.cube[l][m][n] == self.solved_cube[l][m][n] and
-                           self.cube[o][p][q] == self.solved_cube[o][p][q]):
-                                if r == 0:
-                                    backup_cube = copy.deepcopy(self.cube)
-
-                                elif r == search_deep:
-                                    self.cube = copy.deepcopy(backup_cube)
-                                    r = 0
-
-                                cubie = self.search_corner(self.solved_cube[l][m][n], self.solved_cube[o][p][q])
-
-                                self.move_corner(cubie)
-                                r += 1
-                                self.solve_moves += 1
+            self.move_corner(cubie)
+            i += 1
+            self.solve_moves += 1
 
     def scramble(self):
         global buf_undo, buf_redo
