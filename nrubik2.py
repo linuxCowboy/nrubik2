@@ -65,6 +65,7 @@ gtimer = 't'
 
 # cheat
 solve_1 = '1'
+solve_2 = '2'
 
 player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
@@ -895,6 +896,90 @@ class Cube:
         self.solve_time = self.solve_stat - self.solve_time  # call time.time() only once
         self.solve_stat += 7  # display stat 7s
 
+    def search_corner(cubie1, cubie2):
+        found = []
+
+        corners = (
+        ((0, 2, 2), (3, 0, 0), (4, 0, 2)),
+        ((0, 0, 2), (5, 0, 0), (3, 0, 2)),
+        ((0, 0, 0), (2, 0, 0), (5, 0, 2)),
+        ((0, 2, 0), (4, 0, 0), (2, 0, 2)),
+
+        ((1, 0, 2), (4, 2, 2), (3, 2, 0)),
+        ((1, 2, 2), (3, 2, 2), (5, 2, 0)),
+        ((1, 2, 0), (5, 2, 2), (2, 2, 0)),
+        ((1, 0, 0), (2, 2, 2), (4, 2, 0)))
+
+        for c in range(8):
+            i, j, k = corners[c][0]
+            l, m, n = corners[c][1]
+            o, p, q = corners[c][2]
+
+            if (cube[i][j][k] == 'W' and cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2) or \
+               (cube[l][m][n] == 'W' and cube[o][p][q] == cubie1 and cube[i][j][k] == cubie2) or \
+               (cube[o][p][q] == 'W' and cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2):
+                    found.extend((i, j, k))
+                    break
+
+        return found
+
+    def move_corner(cubie):
+        if cubie[0] == 0:
+            funcs = [0, 1]
+        else:
+            funcs = [2, 3]
+
+        if cubie[1] == 0:
+            funcs += [10, 11]
+        else:
+            funcs += [8, 9]
+
+        if cubie[2] == 0:
+            funcs += [4, 5]
+        else:
+            funcs += [6, 7]
+
+        random.shuffle(funcs)
+
+        functions[funcs[0]]()
+
+    def solve_2():
+        global cube
+
+        corners = (
+        ((0, 2, 2), (3, 0, 0), (4, 0, 2)),
+        ((0, 0, 2), (5, 0, 0), (3, 0, 2)),
+        ((0, 0, 0), (2, 0, 0), (5, 0, 2)),
+        ((0, 2, 0), (4, 0, 0), (2, 0, 2)))
+
+        while not (cube[0][0][0] == cube[0][0][2] == solved_cube[0][1][1] and
+                   cube[0][2][0] == cube[0][2][2] == solved_cube[0][1][1] and
+                   cube[2][0][0] == cube[2][0][2] == solved_cube[2][1][1] and
+                   cube[3][0][0] == cube[3][0][2] == solved_cube[3][1][1] and
+                   cube[4][0][0] == cube[4][0][2] == solved_cube[4][1][1] and
+                   cube[5][0][0] == cube[5][0][2] == solved_cube[5][1][1]):
+
+            for c in range(4):
+                i, j, k = corners[c][0]
+                l, m, n = corners[c][1]
+                o, p, q = corners[c][2]
+
+                r = 0
+                while not (cube[i][j][k] == solved_cube[i][j][k] and
+                           cube[l][m][n] == solved_cube[l][m][n] and
+                           cube[o][p][q] == solved_cube[o][p][q]):
+                                if r == 0:
+                                    backup_cube = copy.deepcopy(cube)
+
+                                elif r == search_deep:
+                                    cube = copy.deepcopy(backup_cube)
+                                    r = 0
+
+                                cubie = search_corner(solved_cube[l][m][n], solved_cube[o][p][q])
+
+                                move_corner(cubie)
+                                r += 1
+
     def scramble(self):
         global buf_undo, buf_redo
 
@@ -957,6 +1042,9 @@ class Cube:
 
             elif key == solve_1:
                 self.solve_1()
+
+            elif key == solve_2:
+                self.solve_2()
 
             elif key == layout:
                 self.mode = (self.mode + 1) % 4
