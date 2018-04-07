@@ -710,8 +710,8 @@ class Cube:
             i, j, k = edges[c][0]
             l, m, n = edges[c][1]
 
-            if self.cube[i][j][k] == cubie1 and self.cube[l][m][n] == cubie2 or \
-               self.cube[i][j][k] == cubie2 and self.cube[l][m][n] == cubie1:
+            if (self.cube[i][j][k] == cubie1 and self.cube[l][m][n] == cubie2 or
+                self.cube[i][j][k] == cubie2 and self.cube[l][m][n] == cubie1):
                     found.extend((i, j, k))
                     break
 
@@ -760,6 +760,14 @@ class Cube:
 
     # cheat white cross + edges
     def solve_1(self):
+        search_deep = 6
+
+        edges = (
+        ((0, 2, 1), (4, 0, 1)),
+        ((0, 1, 2), (3, 0, 1)),
+        ((0, 0, 1), (5, 0, 1)),
+        ((0, 1, 0), (2, 0, 1)))
+
         i = 0
         while self.cube[0][1][1] != self.solved_cube[0][1][1]:
             if i < 3:
@@ -771,78 +779,32 @@ class Cube:
         while self.cube[4][1][1] != self.solved_cube[4][1][1]:
                 self.move_y()
 
-        search_deep = 6
-
         while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0]\
                                       == self.solved_cube[0][1][1] and
-                   self.cube[4][0][1] == self.solved_cube[4][0][1] and
+                   self.cube[2][0][1] == self.solved_cube[2][0][1] and
                    self.cube[3][0][1] == self.solved_cube[3][0][1] and
-                   self.cube[5][0][1] == self.solved_cube[5][0][1] and
-                   self.cube[2][0][1] == self.solved_cube[2][0][1]):
+                   self.cube[4][0][1] == self.solved_cube[4][0][1] and
+                   self.cube[5][0][1] == self.solved_cube[5][0][1]):
 
-            i = 0
-            while not (self.cube[0][2][1] == self.solved_cube[0][2][1] and self.cube[4][0][1] == self.solved_cube[4][0][1]):
-                if i == 0:
-                    backup_cube = copy.deepcopy(self.cube)
+            for c in range(4):
+                i, j, k = edges[c][0]
+                l, m, n = edges[c][1]
 
-                elif i == search_deep:
-                    self.cube = copy.deepcopy(backup_cube)
-                    i = 0
+                r = 0
+                while not (self.cube[i][j][k] == self.solved_cube[i][j][k] and
+                           self.cube[l][m][n] == self.solved_cube[l][m][n]):
+                                if r == 0:
+                                    backup_cube = copy.deepcopy(self.cube)
 
-                cubie = self.search_edge(self.solved_cube[0][2][1], self.solved_cube[4][0][1])
+                                elif r == search_deep:
+                                    self.cube = copy.deepcopy(backup_cube)
+                                    r = 0
 
-                self.move_edge(cubie)
+                                cubie = self.search_edge(self.solved_cube[i][j][k], self.solved_cube[l][m][n])
 
-                i += 1
-                self.solve_moves += 1
-
-            i = 0
-            while not (self.cube[0][1][2] == self.solved_cube[0][1][2] and self.cube[3][0][1] == self.solved_cube[3][0][1]):
-                if i == 0:
-                    backup_cube = copy.deepcopy(self.cube)
-
-                elif i == search_deep:
-                    self.cube = copy.deepcopy(backup_cube)
-                    i = 0
-
-                cubie = self.search_edge(self.solved_cube[0][1][2], self.solved_cube[3][0][1])
-
-                self.move_edge(cubie)
-
-                i += 1
-                self.solve_moves += 1
-
-            i = 0
-            while not (self.cube[0][0][1] == self.solved_cube[0][0][1] and self.cube[5][0][1] == self.solved_cube[5][0][1]):
-                if i == 0:
-                    backup_cube = copy.deepcopy(self.cube)
-
-                elif i == search_deep:
-                    self.cube = copy.deepcopy(backup_cube)
-                    i = 0
-
-                cubie = self.search_edge(self.solved_cube[0][0][1], self.solved_cube[5][0][1])
-
-                self.move_edge(cubie)
-
-                i += 1
-                self.solve_moves += 1
-
-            i = 0
-            while not (self.cube[0][1][0] == self.solved_cube[0][1][0] and self.cube[2][0][1] == self.solved_cube[2][0][1]):
-                if i == 0:
-                    backup_cube = copy.deepcopy(self.cube)
-
-                elif i == search_deep:
-                    self.cube = copy.deepcopy(backup_cube)
-                    i = 0
-
-                cubie = self.search_edge(self.solved_cube[0][1][0], self.solved_cube[2][0][1])
-
-                self.move_edge(cubie)
-
-                i += 1
-                self.solve_moves += 1
+                                self.move_edge(cubie)
+                                r += 1
+                                self.solve_moves += 1
 
     def search_corner(self, cubie1, cubie2):
         found = []
