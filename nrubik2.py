@@ -852,8 +852,6 @@ class Cube:
         else:
             funcs += [6, 7]
 
-        funcs += [6, 7]
-
         random.shuffle(funcs)
 
         self.functions[funcs[0]]()
@@ -861,8 +859,6 @@ class Cube:
     # cheat white corners
     def solve_2(self):
         search_deep = 6
-
-        cubie = self.search_corner('R', 'G')
 
         i = 0
         while not ((self.cube[4][2][2] == 'W' and self.cube[3][2][0] == 'R' or
@@ -889,35 +885,23 @@ class Cube:
             i += 1
             self.solve_moves += 1
 
-        if self.cube[1][0][2] == 'W':
+        if self.cube[4][2][2] == 'W':
+            self.turn_bottom_rev()
+            self.turn_right_rev()
+            self.turn_bottom()
+            self.turn_right()
+
+        elif self.cube[1][0][2] == 'W':
             self.turn_right_rev()
             self.turn_bottom()
             self.turn_right()
             self.turn_bottom()
             self.turn_bottom()
 
-        i = 0
-        while not (self.cube[0][2][2] == 'W' and self.cube[3][0][0] == 'R' and
-
-                   self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == self.cube[0][2][1] == 'W' and
-
-                   self.cube[3][0][1] == 'R' and
-                   self.cube[5][0][1] == 'B' and
-                   self.cube[2][0][1] == 'M' and
-                   self.cube[4][0][1] == 'G'):
-
-            if i == 0:
-                backup_cube = copy.deepcopy(self.cube)
-
-            elif i == search_deep:
-                self.cube = copy.deepcopy(backup_cube)
-                i = 0
-
-            cubie = self.search_corner('R', 'G')
-
-            self.move_corner(cubie)
-            i += 1
-            self.solve_moves += 1
+        if self.cube[3][2][0] == 'W' and self.cube[1][0][2] == 'R':
+            self.turn_right_rev()
+            self.turn_bottom_rev()
+            self.turn_right()
 
     def scramble(self):
         global buf_undo, buf_redo
