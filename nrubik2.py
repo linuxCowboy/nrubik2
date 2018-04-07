@@ -825,9 +825,9 @@ class Cube:
             l, m, n = corners[c][1]
             o, p, q = corners[c][2]
 
-            if (self.cube[i][j][k] == 'W' and self.cube[l][m][n] == cubie1 and self.cube[o][p][q] == cubie2) or \
-               (self.cube[l][m][n] == 'W' and self.cube[o][p][q] == cubie1 and self.cube[i][j][k] == cubie2) or \
-               (self.cube[o][p][q] == 'W' and self.cube[i][j][k] == cubie1 and self.cube[l][m][n] == cubie2):
+            if (self.cube[i][j][k] == 'W' and self.cube[l][m][n] == cubie1 and self.cube[o][p][q] == cubie2 or
+                self.cube[l][m][n] == 'W' and self.cube[o][p][q] == cubie1 and self.cube[i][j][k] == cubie2 or
+                self.cube[o][p][q] == 'W' and self.cube[i][j][k] == cubie1 and self.cube[l][m][n] == cubie2):
                     found.extend((i, j, k))
                     break
 
@@ -853,6 +853,7 @@ class Cube:
 
         self.functions[funcs[0]]()
 
+    # cheat white corners
     def solve_2(self):
         search_deep = 6
 
@@ -862,12 +863,21 @@ class Cube:
         ((0, 0, 0), (2, 0, 0), (5, 0, 2)),
         ((0, 2, 0), (4, 0, 0), (2, 0, 2)))
 
-        while not (self.cube[0][0][0] == self.cube[0][0][2] == self.solved_cube[0][1][1] and
-                   self.cube[0][2][0] == self.cube[0][2][2] == self.solved_cube[0][1][1] and
+        while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] ==\
+                   self.cube[0][0][0] == self.cube[0][0][2] == self.cube[0][2][0] == self.cube[0][2][2] ==\
+                                         self.solved_cube[0][1][1] and
+
+                   self.cube[2][0][1] == self.solved_cube[2][0][1] and
+                   self.cube[3][0][1] == self.solved_cube[3][0][1] and
+                   self.cube[4][0][1] == self.solved_cube[4][0][1] and
+                   self.cube[5][0][1] == self.solved_cube[5][0][1] and
+
                    self.cube[2][0][0] == self.cube[2][0][2] == self.solved_cube[2][1][1] and
                    self.cube[3][0][0] == self.cube[3][0][2] == self.solved_cube[3][1][1] and
                    self.cube[4][0][0] == self.cube[4][0][2] == self.solved_cube[4][1][1] and
                    self.cube[5][0][0] == self.cube[5][0][2] == self.solved_cube[5][1][1]):
+
+            self.solve_1()
 
             for c in range(4):
                 i, j, k = corners[c][0]
