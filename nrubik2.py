@@ -743,52 +743,16 @@ class Cube:
                 funcs += [10, 11]
 
         elif cubie[0] == 2:
-            funcs = [4, 5]
-            if cubie[1] == 0:
-                funcs += [0, 1]
-            elif cubie[1] == 1:
-                if cubie[2] == 0:
-                    funcs += [10, 11]
-                else:
-                    funcs += [8, 9]
-            else:
-                funcs += [2, 3]
+            funcs = [4, 5, 10 ,11]
 
         elif cubie[0] == 3:
-            funcs = [6, 7]
-            if cubie[1] == 0:
-                funcs += [0, 1]
-            elif cubie[1] == 1:
-                if cubie[2] == 0:
-                    funcs += [8, 9]
-                else:
-                    funcs += [10, 11]
-            else:
-                funcs += [2, 3]
+            funcs = [6, 7, 8, 9]
 
         elif cubie[0] == 4:
-            funcs = [8, 9]
-            if cubie[1] == 0:
-                funcs += [0, 1]
-            elif cubie[1] == 1:
-                if cubie[2] == 0:
-                    funcs += [4, 5]
-                else:
-                    funcs += [6, 7]
-            else:
-                funcs += [2, 3]
+            funcs = [8, 9, 4, 5]
 
         elif cubie[0] == 5:
-            funcs = [10, 11]
-            if cubie[1] == 0:
-                funcs += [0, 1]
-            elif cubie[1] == 1:
-                if cubie[2] == 0:
-                    funcs += [6, 7]
-                else:
-                    funcs += [4, 5]
-            else:
-                funcs += [2, 3]
+            funcs = [10, 11, 6, 7]
 
         random.shuffle(funcs)
 
