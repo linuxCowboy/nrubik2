@@ -896,7 +896,7 @@ class Cube:
         self.solve_time = self.solve_stat - self.solve_time  # call time.time() only once
         self.solve_stat += 7  # display stat 7s
 
-    def search_corner(cubie1, cubie2):
+    def search_corner(self, cubie1, cubie2):
         found = []
 
         corners = (
@@ -915,15 +915,15 @@ class Cube:
             l, m, n = corners[c][1]
             o, p, q = corners[c][2]
 
-            if (cube[i][j][k] == 'W' and cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2) or \
-               (cube[l][m][n] == 'W' and cube[o][p][q] == cubie1 and cube[i][j][k] == cubie2) or \
-               (cube[o][p][q] == 'W' and cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2):
+            if (self.cube[i][j][k] == 'W' and self.cube[l][m][n] == cubie1 and self.cube[o][p][q] == cubie2) or \
+               (self.cube[l][m][n] == 'W' and self.cube[o][p][q] == cubie1 and self.cube[i][j][k] == cubie2) or \
+               (self.cube[o][p][q] == 'W' and self.cube[i][j][k] == cubie1 and self.cube[l][m][n] == cubie2):
                     found.extend((i, j, k))
                     break
 
         return found
 
-    def move_corner(cubie):
+    def move_corner(self, cubie):
         if cubie[0] == 0:
             funcs = [0, 1]
         else:
@@ -941,10 +941,10 @@ class Cube:
 
         random.shuffle(funcs)
 
-        functions[funcs[0]]()
+        self.functions[funcs[0]]()
 
-    def solve_2():
-        global cube
+    def solve_2(self):
+        search_deep = 6
 
         corners = (
         ((0, 2, 2), (3, 0, 0), (4, 0, 2)),
@@ -952,12 +952,12 @@ class Cube:
         ((0, 0, 0), (2, 0, 0), (5, 0, 2)),
         ((0, 2, 0), (4, 0, 0), (2, 0, 2)))
 
-        while not (cube[0][0][0] == cube[0][0][2] == solved_cube[0][1][1] and
-                   cube[0][2][0] == cube[0][2][2] == solved_cube[0][1][1] and
-                   cube[2][0][0] == cube[2][0][2] == solved_cube[2][1][1] and
-                   cube[3][0][0] == cube[3][0][2] == solved_cube[3][1][1] and
-                   cube[4][0][0] == cube[4][0][2] == solved_cube[4][1][1] and
-                   cube[5][0][0] == cube[5][0][2] == solved_cube[5][1][1]):
+        while not (self.cube[0][0][0] == self.cube[0][0][2] == self.solved_cube[0][1][1] and
+                   self.cube[0][2][0] == self.cube[0][2][2] == self.solved_cube[0][1][1] and
+                   self.cube[2][0][0] == self.cube[2][0][2] == self.solved_cube[2][1][1] and
+                   self.cube[3][0][0] == self.cube[3][0][2] == self.solved_cube[3][1][1] and
+                   self.cube[4][0][0] == self.cube[4][0][2] == self.solved_cube[4][1][1] and
+                   self.cube[5][0][0] == self.cube[5][0][2] == self.solved_cube[5][1][1]):
 
             for c in range(4):
                 i, j, k = corners[c][0]
@@ -965,19 +965,19 @@ class Cube:
                 o, p, q = corners[c][2]
 
                 r = 0
-                while not (cube[i][j][k] == solved_cube[i][j][k] and
-                           cube[l][m][n] == solved_cube[l][m][n] and
-                           cube[o][p][q] == solved_cube[o][p][q]):
+                while not (self.cube[i][j][k] == self.solved_cube[i][j][k] and
+                           self.cube[l][m][n] == self.solved_cube[l][m][n] and
+                           self.cube[o][p][q] == self.solved_cube[o][p][q]):
                                 if r == 0:
-                                    backup_cube = copy.deepcopy(cube)
+                                    backup_cube = copy.deepcopy(self.cube)
 
                                 elif r == search_deep:
-                                    cube = copy.deepcopy(backup_cube)
+                                    self.cube = copy.deepcopy(backup_cube)
                                     r = 0
 
-                                cubie = search_corner(solved_cube[l][m][n], solved_cube[o][p][q])
+                                cubie = self.search_corner(self.solved_cube[l][m][n], self.solved_cube[o][p][q])
 
-                                move_corner(cubie)
+                                self.move_corner(cubie)
                                 r += 1
 
     def scramble(self):
