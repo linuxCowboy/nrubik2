@@ -836,13 +836,16 @@ class Cube:
     def move_corner(self, cubie):
         if cubie[0] == 0:
             funcs = [0, 1]
+            if cubie[1] == 0:
+                funcs += [10, 11]
+            else:
+                funcs += [8, 9]
         else:
             funcs = [2, 3]
-
-        if cubie[1] == 0:
-            funcs += [10, 11]
-        else:
-            funcs += [8, 9]
+            if cubie[1] == 0:
+                funcs += [8, 9]
+            else:
+                funcs += [10, 11]
 
         if cubie[2] == 0:
             funcs += [4, 5]
