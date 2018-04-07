@@ -905,6 +905,9 @@ class Cube:
                 self.turn_right()
 
             self.move_y()
+            
+        self.move_x()
+        self.move_x()
 
     def scramble(self):
         global buf_undo, buf_redo
