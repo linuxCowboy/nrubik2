@@ -515,17 +515,17 @@ def solve():
     solve_1()
 
     solve_2()
-#    sm.append(solve_moves)
+    sm.append(solve_moves)
 
 if __name__ == '__main__':
     print("Run %d x %d tests with search deep %d - %d)" % (runs, tests_per_run, search_deep_start, search_deep_end))
 
     for i in range(search_deep_start, search_deep_end + 1):
         search_deep = i
-#        sm = []
+        sm = []
 
         l = timeit.repeat('solve()', number=tests_per_run, repeat=runs, setup="from __main__ import solve")
 
-        print("%2d:  " % i + "  ".join("%.2f" % t for t in l))
-#        print("%2d:  " % i + "   ".join("%.2f / %d" % (t,m) for t, m in zip(l, sm)))
+#        print("%2d:  " % i + "  ".join("%.2f" % t for t in l))
+        print("%2d:  " % i + "   ".join("%.2f / %d" % (t,m) for t, m in zip(l, sm)))
 
