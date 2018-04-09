@@ -22,33 +22,33 @@
 import sys
 import copy
 import random
-import timeit
+import time
 
-tests_per_run = 1
 runs = 3
 search_deep_end = 14
-search_deep_start = 4
+search_deep_start = 5
+
+solve_moves_1 = 0
+solve_moves_2 = 0
+solve_time_1 = 0
+solve_time_2 = 0
 
 scramble_moves = 17
-solve_moves = 0
 
 if sys.argv[1:]:
     if sys.argv[1] == '--help':
-        print("\n    %s [tests_per_run{%d} [runs{%d} [search_deep_end{%d} [search_deep_start{%d}]]]]\n" % \
-                (sys.argv[0], tests_per_run, runs, search_deep_end, search_deep_start))
+        print("\n    %s [runs{%d} [search_deep_end{%d} [search_deep_start{%d}]]]\n" % \
+                (sys.argv[0], runs, search_deep_end, search_deep_start))
         sys.exit(0)
 
 if sys.argv[1:]:
-    tests_per_run = int(sys.argv[1])
+    runs = int(sys.argv[1])
 
 if sys.argv[2:]:
-    runs = int(sys.argv[2])
+    search_deep_end = int(sys.argv[2])
 
 if sys.argv[3:]:
-    search_deep_end = int(sys.argv[3])
-
-if sys.argv[4:]:
-    search_deep_start = int(sys.argv[4])
+    search_deep_start = int(sys.argv[3])
 
 solved_cube = [
     [
@@ -371,7 +371,7 @@ def move_edge(cubie):
     functions[funcs[0]]()
 
 def solve_1():
-    global cube, solve_moves
+    global cube, solve_moves_1
 
     search_deep_1 = 6
 
@@ -406,7 +406,7 @@ def solve_1():
 
                             move_edge(cubie)
                             c += 1
-                            solve_moves += 1
+                            solve_moves_1 += 1
 
 def search_corner(cubie1, cubie2):
     found = []
@@ -459,8 +459,8 @@ def move_corner(cubie):
 
     functions[funcs[0]]()
 
-def solve_2():
-    global cube, solve_moves
+def solve_2(search_deep):
+    global cube, solve_moves_2
 
     for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
         i = 0
@@ -486,13 +486,15 @@ def solve_2():
 
             move_corner(cubie)
             i += 1
-            solve_moves += 1
+            solve_moves_2 += 1
 
         if cube[4][2][2] == 'W':
             turn_bottom_rev()
             turn_right_rev()
             turn_bottom()
             turn_right()
+
+            solve_moves_2 += 4
 
         elif cube[1][0][2] == 'W':
             turn_right_rev()
@@ -501,31 +503,47 @@ def solve_2():
             turn_bottom()
             turn_bottom()
 
+            solve_moves_2 += 5
+
         if cube[3][2][0] == 'W' and cube[1][0][2] == c1:
             turn_right_rev()
             turn_bottom_rev()
             turn_right()
 
+            solve_moves_2 += 3
+
         move_y()
+        solve_moves_2 += 1
 
 def solve():
-    for i in range(scramble_moves):
-        functions[random.randint(0, 11)]()
+    global cube, solve_moves_1, solve_moves_2, solve_time_1, solve_time_2
 
-    solve_1()
+    print("Run %d test(s) with search deep %d - %d)" % (runs, search_deep_start, search_deep_end))
 
-    solve_2()
-    sm.append(solve_moves)
+    for i in range(runs):
+        for j in range(scramble_moves):
+            functions[random.randint(0, 11)]()
+
+        scrambled_cube = copy.deepcopy(cube)
+
+        print("\n*%2d. Run:  search deep  |  edges  |  corners  (moves / seconds)" % (i + 1))
+
+        for sd in range(search_deep_start, search_deep_end + 1):
+            solve_moves_1 = solve_moves_2 = 0
+
+            cube = copy.deepcopy(scrambled_cube)
+
+            solve_time_1 = time.time()
+            solve_1()
+
+            solve_time_2 = time.time()
+            solve_time_1 = solve_time_2 - solve_time_1
+
+            solve_2(sd)
+            solve_time_2 = time.time() - solve_time_2
+
+            print("%2d:  %5d / %.2f   %5d / %.2f" % (sd, solve_moves_1, solve_time_1, solve_moves_2, solve_time_2))
 
 if __name__ == '__main__':
-    print("Run %d x %d tests with search deep %d - %d)" % (runs, tests_per_run, search_deep_start, search_deep_end))
-
-    for i in range(search_deep_start, search_deep_end + 1):
-        search_deep = i
-        sm = []
-
-        l = timeit.repeat('solve()', number=tests_per_run, repeat=runs, setup="from __main__ import solve")
-
-#        print("%2d:  " % i + "  ".join("%.2f" % t for t in l))
-        print("%2d:  " % i + "   ".join("%.2f / %d" % (t,m) for t, m in zip(l, sm)))
+    solve()
 
