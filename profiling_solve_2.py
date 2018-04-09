@@ -28,11 +28,6 @@ runs = 3
 search_deep_end = 14
 search_deep_start = 5
 
-solve_moves_1 = 0
-solve_moves_2 = 0
-solve_time_1 = 0
-solve_time_2 = 0
-
 scramble_moves = 17
 
 if sys.argv[1:]:
@@ -292,8 +287,8 @@ def move_y():
     turn_equator()
     turn_bottom_rev()
 
-functions = (turn_top, turn_top_rev, turn_bottom, turn_bottom_rev,\
-             turn_left, turn_left_rev, turn_right, turn_right_rev,\
+functions = (turn_top, turn_top_rev, turn_bottom, turn_bottom_rev,
+             turn_left, turn_left_rev, turn_right, turn_right_rev,
              turn_front, turn_front_rev, turn_back, turn_back_rev)
 
 def search_edge(cubie1, cubie2):
@@ -516,7 +511,7 @@ def solve_2(search_deep):
         solve_moves_2 += 1
 
 def solve():
-    global cube, solve_moves_1, solve_moves_2, solve_time_1, solve_time_2
+    global cube, solve_moves_1, solve_moves_2
 
     print("Run %d test(s) with search deep %d - %d)" % (runs, search_deep_start, search_deep_end))
 
@@ -526,7 +521,7 @@ def solve():
 
         scrambled_cube = copy.deepcopy(cube)
 
-        print("\n*%2d. Run:  search deep  |  edges  |  corners  (moves / seconds)" % (i + 1))
+        print("\n*%d. Run:  search deep  |  edges  |  corners  (moves / seconds)" % (i + 1))
 
         for sd in range(search_deep_start, search_deep_end + 1):
             solve_moves_1 = solve_moves_2 = 0
