@@ -514,14 +514,13 @@ def solve():
     global cube, solve_moves_1, solve_moves_2
 
     print("Run %d test(s) with search deep %d - %d)" % (runs, search_deep_start, search_deep_end))
+    print("         search deep      edges         corners  (moves / seconds)\n")
 
     for i in range(runs):
         for j in range(scramble_moves):
             functions[random.randint(0, 11)]()
 
         scrambled_cube = copy.deepcopy(cube)
-
-        print("\n*%d. Run:  search deep  |  edges  |  corners  (moves / seconds)" % (i + 1))
 
         for sd in range(search_deep_start, search_deep_end + 1):
             solve_moves_1 = solve_moves_2 = 0
@@ -537,7 +536,11 @@ def solve():
             solve_2(sd)
             solve_time_2 = time.time() - solve_time_2
 
-            print("%2d:  %5d / %.2f   %5d / %.2f" % (sd, solve_moves_1, solve_time_1, solve_moves_2, solve_time_2))
+            print("%2d.Run:       %2d      %5d / %.2f  %6d / %.2f" % \
+                    (i + 1, sd, solve_moves_1, solve_time_1, solve_moves_2, solve_time_2))
+
+        if search_deep_start != search_deep_end:
+            print
 
 if __name__ == '__main__':
     solve()
