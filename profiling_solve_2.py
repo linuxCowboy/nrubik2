@@ -276,16 +276,42 @@ def turn_back_rev():
     for i in range(3):
         cube[3][i][2] = backup_cube[0][0][i]
 
+def turn_middle():
+    backup_cube = copy.deepcopy(cube)
+    for i in range(3):
+        cube[0][i][1] = backup_cube[4][i][1]
+        cube[4][i][1] = backup_cube[1][i][1]
+        cube[1][i][1] = backup_cube[5][2-i][1]
+        cube[5][i][1] = backup_cube[0][2-i][1]
+
 def turn_equator():
     backup_cube = copy.deepcopy(cube)
     for i, j in [(2, 4), (4, 3), (3, 5), (5, 2)]:
         for k in range(3):
             cube[i][1][k] = backup_cube[j][1][k]
 
+def turn_standing():
+    backup_cube = copy.deepcopy(cube)
+    for k in range(3):
+        cube[0][1][k] = backup_cube[2][2-k][1]
+        cube[2][k][1] = backup_cube[1][1][k]
+        cube[1][1][k] = backup_cube[3][2-k][1]
+        cube[3][k][1] = backup_cube[0][1][k]
+
+def move_x():
+    turn_right()
+    turn_middle()
+    turn_left_rev()
+
 def move_y():
     turn_top()
     turn_equator()
     turn_bottom_rev()
+
+def move_z():
+    turn_front()
+    turn_standing()
+    turn_back_rev()
 
 functions = (turn_top, turn_top_rev, turn_bottom, turn_bottom_rev,
              turn_left, turn_left_rev, turn_right, turn_right_rev,
@@ -375,6 +401,17 @@ def solve_1():
              ((0, 0, 1), (5, 0, 1)),
              ((0, 1, 0), (2, 0, 1)))
 
+    i = 0
+    while cube[0][1][1] != solved_cube[0][1][1]:
+        if i < 3:
+            move_x()
+        else:
+            move_z()
+        i += 1
+
+    while cube[4][1][1] != solved_cube[4][1][1]:
+            move_y()
+
     while not (cube[0][2][1] == cube[0][1][2] == cube[0][0][1] == cube[0][1][0]\
                              == solved_cube[0][1][1] and
 
@@ -456,59 +493,78 @@ def move_corner(cubie):
 
 def solve_2(search_deep):
     global cube, solve_moves_2
+    restart = okay = False
 
-    for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
-        i = 0
-        while not ((cube[4][2][2] == 'W' and cube[3][2][0] == c1 or
-                    cube[3][2][0] == 'W' and cube[1][0][2] == c1 or
-                    cube[1][0][2] == 'W' and cube[4][2][2] == c1) and
+    while not okay:
+        if restart:
+            for j in range(scramble_moves):
+                functions[random.randint(0, 11)]()
 
-                   cube[0][1][2] == cube[0][0][1] == cube[0][1][0] == cube[0][2][1] == 'W' and
+                solve_1()
+                restart = False
 
-                   cube[3][0][1] == cube[3][1][1] and
-                   cube[5][0][1] == cube[5][1][1] and
-                   cube[2][0][1] == cube[2][1][1] and
-                   cube[4][0][1] == cube[4][1][1]):
+        for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
+            i = 0
+            while not ((cube[4][2][2] == 'W' and cube[3][2][0] == c1 or
+                        cube[3][2][0] == 'W' and cube[1][0][2] == c1 or
+                        cube[1][0][2] == 'W' and cube[4][2][2] == c1) and
 
-            if i == 0:
-                backup_cube = copy.deepcopy(cube)
+                       cube[0][1][2] == cube[0][0][1] == cube[0][1][0] == cube[0][2][1] == 'W' and
 
-            elif i == search_deep:
-                cube = copy.deepcopy(backup_cube)
-                i = 0
+                       cube[3][0][1] == cube[3][1][1] and
+                       cube[5][0][1] == cube[5][1][1] and
+                       cube[2][0][1] == cube[2][1][1] and
+                       cube[4][0][1] == cube[4][1][1]):
 
-            cubie = search_corner(c1, c2)
+                if i == 0:
+                    backup_cube = copy.deepcopy(cube)
 
-            move_corner(cubie)
-            i += 1
+                elif i == search_deep:
+                    cube = copy.deepcopy(backup_cube)
+                    i = 0
+
+                cubie = search_corner(c1, c2)
+
+                move_corner(cubie)
+                i += 1
+                solve_moves_2 += 1
+
+                if not solve_moves_2 % 3000:
+                    restart = True
+                    break
+
+            if restart:
+                break
+
+            if cube[4][2][2] == 'W':
+                turn_bottom_rev()
+                turn_right_rev()
+                turn_bottom()
+                turn_right()
+
+                solve_moves_2 += 4
+
+            elif cube[1][0][2] == 'W':
+                turn_right_rev()
+                turn_bottom()
+                turn_right()
+                turn_bottom()
+                turn_bottom()
+
+                solve_moves_2 += 5
+
+            if cube[3][2][0] == 'W' and cube[1][0][2] == c1:
+                turn_right_rev()
+                turn_bottom_rev()
+                turn_right()
+
+                solve_moves_2 += 3
+
+            move_y()
             solve_moves_2 += 1
 
-        if cube[4][2][2] == 'W':
-            turn_bottom_rev()
-            turn_right_rev()
-            turn_bottom()
-            turn_right()
-
-            solve_moves_2 += 4
-
-        elif cube[1][0][2] == 'W':
-            turn_right_rev()
-            turn_bottom()
-            turn_right()
-            turn_bottom()
-            turn_bottom()
-
-            solve_moves_2 += 5
-
-        if cube[3][2][0] == 'W' and cube[1][0][2] == c1:
-            turn_right_rev()
-            turn_bottom_rev()
-            turn_right()
-
-            solve_moves_2 += 3
-
-        move_y()
-        solve_moves_2 += 1
+        if not restart:
+            okay = True
 
 def solve():
     global cube, solve_moves_1, solve_moves_2
