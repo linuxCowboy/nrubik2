@@ -27,13 +27,14 @@ import time
 runs = 3
 search_deep_end = 14
 search_deep_start = 5
+reset_point = 1500
 
 scramble_moves = 17
 
 if sys.argv[1:]:
     if sys.argv[1] == '--help':
-        print("\n    %s [runs{%d} [search_deep_end{%d} [search_deep_start{%d}]]]\n" % \
-                (sys.argv[0], runs, search_deep_end, search_deep_start))
+        print("\n    %s [runs{%d} [search_deep_end{%d} [search_deep_start{%d} [reset_point{%d}]]]]\n" % \
+                (sys.argv[0], runs, search_deep_end, search_deep_start, reset_point))
         sys.exit(0)
 
 if sys.argv[1:]:
@@ -44,6 +45,9 @@ if sys.argv[2:]:
 
 if sys.argv[3:]:
     search_deep_start = int(sys.argv[3])
+
+if sys.argv[4:]:
+    reset_point = int(sys.argv[4])
 
 solved_cube = [
     [
@@ -500,8 +504,8 @@ def solve_2(search_deep):
             for j in range(scramble_moves):
                 functions[random.randint(0, 11)]()
 
-                solve_1()
-                restart = False
+            solve_1()
+            restart = False
 
         for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
             i = 0
@@ -529,7 +533,7 @@ def solve_2(search_deep):
                 i += 1
                 solve_moves_2 += 1
 
-                if not solve_moves_2 % 3000:
+                if not solve_moves_2 % reset_point:
                     restart = True
                     break
 
@@ -569,7 +573,7 @@ def solve_2(search_deep):
 def solve():
     global cube, solve_moves_1, solve_moves_2
 
-    print("Run %d test(s) with search deep %d - %d)" % (runs, search_deep_start, search_deep_end))
+    print("Run %d test(s) with search deep %d - %d and reset point %d)" % (runs, search_deep_start, search_deep_end, reset_point))
     print("         search deep      edges         corners  (moves / seconds)\n")
 
     for i in range(runs):
