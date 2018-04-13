@@ -864,62 +864,85 @@ class Cube:
 
     # cheat white corners
     def solve_2(self):
-        search_deep = 6
+        search_deep = 5
+        restart = okay = False
 
-        for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
-            i = 0
-            while not (# intermediate step
-                       (self.cube[4][2][2] == 'W' and self.cube[3][2][0] == c1 or
-                        self.cube[3][2][0] == 'W' and self.cube[1][0][2] == c1 or
-                        self.cube[1][0][2] == 'W' and self.cube[4][2][2] == c1) and
+        while not okay:
+            if restart:
+                for i in range(17):
+                    self.functions[random.randint(0, 11)]()
 
-                       # white cross
-                       self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == self.cube[0][2][1] == 'W' and
+                self.solve_1()
+                restart = False
 
-                       # white edges
-                       self.cube[3][0][1] == self.cube[3][1][1] and
-                       self.cube[5][0][1] == self.cube[5][1][1] and
-                       self.cube[2][0][1] == self.cube[2][1][1] and
-                       self.cube[4][0][1] == self.cube[4][1][1]):
+            for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
+                i = 0
+                moves = 0
 
-                if i == 0:
-                    backup_cube = copy.deepcopy(self.cube)
+                while not (# intermediate step
+                           (self.cube[4][2][2] == 'W' and self.cube[3][2][0] == c1 or
+                            self.cube[3][2][0] == 'W' and self.cube[1][0][2] == c1 or
+                            self.cube[1][0][2] == 'W' and self.cube[4][2][2] == c1) and
 
-                elif i == search_deep:
-                    self.cube = copy.deepcopy(backup_cube)
-                    i = 0
+                           # white cross
+                           self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == self.cube[0][2][1] == 'W' and
 
-                cubie = self.search_corner(c1, c2)
+                           # white edges
+                           self.cube[3][0][1] == self.cube[3][1][1] and
+                           self.cube[5][0][1] == self.cube[5][1][1] and
+                           self.cube[2][0][1] == self.cube[2][1][1] and
+                           self.cube[4][0][1] == self.cube[4][1][1]):
 
-                self.move_corner(cubie)
-                i += 1
-                self.solve_moves += 1
+                    if i == 0:
+                        backup_cube = copy.deepcopy(self.cube)
 
-            if self.cube[4][2][2] == 'W':
-                self.turn_bottom_rev()
-                self.turn_right_rev()
-                self.turn_bottom()
-                self.turn_right()
+                    elif i == search_deep:
+                        self.cube = copy.deepcopy(backup_cube)
+                        i = 0
 
-            elif self.cube[1][0][2] == 'W':
-                self.turn_right_rev()
-                self.turn_bottom()
-                self.turn_right()
-                self.turn_bottom()
-                self.turn_bottom()
+                    cubie = self.search_corner(c1, c2)
 
-            # fall through
-            if self.cube[3][2][0] == 'W' and self.cube[1][0][2] == c1:
-                self.turn_right_rev()
-                self.turn_bottom_rev()
-                self.turn_right()
+                    self.move_corner(cubie)
 
-            # next corner
-            self.move_y()
-            
-        # yellow layer up
-        self.move_x()
-        self.move_x()
+                    i += 1
+                    moves += 1
+                    self.solve_moves += 1
+
+                    if not moves % 1500:
+                        restart = True
+                        break
+
+                if restart:
+                    break
+
+                if self.cube[4][2][2] == 'W':
+                    self.turn_bottom_rev()
+                    self.turn_right_rev()
+                    self.turn_bottom()
+                    self.turn_right()
+
+                elif self.cube[1][0][2] == 'W':
+                    self.turn_right_rev()
+                    self.turn_bottom()
+                    self.turn_right()
+                    self.turn_bottom()
+                    self.turn_bottom()
+
+                # fall through
+                if self.cube[3][2][0] == 'W' and self.cube[1][0][2] == c1:
+                    self.turn_right_rev()
+                    self.turn_bottom_rev()
+                    self.turn_right()
+
+                # next corner
+                self.move_y()
+
+            if not restart:
+                okay = True
+
+                # yellow layer up
+                self.move_x()
+                self.move_x()
 
     def scramble(self):
         global buf_undo, buf_redo
