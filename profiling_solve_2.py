@@ -509,6 +509,8 @@ def solve_2(search_deep):
 
         for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
             i = 0
+            moves = 0
+
             while not ((cube[4][2][2] == 'W' and cube[3][2][0] == c1 or
                         cube[3][2][0] == 'W' and cube[1][0][2] == c1 or
                         cube[1][0][2] == 'W' and cube[4][2][2] == c1) and
@@ -530,10 +532,12 @@ def solve_2(search_deep):
                 cubie = search_corner(c1, c2)
 
                 move_corner(cubie)
+
                 i += 1
+                moves += 1
                 solve_moves_2 += 1
 
-                if not solve_moves_2 % reset_point:
+                if not moves % reset_point:
                     restart = True
                     break
 
