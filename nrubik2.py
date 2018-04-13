@@ -864,7 +864,7 @@ class Cube:
 
     # cheat white corners
     def solve_2(self):
-        search_deep = 5
+        search_deep = 6
         restart = okay = False
 
         while not okay:
@@ -908,7 +908,7 @@ class Cube:
                     moves += 1
                     self.solve_moves += 1
 
-                    if not moves % 1500:
+                    if not moves % 500:
                         restart = True
                         break
 
