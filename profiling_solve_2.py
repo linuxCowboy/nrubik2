@@ -505,15 +505,12 @@ def solve_2(search_deep):
 
     while not okay:
         if restart:
-            for j in range(scramble_moves):
-                functions[random.randint(0, 11)]()
-
             solve_1()
+
             restart = False
 
         for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
-            i = 0
-            moves = 0
+            i = moves = 0
 
             while not ((cube[4][2][2] == 'W' and cube[3][2][0] == c1 or
                         cube[3][2][0] == 'W' and cube[1][0][2] == c1 or
