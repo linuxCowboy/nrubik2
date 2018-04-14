@@ -505,13 +505,10 @@ def move_corner(cubie):
 
 def solve_2(search_deep):
     global cube, solve_moves_2
-    restart = okay = False
+    restart = True
 
-    while not okay:
-        if restart:
-            solve_1()
-
-            restart = False
+    while restart:
+        restart = False
 
         for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
             i = moves = 0
@@ -543,6 +540,8 @@ def solve_2(search_deep):
                 solve_moves_2 += 1
 
                 if not moves % reset_point:
+                    solve_1()
+
                     restart = True
                     break
 
@@ -575,9 +574,6 @@ def solve_2(search_deep):
 
             move_y()
             solve_moves_2 += 1
-
-        if not restart:
-            okay = True
 
 def solve():
     global cube, solve_moves_1, solve_moves_2, solve_time_1_restart
