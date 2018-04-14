@@ -396,7 +396,9 @@ def move_edge(cubie):
     functions[funcs[0]]()
 
 def solve_1():
-    global cube, solve_moves_1
+    global cube, solve_moves_1, solve_time_1_restart
+
+    restart_time = time.time()
 
     search_deep_1 = 6
 
@@ -443,6 +445,8 @@ def solve_1():
                             move_edge(cubie)
                             c += 1
                             solve_moves_1 += 1
+
+    solve_time_1_restart += time.time() - restart_time
 
 def search_corner(cubie1, cubie2):
     found = []
@@ -575,10 +579,10 @@ def solve_2(search_deep):
             okay = True
 
 def solve():
-    global cube, solve_moves_1, solve_moves_2
+    global cube, solve_moves_1, solve_moves_2, solve_time_1_restart
 
     print("Run %d test(s) with search deep %d - %d and reset point %d)" % (runs, search_deep_start, search_deep_end, reset_point))
-    print("         search deep      edges         corners  (moves / seconds)\n")
+    print("         search deep      edges    {restart}    corners  (moves / seconds)\n")
 
     for i in range(runs):
         for j in range(scramble_moves):
@@ -592,6 +596,7 @@ def solve():
             cube = copy.deepcopy(scrambled_cube)
 
             solve_time_1 = time.time()
+            solve_time_1_restart = 0
             solve_1()
 
             solve_time_2 = time.time()
@@ -600,8 +605,8 @@ def solve():
             solve_2(sd)
             solve_time_2 = time.time() - solve_time_2
 
-            print("%2d.Run:       %2d      %5d / %.2f  %6d / %.2f" % \
-                    (i + 1, sd, solve_moves_1, solve_time_1, solve_moves_2, solve_time_2))
+            print("%2d.Run:       %2d      %5d / %.2f {%.2f}   %6d / %.2f" % \
+                    (i + 1, sd, solve_moves_1, solve_time_1, solve_time_1_restart, solve_moves_2, solve_time_2))
 
         if search_deep_start != search_deep_end:
             print
