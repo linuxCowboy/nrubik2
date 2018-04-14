@@ -602,7 +602,10 @@ def solve():
             solve_2(sd)
             solve_time_2 = time.time() - solve_time_2
 
-            print("%2d.Run:       %2d      %5d / %.2f {%.2f}   %6d / %.2f" % \
+            if solve_time_2 < 1:
+                print("%2d.Run" % (i + 1))
+            else:
+                print("%2d.Run:       %2d      %5d / %.2f {%.2f}   %6d / %.2f" % \
                     (i + 1, sd, solve_moves_1, solve_time_1, solve_time_1_restart, solve_moves_2, solve_time_2))
 
         if search_deep_start != search_deep_end:
