@@ -31,6 +31,7 @@ reset_point = 400
 threshold = 0
 
 scramble_moves = 17
+search_deep_1 = 6
 
 if sys.argv[1:]:
     if sys.argv[1] == '--help':
@@ -403,8 +404,6 @@ def solve_1():
     global cube, solve_moves_1, solve_time_1_restart
 
     restart_time = time.time()
-
-    search_deep_1 = 6
 
     edges = (((0, 2, 1), (4, 0, 1)),
              ((0, 1, 2), (3, 0, 1)),
