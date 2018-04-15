@@ -25,8 +25,8 @@ import random
 import time
 
 runs = 3
+search_deep_start = 4
 search_deep_end = 14
-search_deep_start = 5
 reset_point = 400
 threshold = 0
 
@@ -34,18 +34,18 @@ scramble_moves = 17
 
 if sys.argv[1:]:
     if sys.argv[1] == '--help':
-        print("\n    %s [runs{%d} [search_deep_end{%d} [search_deep_start{%d} [reset_point{%d} [threshold{%d}]]]]]\n" % \
-                (sys.argv[0], runs, search_deep_end, search_deep_start, reset_point, threshold))
+        print("\n    %s [runs{%d} [search_deep_start{%d} [search_deep_end{%d} [reset_point{%d} [threshold{%d}]]]]]\n" % \
+                (sys.argv[0], runs, search_deep_start, search_deep_end, reset_point, threshold))
         sys.exit(0)
 
 if sys.argv[1:]:
     runs = int(sys.argv[1])
 
 if sys.argv[2:]:
-    search_deep_end = int(sys.argv[2])
+    search_deep_start = int(sys.argv[2])
 
 if sys.argv[3:]:
-    search_deep_start = int(sys.argv[3])
+    search_deep_end = int(sys.argv[3])
 
 if sys.argv[4:]:
     reset_point = int(sys.argv[4])
