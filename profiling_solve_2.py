@@ -24,14 +24,14 @@ import copy
 import random
 import time
 
-runs = 3
+runs              = 3
 search_deep_start = 4
-search_deep_end = 14
-reset_point = 400
-threshold = 0
+search_deep_end   = 14
+reset_point       = 400
+threshold         = 0
 
-scramble_moves = 17
-search_deep_1 = 6
+scramble_moves    = 17
+search_deep_1     = 6
 
 if sys.argv[1:]:
     if sys.argv[1] == '--help':
@@ -40,19 +40,19 @@ if sys.argv[1:]:
         sys.exit(0)
 
 if sys.argv[1:]:
-    runs = int(sys.argv[1])
+    runs              = int(sys.argv[1])
 
 if sys.argv[2:]:
     search_deep_start = int(sys.argv[2])
 
 if sys.argv[3:]:
-    search_deep_end = int(sys.argv[3])
+    search_deep_end   = int(sys.argv[3])
 
 if sys.argv[4:]:
-    reset_point = int(sys.argv[4])
+    reset_point       = int(sys.argv[4])
 
 if sys.argv[5:]:
-    threshold = int(sys.argv[5])
+    threshold         = int(sys.argv[5])
 
 solved_cube = [
     [
