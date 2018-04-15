@@ -509,30 +509,34 @@ def solve_2(search_deep):
     while restart:
         restart = False
 
-        for c1, c2 in (('R', 'G'), ('B', 'R'), ('M', 'B'), ('G', 'M')):
+        for c1, c2 in ((solved_cube[3][0][0], solved_cube[4][0][2]), (solved_cube[5][0][0], solved_cube[3][0][2]),\
+                       (solved_cube[2][0][0], solved_cube[5][0][2]), (solved_cube[4][0][0], solved_cube[2][0][2])):
             i = moves = 0
 
-            while not ((cube[4][2][2] == 'W' and cube[3][2][0] == c1 or
-                        cube[3][2][0] == 'W' and cube[1][0][2] == c1 or
-                        cube[1][0][2] == 'W' and cube[4][2][2] == c1) and
+            while not ((cube[4][2][2] == solved_cube[0][2][2] and cube[3][2][0] == c1 or
+                        cube[3][2][0] == solved_cube[0][2][2] and cube[1][0][2] == c1 or
+                        cube[1][0][2] == solved_cube[0][2][2] and cube[4][2][2] == c1) and
 
-                       cube[0][1][2] == cube[0][0][1] == cube[0][1][0] == cube[0][2][1] == 'W' and
+                       cube[0][1][2] == cube[0][0][1] == cube[0][1][0] == cube[0][2][1] == solved_cube[0][1][1] and
 
                        cube[3][0][1] == cube[3][1][1] and
                        cube[5][0][1] == cube[5][1][1] and
                        cube[2][0][1] == cube[2][1][1] and
                        cube[4][0][1] == cube[4][1][1] and
 
-                       (c1 == 'R' or
+                       (c1 == solved_cube[3][0][0] or
 
-                        c1 == 'B' and cube[0][2][0] == 'W' and cube[4][0][0] == 'R' or
+                        c1 == solved_cube[5][0][0] and
+                            cube[0][2][0] == solved_cube[0][2][0] and cube[4][0][0] == solved_cube[3][0][0] or
 
-                        c1 == 'M' and cube[0][2][0] == 'W' and cube[4][0][0] == 'B' and
-                                      cube[0][0][0] == 'W' and cube[2][0][0] == 'R' or
+                        c1 == solved_cube[2][0][0] and
+                            cube[0][2][0] == solved_cube[0][2][0] and cube[4][0][0] == solved_cube[5][0][0] and
+                            cube[0][0][0] == solved_cube[0][0][0] and cube[2][0][0] == solved_cube[3][0][0] or
 
-                        c1 == 'G' and cube[0][2][0] == 'W' and cube[4][0][0] == 'M' and
-                                      cube[0][0][0] == 'W' and cube[2][0][0] == 'B' and
-                                      cube[0][0][2] == 'W' and cube[5][0][0] == 'R')):
+                        c1 == solved_cube[4][0][0] and
+                            cube[0][2][0] == solved_cube[0][2][0] and cube[4][0][0] == solved_cube[2][0][0] and
+                            cube[0][0][0] == solved_cube[0][0][0] and cube[2][0][0] == solved_cube[5][0][0] and
+                            cube[0][0][2] == solved_cube[0][0][2] and cube[5][0][0] == solved_cube[3][0][0])):
 
                 if i == 0:
                     backup_cube = copy.deepcopy(cube)
