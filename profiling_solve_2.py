@@ -469,9 +469,9 @@ def search_corner(cubie1, cubie2):
         l, m, n = corners[c][1]
         o, p, q = corners[c][2]
 
-        if (cube[i][j][k] == 'W' and cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2 or
-            cube[l][m][n] == 'W' and cube[o][p][q] == cubie1 and cube[i][j][k] == cubie2 or
-            cube[o][p][q] == 'W' and cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2):
+        if (cube[i][j][k] == solved_cube[0][1][1] and cube[l][m][n] == cubie1 and cube[o][p][q] == cubie2 or
+            cube[l][m][n] == solved_cube[0][1][1] and cube[o][p][q] == cubie1 and cube[i][j][k] == cubie2 or
+            cube[o][p][q] == solved_cube[0][1][1] and cube[i][j][k] == cubie1 and cube[l][m][n] == cubie2):
                 found.extend((i, j, k))
                 break
 
@@ -562,7 +562,7 @@ def solve_2(search_deep):
             if restart:
                 break
 
-            if cube[4][2][2] == 'W':
+            if cube[4][2][2] == solved_cube[0][2][2]:
                 turn_bottom_rev()
                 turn_right_rev()
                 turn_bottom()
@@ -570,7 +570,7 @@ def solve_2(search_deep):
 
                 solve_moves_2 += 4
 
-            elif cube[1][0][2] == 'W':
+            elif cube[1][0][2] == solved_cube[0][2][2]:
                 turn_right_rev()
                 turn_bottom()
                 turn_right()
@@ -579,7 +579,7 @@ def solve_2(search_deep):
 
                 solve_moves_2 += 5
 
-            if cube[3][2][0] == 'W' and cube[1][0][2] == c1:
+            if cube[3][2][0] == solved_cube[0][2][2] and cube[1][0][2] == c1:
                 turn_right_rev()
                 turn_bottom_rev()
                 turn_right()
