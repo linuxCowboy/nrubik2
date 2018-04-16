@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #
-# profiling_solver for nrubik2
+# profiling_solver for nrubik2:
+#
+#     profile search_deep_2 and reset_point
 #
 # Copyright (c) 2018 LinuxCowboy
 #
