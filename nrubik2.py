@@ -74,6 +74,11 @@ tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'        # chimes
 tick_paths = './', '~/Music/'                             # trailing slash!
 tick_times = (0, 0), (20, 0), (45, 0), (90, 1), (120, 2)  # (seconds, index)
 
+scramble_moves = 17
+search_deep_1  = 6
+search_deep_2  = 6
+reset_point    = 400
+
 ############################################################################
 
 # Checks: if problems with player or files - simply no sound
@@ -763,7 +768,6 @@ class Cube:
 
     # cheat white cross + edges
     def solve_1(self):
-        search_deep = 6
 
         edges = (((0, 2, 1), (4, 0, 1)),
                  ((0, 1, 2), (3, 0, 1)),
@@ -801,7 +805,7 @@ class Cube:
                                 if c == 0:
                                     backup_cube = copy.deepcopy(self.cube)
 
-                                elif c == search_deep:
+                                elif c == search_deep_1:
                                     self.cube = copy.deepcopy(backup_cube)
                                     c = 0
 
@@ -872,7 +876,6 @@ class Cube:
 
     # cheat white corners
     def solve_2(self):
-        search_deep = 6
         restart = True
 
         while restart:
@@ -924,7 +927,7 @@ class Cube:
                     if i == 0:
                         backup_cube = copy.deepcopy(self.cube)
 
-                    elif i == search_deep:
+                    elif i == search_deep_2:
                         self.cube = copy.deepcopy(backup_cube)
                         i = 0
 
@@ -936,7 +939,7 @@ class Cube:
                     moves += 1
                     self.solve_moves += 1
 
-                    if not moves % 400:
+                    if not moves % reset_point:
                         self.solve_1()
 
                         restart = True
@@ -977,7 +980,7 @@ class Cube:
         if self.mode != 3:
             self.cube = copy.deepcopy(self.solved_cube)
 
-            for i in range(17):  # scramble moves
+            for i in range(scramble_moves):
                 self.functions[random.randint(0, 11)]()
 
             buf_undo = buf_redo = ""
