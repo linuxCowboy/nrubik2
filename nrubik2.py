@@ -813,6 +813,7 @@ class Cube:
                                 cubie = self.search_edge(self.solved_cube[i][j][k], self.solved_cube[l][m][n])
 
                                 self.move_edge(cubie)
+
                                 c += 1
                                 self.solve_moves += 1
 

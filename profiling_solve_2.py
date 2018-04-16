@@ -623,7 +623,7 @@ def solve():
                     (i + 1, sd, solve_moves_1, solve_time_1, solve_time_1_restart, solve_moves_2, solve_time_2))
 
         if search_deep_start != search_deep_end:
-            print
+            print("")
 
 if __name__ == '__main__':
     solve()
