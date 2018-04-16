@@ -38,9 +38,8 @@ if sys.argv[1:]:
         print("\n    %s [runs{%d} [search_deep_start{%d} [search_deep_end{%d} [reset_point{%d} [threshold{%d}]]]]]\n" % \
                 (sys.argv[0], runs, search_deep_start, search_deep_end, reset_point, threshold))
         sys.exit(0)
-
-if sys.argv[1:]:
-    runs              = int(sys.argv[1])
+    else:
+        runs          = int(sys.argv[1])
 
 if sys.argv[2:]:
     search_deep_start = int(sys.argv[2])
