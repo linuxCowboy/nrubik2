@@ -108,8 +108,6 @@ for m in moves[:]:
 
 buf_undo = buf_redo = ""  # trace buffer
 
-max_y = max_x = 0  # curses max screen
-
 class Cube:
 
     # mode 0: nrubik b/w  mode 1: nrubik  mode 2: nrubik2  mode 3: timer
