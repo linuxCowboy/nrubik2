@@ -83,6 +83,7 @@ reset_point    = 400
 
 # Checks: if problems with player or files - simply no sound
 timer_ticks = ()
+
 if os.access(player, os.X_OK):
     i = 0
     while tick_paths[i:]:
@@ -775,7 +776,7 @@ class Cube:
                  ((0, 1, 0), (2, 0, 1)))
 
         i = 0
-        # white up
+        # white up (but independent: solved_cube[0])
         while self.cube[0][1][1] != self.solved_cube[0][1][1]:
             if i < 3:
                 self.move_x()
