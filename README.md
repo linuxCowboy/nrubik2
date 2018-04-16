@@ -36,3 +36,13 @@ New Timer-Mode:
  - program different chimes for different times
  - needs cmdline audio player
  - default: "/usr/bin/aplay"
+
+-----
+Cheats:
+
+```
+ 1) white cross + edges
+ 2) white corners
+```
+
+ \+ Profiler
