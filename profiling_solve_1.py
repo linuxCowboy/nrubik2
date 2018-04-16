@@ -26,8 +26,8 @@ import copy
 import random
 import timeit
 
-tests_per_run = 10
-runs = 3
+tests_per_run  = 10
+runs           = 3
 scramble_moves = 17
 
 if sys.argv[1:]:
@@ -35,15 +35,14 @@ if sys.argv[1:]:
         print("\n    %s [tests_per_run{%d} [runs{%d} [scramble_moves{%d}]]]\n" % \
                 (sys.argv[0], tests_per_run, runs, scramble_moves))
         sys.exit(0)
-
-if sys.argv[1:]:
-    tests_per_run = int(sys.argv[1])
+    else:
+        tests_per_run = int(sys.argv[1])
 
 if sys.argv[2:]:
-    runs = int(sys.argv[2])
+    runs              = int(sys.argv[2])
 
 if sys.argv[3:]:
-    scramble_moves = int(sys.argv[3])
+    scramble_moves    = int(sys.argv[3])
 
 solved_cube = [
     [
