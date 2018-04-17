@@ -46,3 +46,14 @@ Cheats:
 ```
 
  \+ Profiler
+
+-----
+Patterns:
+
+![Nest](nest.jpg?raw=true)
+
+![Z-Line](z-line.jpg?raw=true)
+
+![Zigzag](zigzag.jpg?raw=true)
+
+![Checkerboard](checkerboard.jpg?raw=true)
