@@ -74,8 +74,11 @@ tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'        # chimes
 tick_paths = './', '~/Music/'                             # trailing slash!
 tick_times = (0, 0), (20, 0), (45, 0), (90, 1), (120, 2)  # (seconds, index)
 
+# profiling_solve_1.py
 scramble_moves = 17
 search_deep_1  = 6
+
+# profiling_solve_2.py
 search_deep_2  = 6
 reset_point    = 400
 
@@ -913,14 +916,17 @@ class Cube:
                             c1 == self.solved_cube[2][0][0] and
                                 self.cube[0][2][0] == self.solved_cube[0][2][0] and
                                 self.cube[4][0][0] == self.solved_cube[5][0][0] and
+
                                 self.cube[0][0][0] == self.solved_cube[0][0][0] and
                                 self.cube[2][0][0] == self.solved_cube[3][0][0] or
 
                             c1 == self.solved_cube[4][0][0] and
                                 self.cube[0][2][0] == self.solved_cube[0][2][0] and
                                 self.cube[4][0][0] == self.solved_cube[2][0][0] and
+
                                 self.cube[0][0][0] == self.solved_cube[0][0][0] and
                                 self.cube[2][0][0] == self.solved_cube[5][0][0] and
+
                                 self.cube[0][0][2] == self.solved_cube[0][0][2] and
                                 self.cube[5][0][0] == self.solved_cube[3][0][0])):
 
