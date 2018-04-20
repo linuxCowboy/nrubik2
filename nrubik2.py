@@ -66,6 +66,7 @@ gtimer = 't'
 # cheat
 solve_1 = '1'
 solve_2 = '2'
+solve_3 = '3'
 
 player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
@@ -980,6 +981,10 @@ class Cube:
         self.move_x()
         self.move_x()
 
+    # cheat second layer
+    def solve_3(self):
+        pass
+
     def scramble(self):
         global buf_undo, buf_redo
 
@@ -1040,7 +1045,7 @@ class Cube:
             elif key == solve:
                 self.cube = copy.deepcopy(self.solved_cube)
 
-            elif key in (solve_1, solve_2):
+            elif key in (solve_1, solve_2, solve_3):
                 self.solve_moves = 0
                 self.solve_time = time.time()
 
@@ -1048,6 +1053,9 @@ class Cube:
 
                 if key == solve_2:
                     self.solve_2()
+
+                if key == solve_3:
+                    self.solve_3()
 
                 self.solve_stat = time.time()
                 self.solve_time = self.solve_stat - self.solve_time  # call time.time() only once
