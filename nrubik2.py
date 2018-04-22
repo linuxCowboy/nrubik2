@@ -990,10 +990,10 @@ class Cube:
                  ((4, 1, 0), (2, 1, 2)),
                  ((5, 1, 0), (3, 1, 2)))
 
-        while not ((self.cube[2][1][0] == upper or self.cube[5][1][2] == upper) and
-                   (self.cube[3][1][0] == upper or self.cube[4][1][2] == upper) and
-                   (self.cube[4][1][0] == upper or self.cube[2][1][2] == upper) and
-                   (self.cube[5][1][0] == upper or self.cube[3][1][2] == upper)):
+        while not ((self.cube[4][1][2] == upper or self.cube[3][1][0] == upper) and
+                   (self.cube[3][1][2] == upper or self.cube[5][1][0] == upper) and
+                   (self.cube[5][1][2] == upper or self.cube[2][1][0] == upper) and
+                   (self.cube[2][1][2] == upper or self.cube[4][1][0] == upper)):
 
            while not (self.cube[4][1][2] == upper or
                       self.cube[3][1][0] == upper):
