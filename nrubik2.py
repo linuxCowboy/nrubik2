@@ -983,42 +983,6 @@ class Cube:
 
     # cheat second layer
     def solve_3(self):
-        upper = self.solved_cube[1][1][1]
-
-        edges = (((2, 1, 0), (5, 1, 2)),
-                 ((3, 1, 0), (4, 1, 2)),
-                 ((4, 1, 0), (2, 1, 2)),
-                 ((5, 1, 0), (3, 1, 2)))
-
-        while not ((self.cube[4][1][2] == upper or self.cube[3][1][0] == upper) and
-                   (self.cube[3][1][2] == upper or self.cube[5][1][0] == upper) and
-                   (self.cube[5][1][2] == upper or self.cube[2][1][0] == upper) and
-                   (self.cube[2][1][2] == upper or self.cube[4][1][0] == upper)):
-
-            while not (self.cube[4][1][2] == upper or
-                       self.cube[3][1][0] == upper):
-
-                self.turn_front()
-                self.turn_top()
-                self.turn_front()
-                self.turn_top()
-                self.turn_front()
-
-                self.turn_top_rev()
-                self.turn_front_rev()
-                self.turn_top_rev()
-                self.turn_front_rev()
-
-                self.turn_top()
-
-                self.solve_moves += 10
-
-                if self.solve_moves > 9999:
-                    return
-
-            self.move_y()
-
-        self.solve_moves = y = 0
 
         while not (self.cube[2][1][0] == self.cube[2][1][1] == self.cube[2][1][2] and
                    self.cube[3][1][0] == self.cube[3][1][1] == self.cube[3][1][2] and
@@ -1026,20 +990,31 @@ class Cube:
                    self.cube[5][1][0] == self.cube[5][1][1] == self.cube[5][1][2]):
 
             i = 0
-            while not (self.cube[4][0][1] == self.cube[4][1][1] and self.cube[0][2][1] != upper):
-                if i < 3:
+            while not (self.cube[4][0][1] == self.cube[4][1][1] and self.cube[0][2][1] != self.solved_cube[1][1][1]):
+                if i % 4:
                     self.turn_top()
+
                     i += 1
+                    self.solve_moves += 1
 
                 else:
                     self.turn_equator()
                     self.turn_bottom_rev()
-                    i = 0
 
-                self.solve_moves += 3
+                    i += 1
+                    self.solve_moves += 2
 
-                if self.solve_moves > 999:
-                    return
+                if not i % 16:
+                    self.turn_top()
+                    self.turn_right()
+                    self.turn_top_rev()
+                    self.turn_right_rev()
+                    self.turn_top_rev()
+                    self.turn_front_rev()
+                    self.turn_top()
+                    self.turn_front()
+
+                    self.solve_moves += 8
 
             if self.cube[0][2][1] == self.cube[3][1][1]:
                 self.turn_top()
@@ -1051,7 +1026,7 @@ class Cube:
                 self.turn_top()
                 self.turn_front()
 
-            elif self.cube[0][2][1] == self.cube[2][1][1]:
+            else:
                 self.turn_top_rev()
                 self.turn_left_rev()
                 self.turn_top()
@@ -1061,11 +1036,7 @@ class Cube:
                 self.turn_top_rev()
                 self.turn_front_rev()
 
-            else:
-                self.solve_moves = 33333
-                return
-
-            y += 1
+            self.solve_moves += 8
 
     def scramble(self):
         global buf_undo, buf_redo
