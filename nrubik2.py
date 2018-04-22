@@ -1108,9 +1108,6 @@ class Cube:
                 if key == solve_3:
                     self.solve_2()
 
-                    self.solve_moves = 0
-                    self.solve_time = time.time()
-
                     self.solve_3()
 
                 self.solve_stat = time.time()
