@@ -1018,6 +1018,43 @@ class Cube:
 
             self.move_y()
 
+
+        while not (self.cube[2][1][0] == self.cube[2][1][1] == self.cube[2][1][2] and
+                   self.cube[3][1][0] == self.cube[3][1][1] == self.cube[3][1][2] and
+                   self.cube[4][1][0] == self.cube[4][1][1] == self.cube[4][1][2] and
+                   self.cube[5][1][0] == self.cube[5][1][1] == self.cube[5][1][2]):
+
+            i = 0
+            while self.cube[4][0][1] != self.cube[4][1][1]:
+                if i < 3:
+                    self.turn_top()
+                    i += 1
+
+                else:
+                    self.turn_equator()
+                    self.turn_bottom_rev()
+                    i = 0
+
+            if self.cube[0][2][1] == self.cube[3][1][0]:
+                self.turn_top()
+                self.turn_right()
+                self.turn_top_rev()
+                self.turn_right_rev()
+                self.turn_top_rev()
+                self.turn_front_rev()
+                self.turn_top()
+                self.turn_front()
+
+            else:
+                self.turn_top_rev()
+                self.turn_left_rev()
+                self.turn_top()
+                self.turn_left()
+                self.turn_top()
+                self.turn_front()
+                self.turn_top_rev()
+                self.turn_front_rev()
+
     def scramble(self):
         global buf_undo, buf_redo
 
