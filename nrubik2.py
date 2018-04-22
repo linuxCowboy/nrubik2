@@ -1100,12 +1100,10 @@ class Cube:
 
                 self.solve_1()
 
-                if key == solve_2:
+                if key in (solve_2, solve_3):
                     self.solve_2()
 
                 if key == solve_3:
-                    self.solve_2()
-
                     self.solve_3()
 
                 self.solve_stat = time.time()
