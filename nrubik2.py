@@ -983,19 +983,20 @@ class Cube:
 
     # cheat second layer
     def solve_3(self):
+        upper = self.solved_cube[1][1][1]
 
         edges = (((2, 1, 0), (5, 1, 2)),
                  ((3, 1, 0), (4, 1, 2)),
                  ((4, 1, 0), (2, 1, 2)),
                  ((5, 1, 0), (3, 1, 2)))
 
-        while not ((self.cube[2][1][0] == self.solved_cube[1][1][1] or self.cube[5][1][2] == self.solved_cube[1][1][1]) and
-                   (self.cube[3][1][0] == self.solved_cube[1][1][1] or self.cube[4][1][2] == self.solved_cube[1][1][1]) and
-                   (self.cube[4][1][0] == self.solved_cube[1][1][1] or self.cube[2][1][2] == self.solved_cube[1][1][1]) and
-                   (self.cube[5][1][0] == self.solved_cube[1][1][1] or self.cube[3][1][2] == self.solved_cube[1][1][1])):
+        while not ((self.cube[2][1][0] == upper or self.cube[5][1][2] == upper) and
+                   (self.cube[3][1][0] == upper or self.cube[4][1][2] == upper) and
+                   (self.cube[4][1][0] == upper or self.cube[2][1][2] == upper) and
+                   (self.cube[5][1][0] == upper or self.cube[3][1][2] == upper)):
 
-           while not (self.cube[4][1][2] == self.solved_cube[1][1][1] or
-                      self.cube[3][1][0] == self.solved_cube[1][1][1]):
+           while not (self.cube[4][1][2] == upper or
+                      self.cube[3][1][0] == upper):
 
                self.turn_front()
                self.turn_top()
