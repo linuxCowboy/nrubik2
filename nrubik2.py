@@ -995,30 +995,28 @@ class Cube:
             self.turn_top()
             self.turn_front()
 
-        while not (self.cube[2][1][0] == self.cube[2][1][1] == self.cube[2][1][2] and
-                   self.cube[3][1][0] == self.cube[3][1][1] == self.cube[3][1][2] and
-                   self.cube[4][1][0] == self.cube[4][1][1] == self.cube[4][1][2] and
-                   self.cube[5][1][0] == self.cube[5][1][1] == self.cube[5][1][2]):
+            self.solve_moves += 8
+
+        while not (self.cube[3][1][0] == self.cube[3][1][1] == self.cube[3][1][2] and
+                   self.cube[5][1][0] == self.cube[5][1][1] == self.cube[5][1][2] and
+                   self.cube[2][1][0] == self.cube[2][1][1] == self.cube[2][1][2] and
+                   self.cube[4][1][0] == self.cube[4][1][1] == self.cube[4][1][2]):
 
             i = 0
             while not (self.cube[4][0][1] == self.cube[4][1][1] and self.cube[0][2][1] != self.solved_cube[1][1][1]):
-                if i % 4:
-                    self.turn_top()
+                self.turn_top()
 
-                    i += 1
-                    self.solve_moves += 1
+                i += 1
+                self.solve_moves += 1
 
-                else:
+                if not i % 4:
                     self.turn_equator()
                     self.turn_bottom_rev()
 
-                    i += 1
                     self.solve_moves += 2
 
                 if not i % 16:
                     move_edge()
-
-                    self.solve_moves += 8
 
             if self.cube[0][2][1] == self.cube[3][1][1]:
                 move_edge()
@@ -1034,7 +1032,7 @@ class Cube:
                 self.turn_top_rev()
                 self.turn_front_rev()
 
-            self.solve_moves += 8
+                self.solve_moves += 8
 
     def scramble(self):
         global buf_undo, buf_redo
