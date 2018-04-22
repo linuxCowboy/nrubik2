@@ -984,6 +984,17 @@ class Cube:
     # cheat second layer
     def solve_3(self):
 
+        # to right
+        def move_edge():
+            self.turn_top()
+            self.turn_right()
+            self.turn_top_rev()
+            self.turn_right_rev()
+            self.turn_top_rev()
+            self.turn_front_rev()
+            self.turn_top()
+            self.turn_front()
+
         while not (self.cube[2][1][0] == self.cube[2][1][1] == self.cube[2][1][2] and
                    self.cube[3][1][0] == self.cube[3][1][1] == self.cube[3][1][2] and
                    self.cube[4][1][0] == self.cube[4][1][1] == self.cube[4][1][2] and
@@ -1005,27 +1016,14 @@ class Cube:
                     self.solve_moves += 2
 
                 if not i % 16:
-                    self.turn_top()
-                    self.turn_right()
-                    self.turn_top_rev()
-                    self.turn_right_rev()
-                    self.turn_top_rev()
-                    self.turn_front_rev()
-                    self.turn_top()
-                    self.turn_front()
+                    move_edge()
 
                     self.solve_moves += 8
 
             if self.cube[0][2][1] == self.cube[3][1][1]:
-                self.turn_top()
-                self.turn_right()
-                self.turn_top_rev()
-                self.turn_right_rev()
-                self.turn_top_rev()
-                self.turn_front_rev()
-                self.turn_top()
-                self.turn_front()
+                move_edge()
 
+            # to left
             else:
                 self.turn_top_rev()
                 self.turn_left_rev()
