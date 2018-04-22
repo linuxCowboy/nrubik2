@@ -43,6 +43,7 @@ Cheats:
 ```
  1) white cross + edges
  2) white corners
+ 3) second layer
 ```
 
  \+ Profiler
