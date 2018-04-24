@@ -73,7 +73,7 @@ option = '--quiet'         # suppress any output
 
 tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'        # chimes
 tick_paths = './', '~/Music/'                             # trailing slash!
-tick_times = (0, 0), (20, 0), (45, 0), (90, 1), (120, 2)  # (seconds, index)
+tick_times = (0, 0), (15, 0), (40, 0), (90, 1), (120, 2)  # (seconds, index)
 
 # profiling_solve_1.py
 scramble_moves = 17
@@ -1115,8 +1115,10 @@ class Cube:
 
                 if self.mode == 3:
                     self.speed_timer = self.tick = 0
-
                     self.pausing = True
+
+                    if timer_ticks:
+                        os.spawnlp(os.P_NOWAIT, player, player, option, timer_ticks[0][1])
 
                 elif self.mode == 0:
                     self.speed_timer = self.game_timer
