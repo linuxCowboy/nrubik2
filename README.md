@@ -36,6 +36,7 @@ New Timer-Mode:
  - program different chimes for different times
  - needs cmdline audio player
  - default: "/usr/bin/aplay"
+ - cmdline option for timer ticks
 
 -----
 Cheats:
