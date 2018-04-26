@@ -87,9 +87,19 @@ reset_point    = 400
 
 if sys.argv[1:]:
     if sys.argv[1] == '--help':
-        print("\n    %s [second_to_play,chime_index] ...\n\ndefault: %s\n" % (sys.argv[0], tick_times))
+        print("nrubik2 - An N-Curses Based, Virtual Rubik's Cube\n")
 
-        chimes = 'chimes: '
+        print("    %s [second_to_play,chime_index] ...\n" % sys.argv[0])
+
+        default = 'default:  '
+        for i in range(len(tick_times)):
+            (second, index) = tick_times[i]
+
+            default += str(second) + "," + str(index) + " "
+
+        print(default + "\n")
+
+        chimes = 'chimes:   '
         for i,j in enumerate(tick_files):
             chimes += str(i) + ": " + str(j) + "  "
 
