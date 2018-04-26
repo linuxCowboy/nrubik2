@@ -86,12 +86,17 @@ reset_point    = 400
 ############################################################################
 
 if sys.argv[1:]:
-    tick_times = ()
+    if sys.argv[1] == '--help':
+        print("\n    %s [second_to_play,chime_index] ...\n\ndefault: %s\n" % (sys.argv[0], tick_times))
 
-    for i in range(1, len(sys.argv)):
-        (second, index) = sys.argv[i].split(',')
+        sys.exit(0)
+    else:
+        tick_times = ()
 
-        tick_times += (int(second), int(index)),
+        for i in range(1, len(sys.argv)):
+            (second, index) = sys.argv[i].split(',')
+
+            tick_times += (int(second), int(index)),
 
 # Checks: if problems with player or files - simply no sound
 timer_ticks = ()
