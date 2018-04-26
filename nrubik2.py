@@ -89,6 +89,12 @@ if sys.argv[1:]:
     if sys.argv[1] == '--help':
         print("\n    %s [second_to_play,chime_index] ...\n\ndefault: %s\n" % (sys.argv[0], tick_times))
 
+        chimes = 'chimes: '
+        for i,j in enumerate(tick_files):
+            chimes += str(i) + ": " + str(j) + "  "
+
+        print(chimes + "\n")
+
         sys.exit(0)
     else:
         tick_times = ()
