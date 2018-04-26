@@ -71,9 +71,9 @@ solve_3 = '3'
 player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
 
-tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'        # chimes
-tick_paths = './', '~/Music/'                             # trailing slash!
-tick_times = (0, 0), (15, 0), (40, 0), (90, 1), (120, 2)  # (seconds, index)
+tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'  # chimes
+tick_paths = './', '~/Music/'                       # trailing slash!
+tick_times = (0, 0), (40, 0), (90, 1), (120, 2)     # (seconds, index)
 
 # profiling_solve_1.py
 scramble_moves = 17
