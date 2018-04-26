@@ -85,6 +85,14 @@ reset_point    = 400
 
 ############################################################################
 
+if sys.argv[1:]:
+    tick_times = ()
+
+    for i in range(1, len(sys.argv)):
+        (second, index) = sys.argv[i].split(',')
+
+        tick_times += (int(second), int(index)),
+
 # Checks: if problems with player or files - simply no sound
 timer_ticks = ()
 
