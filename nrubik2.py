@@ -101,18 +101,26 @@ if sys.argv[1:]:
 
         chimes = 'chimes:   '
         for i,j in enumerate(tick_files):
-            chimes += str(i) + ": " + str(j) + "  "
+            chimes += str(i) + ": " + j + "  "
 
         print(chimes + "\n")
 
         sys.exit(0)
-    else:
-        tick_times = ()
 
-        for i in range(1, len(sys.argv)):
+    else:
+        start = 1
+
+        if sys.argv[1] == '+':
+            start = 2
+        else:
+            tick_times = ()
+
+        for i in range(start, len(sys.argv)):
             (second, index) = sys.argv[i].split(',')
 
             tick_times += (int(second), int(index)),
+
+        tick_times = sorted(tick_times)
 
 # Checks: if problems with player or files - simply no sound
 timer_ticks = ()
