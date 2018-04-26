@@ -89,7 +89,9 @@ if sys.argv[1:]:
     if sys.argv[1] == '--help':
         print("nrubik2 - An N-Curses Based, Virtual Rubik's Cube\n")
 
-        print("    %s [second_to_play,chime_index] ...\n" % sys.argv[0])
+        print("    %s [+] [second_to_play,chime_index] ...\n" % sys.argv[0])
+
+        print("option:   replace [or add to] timer ticks list\n")
 
         default = 'default:  '
         for i in range(len(tick_times)):
