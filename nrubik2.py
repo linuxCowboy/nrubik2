@@ -260,7 +260,7 @@ class Cube:
             self.stdscr.addstr(start_y + 13, start_x, cube_y + ","   + cube_y.upper()   + " - Cube Y")
             self.stdscr.addstr(start_y + 14, start_x, cube_z + ","   + cube_z.upper()   + " - Cube Z")
 
-            self.stdscr.addstr(start_y + 16, start_x - 1, "Home - Reset")
+            self.stdscr.addstr(start_y + 16, start_x - 1, "1,2,3,4 - Solve")
 
             self.stdscr.addstr(start_y + 3,  end_x + 6, "o/O - Save")
             self.stdscr.addstr(start_y + 4,  end_x + 6, "i/I - Load")
@@ -273,7 +273,7 @@ class Cube:
             self.stdscr.addstr(start_y + 11, end_x, "Page Down - 2 Null")
             self.stdscr.addstr(start_y + 12, end_x, "Space     - Marker")
 
-            self.stdscr.addstr(start_y + 14, end_x, "End    - Solve")
+            self.stdscr.addstr(start_y + 14, end_x, "Home   - Reset")
             self.stdscr.addstr(start_y + 15, end_x, "Insert - Layout")
             self.stdscr.addstr(start_y + 16, end_x, "Escape - Quit")
 
