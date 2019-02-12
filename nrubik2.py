@@ -3,7 +3,7 @@
 # nrubik2 - ncurses based virtual rubik's cube
 #
 # Copyright (c) 2017 Caleb Butler
-# Copyright (c) 2018 LinuxCowboy
+# Copyright (c) 2019 LinuxCowboy
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -214,8 +214,8 @@ class Cube:
 
         self.cube = copy.deepcopy(self.solved_cube)
 
-        self.functions = (self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,\
-                          self.turn_left, self.turn_left_rev, self.turn_right, self.turn_right_rev,\
+        self.functions = (self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,
+                          self.turn_left, self.turn_left_rev, self.turn_right, self.turn_right_rev,
                           self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev)
 
         if curses.has_colors():
@@ -426,7 +426,7 @@ class Cube:
         if self.mode <= 2:
             # game timer - displayed in 1s
             if self.show_gt:
-                self.stdscr.addstr(int(2), int(x - 2 - 8), '{:02}:{:02}:{:02}'.format(\
+                self.stdscr.addstr(int(2), int(x - 2 - 8), '{:02}:{:02}:{:02}'.format(
                     int(self.game_timer / 60 / 60 % 24), int(self.game_timer / 60 % 60), int(self.game_timer % 60)),
                         curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
@@ -835,7 +835,7 @@ class Cube:
         while self.cube[4][1][1] != self.solved_cube[4][1][1]:
                 self.move_y()
 
-        while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0]\
+        while not (self.cube[0][2][1] == self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0]
                                       == self.solved_cube[0][1][1] and
 
                    self.cube[2][0][1] == self.solved_cube[2][0][1] and
@@ -931,9 +931,9 @@ class Cube:
             restart = False
 
             # orientation independent
-            for c1, c2 in ((self.solved_cube[3][0][0], self.solved_cube[4][0][2]),\
-                           (self.solved_cube[5][0][0], self.solved_cube[3][0][2]),\
-                           (self.solved_cube[2][0][0], self.solved_cube[5][0][2]),\
+            for c1, c2 in ((self.solved_cube[3][0][0], self.solved_cube[4][0][2]),
+                           (self.solved_cube[5][0][0], self.solved_cube[3][0][2]),
+                           (self.solved_cube[2][0][0], self.solved_cube[5][0][2]),
                            (self.solved_cube[4][0][0], self.solved_cube[2][0][2])):
                 i = moves = 0
 
@@ -943,8 +943,8 @@ class Cube:
                             self.cube[1][0][2] == self.solved_cube[0][2][2] and self.cube[4][2][2] == c1) and
 
                            # white cross
-                           self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == self.cube[0][2][1]\
-                                       == self.solved_cube[0][1][1] and
+                           (self.cube[0][1][2] == self.cube[0][0][1] == self.cube[0][1][0] == self.cube[0][2][1]
+                                == self.solved_cube[0][1][1]) and
 
                            # white edges
                            self.cube[3][0][1] == self.cube[3][1][1] and
