@@ -53,7 +53,7 @@ toredo = 'KEY_PPAGE'
 tonull = 'KEY_NPAGE'
 
 reset  = 'KEY_HOME'
-solve  = 'KEY_END'
+cheat  = 'KEY_END'
 layout = 'KEY_IC'
 quit   = chr(27)
 
@@ -63,11 +63,10 @@ marker = '_'
 # game timer
 gtimer = 't'
 
-# cheat
+# solver
 solve_1 = '1'
 solve_2 = '2'
 solve_3 = '3'
-solve_4 = '4'  # solve
 
 player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
@@ -262,7 +261,7 @@ class Cube:
             self.stdscr.addstr(start_y + 13, start_x, cube_y + ","   + cube_y.upper()   + " - Cube Y")
             self.stdscr.addstr(start_y + 14, start_x, cube_z + ","   + cube_z.upper()   + " - Cube Z")
 
-            self.stdscr.addstr(start_y + 16, start_x - 1, "1,2,3,4 - Solve")
+            self.stdscr.addstr(start_y + 16, start_x - 1, "1,2,3,End - Solve")
 
             self.stdscr.addstr(start_y + 3,  end_x + 6, "o/O - Save")
             self.stdscr.addstr(start_y + 4,  end_x + 6, "i/I - Load")
@@ -815,7 +814,7 @@ class Cube:
 
         self.functions[funcs[0]]()
 
-    # cheat white cross + edges
+    # solve white cross + edges
     def solve_1(self):
 
         edges = (((0, 2, 1), (4, 0, 1)),
@@ -924,7 +923,7 @@ class Cube:
 
         self.functions[funcs[0]]()
 
-    # cheat white corners
+    # solve white corners
     def solve_2(self):
         restart = True
 
@@ -1027,7 +1026,7 @@ class Cube:
         self.move_x()
         self.move_x()
 
-    # cheat second layer
+    # solve second layer
     def solve_3(self):
 
         # to right
@@ -1139,7 +1138,7 @@ class Cube:
             elif key == reset:
                 self.scramble()
 
-            elif key in (solve, solve_4):
+            elif key == cheat:
                 self.cube = copy.deepcopy(self.solved_cube)
                 self.solve_cheat = True
                 self.solve_stat = time.time() + 7
