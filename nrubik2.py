@@ -169,6 +169,7 @@ class Cube:
     solve_moves   = 0  # moves in brute force solver
     solve_time    = 0  # time in brute force solver
     solve_stat    = 0  # duration viewing brute force results
+    solve_cheat   = False
 
     tick          = 0  # index in speedcube timer chimes list
 
@@ -305,7 +306,7 @@ class Cube:
     def headline(self):
         if self.mode <= 2:
             if self.solved() is True:
-                if len(buf_undo) == 0:
+                if not len(buf_undo) or self.solve_cheat:
                     head = "'Home' for Start!"
                 else:
                     head = "Solved. Congrats!"
@@ -432,7 +433,10 @@ class Cube:
 
             # solve statistic
             if self.solve_stat > self.previous_time:
-                buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
+                if self.solve_cheat:
+                    buf = "*cheat"
+                else:
+                    buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
 
                 self.stdscr.addstr(int(y / 2 + 7), int(x / 2 - len(buf) / 2 - 1), buf)
 
@@ -1090,6 +1094,7 @@ class Cube:
             self.speed_timer = self.game_timer = 0
             self.previous_time = time.time()
 
+            self.solve_cheat = False
             self.pausing = False
 
     def get_input(self):
@@ -1135,7 +1140,8 @@ class Cube:
 
             elif key in (solve, solve_4):
                 self.cube = copy.deepcopy(self.solved_cube)
-                self.solve_stat = 0
+                self.solve_cheat = True
+                self.solve_stat = 2**31
 
             elif key in (solve_1, solve_2, solve_3):
                 self.solve_moves = 0
