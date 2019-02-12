@@ -67,6 +67,7 @@ gtimer = 't'
 solve_1 = '1'
 solve_2 = '2'
 solve_3 = '3'
+solve_4 = '4'  # solve
 
 player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
@@ -1132,7 +1133,7 @@ class Cube:
             elif key == reset:
                 self.scramble()
 
-            elif key == solve:
+            elif key in (solve, solve_4):
                 self.cube = copy.deepcopy(self.solved_cube)
 
             elif key in (solve_1, solve_2, solve_3):
