@@ -465,7 +465,7 @@ class Cube:
             for j in range(3):
                 self.cube[0][i][j] = backup_cube[0][2-j][i]
         # turn rest
-        for i, j in [(2, 4), (3, 5), (4, 3), (5, 2)]:
+        for i, j in (2, 4), (3, 5), (4, 3), (5, 2):
             for k in range(3):
                 self.cube[i][0][k] = backup_cube[j][0][k]
 
@@ -476,7 +476,7 @@ class Cube:
             for j in range(3):
                 self.cube[0][j][i] = backup_cube[0][i][2-j]
         # turn rest
-        for i, j in [(2, 5), (3, 4), (4, 2), (5, 3)]:
+        for i, j in (2, 5), (3, 4), (4, 2), (5, 3):
             for k in range(3):
                 self.cube[i][0][k] = backup_cube[j][0][k]
 
@@ -487,7 +487,7 @@ class Cube:
             for j in range(3):
                 self.cube[1][i][j] = backup_cube[1][2-j][i]
         # turn rest
-        for i, j in [(2, 5), (3, 4), (4, 2), (5, 3)]:
+        for i, j in (2, 5), (3, 4), (4, 2), (5, 3):
             for k in range(3):
                 self.cube[i][2][k] = backup_cube[j][2][k]
 
@@ -498,7 +498,7 @@ class Cube:
             for j in range(3):
                 self.cube[1][j][i] = backup_cube[1][i][2-j]
         # turn rest
-        for i, j in [(2, 4), (3, 5), (4, 3), (5, 2)]:
+        for i, j in (2, 4), (3, 5), (4, 3), (5, 2):
             for k in range(3):
                 self.cube[i][2][k] = backup_cube[j][2][k]
 
@@ -675,14 +675,14 @@ class Cube:
     # u
     def turn_equator(self):
         backup_cube = copy.deepcopy(self.cube)
-        for i, j in [(2, 4), (4, 3), (3, 5), (5, 2)]:
+        for i, j in (2, 4), (4, 3), (3, 5), (5, 2):
             for k in range(3):
                 self.cube[i][1][k] = backup_cube[j][1][k]
 
     # U
     def turn_equator_rev(self):
         backup_cube = copy.deepcopy(self.cube)
-        for i, j in [(2, 5), (4, 2), (3, 4), (5, 3)]:
+        for i, j in (2, 5), (4, 2), (3, 4), (5, 3):
             for k in range(3):
                 self.cube[i][1][k] = backup_cube[j][1][k]
 
