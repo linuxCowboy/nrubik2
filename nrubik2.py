@@ -1095,6 +1095,7 @@ class Cube:
             self.previous_time = time.time()
 
             self.solve_cheat = False
+            self.solve_stat = 0
             self.pausing = False
 
     def get_input(self):
@@ -1141,7 +1142,7 @@ class Cube:
             elif key in (solve, solve_4):
                 self.cube = copy.deepcopy(self.solved_cube)
                 self.solve_cheat = True
-                self.solve_stat = 2**31
+                self.solve_stat = time.time() + 7
 
             elif key in (solve_1, solve_2, solve_3):
                 self.solve_moves = 0
