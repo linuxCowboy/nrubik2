@@ -305,11 +305,11 @@ class Cube:
 
     def headline(self):
         if self.mode <= 2:
-            if self.solved() is True:
-                if not len(buf_undo) or self.solve_cheat:
-                    head = "'Home' for Start!"
-                else:
+            if self.solved() or self.solve_cheat:
+                if self.solved() and len(buf_undo) and not self.solve_cheat:
                     head = "Solved. Congrats!"
+                else:
+                    head = "'Home' for Start!"
             else:
                 if self.mode <= 1:
                     head = "nrubik"
