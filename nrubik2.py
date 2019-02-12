@@ -1135,6 +1135,7 @@ class Cube:
 
             elif key in (solve, solve_4):
                 self.cube = copy.deepcopy(self.solved_cube)
+                self.solve_stat = 0
 
             elif key in (solve_1, solve_2, solve_3):
                 self.solve_moves = 0
