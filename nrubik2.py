@@ -1246,9 +1246,14 @@ class Cube:
 
                 self.solve_stat = time.time() + 7
 
-            elif key == cube_in:
+            elif key in (cube_in, cube_in_dir):
                 try:
-                    with open(os.path.expanduser(cube_dir + cube_file)) as filein:
+                    fn = cube_dir + cube_file
+
+                    if key == cube_in_dir:
+                        fn = check_output(["zenity", "--file-selection", "--filename", os.path.expanduser(cube_dir)])
+
+                    with open(os.path.expanduser(fn).strip()) as filein:
                         nrdict = eval(filein.read())
 
                     self.scramble(nrdict)
