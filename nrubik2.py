@@ -26,6 +26,8 @@ import copy
 import random
 import time
 import os
+from subprocess import check_output
+import pickle
 
 # lowercase chars for moves
 up    = 'u'
@@ -62,6 +64,13 @@ marker = '_'
 
 # game timer
 gtimer = 't'
+
+# save/load cube
+cube_out = 'o'
+cube_in  = 'i'
+cube_file = 'nrubik2.save'
+cube_dir = '/tmp/d1/'
+outf = "init"
 
 # solver
 solve_1 = '1'
@@ -457,6 +466,10 @@ class Cube:
                 buf = "... " + buf
 
             self.stdscr.addstr(int(y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
+
+
+            self.stdscr.addstr(int(y / 2 + 7), int(x / 2 - len(outf) / 2 - 1), outf)
+
 
     def turn_top(self):
         backup_cube = copy.deepcopy(self.cube)
@@ -1079,16 +1092,21 @@ class Cube:
 
                 self.solve_moves += 8
 
-    def scramble(self):
+    def scramble(self, picdic={}):
         global buf_undo, buf_redo
 
         if self.mode != 3:
-            self.cube = copy.deepcopy(self.solved_cube)
+            if picdic:
+                self.cube = picdic["cube"]
+                buf_undo  = picdic["undo"]
+                buf_redo  = picdic["redo"]
+            else:
+                self.cube = copy.deepcopy(self.solved_cube)
 
-            for i in range(scramble_moves):
-                self.functions[random.randint(0, 11)]()
+                for i in range(scramble_moves):
+                    self.functions[random.randint(0, 11)]()
 
-            buf_undo = buf_redo = ""
+                buf_undo = buf_redo = ""
 
             self.speed_timer = self.game_timer = 0
             self.previous_time = time.time()
@@ -1098,7 +1116,7 @@ class Cube:
             self.pausing = False
 
     def get_input(self):
-        global buf_undo, buf_redo
+        global buf_undo, buf_redo, outf
         key = None
         dismiss = False  # dont save key in trace buffer
 
@@ -1207,6 +1225,29 @@ class Cube:
 
             elif key == gtimer:
                 self.show_gt = not self.show_gt
+
+            elif key == cube_out:
+                picdic = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo}
+
+                try:
+                    pickle.dump(picdic, open(cube_dir + cube_file, "wb"))
+
+                    outf = "saved"
+                except:
+                    outf = "Error out!"
+                    pass
+
+# check_output(["zenity", "--file-selection", "--filename=/tmp/", "--file-filter=nrubik2*"])
+
+            elif key == cube_in:
+                try:
+                    picdic = pickle.load(open(cube_dir + cube_file, "rb"))
+
+                    self.scramble(picdic)
+                    outf = "restored"
+                except:
+                    outf = "Error in!"
+                    pass
 
             # trace buffer
             if key in moves and not dismiss:
