@@ -1227,42 +1227,44 @@ class Cube:
                 self.show_gt = not self.show_gt
 
             elif key in (cube_out, cube_out_dir):
-                nrdict = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo}
+                if self.mode != 3:
+                    nrdict = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo}
 
-                try:
-                    fn = cube_dir + cube_file
+                    try:
+                        fn = cube_dir + cube_file
 
-                    if key == cube_out_dir:
-                        fn = check_output(["zenity", 
-                            "--file-selection", "--filename", os.path.expanduser(cube_dir), "--save", "--confirm-overwrite"])
+                        if key == cube_out_dir:
+                            fn = check_output(["zenity", 
+                                "--file-selection", "--filename", os.path.expanduser(cube_dir), "--save", "--confirm-overwrite"])
 
-                    with open(os.path.expanduser(fn).strip(), 'w') as fileout:
-                        fileout.write(str(nrdict))
+                        with open(os.path.expanduser(fn).strip(), 'w') as fileout:
+                            fileout.write(str(nrdict))
 
-                    self.msg_buf = 'saved'
-                except:
-                    self.msg_buf = 'Error Out'
-                    pass
+                        self.msg_buf = 'saved'
+                    except:
+                        self.msg_buf = 'Error Out'
+                        pass
 
-                self.solve_stat = time.time() + 7
+                    self.solve_stat = time.time() + 7
 
             elif key in (cube_in, cube_in_dir):
-                try:
-                    fn = cube_dir + cube_file
+                if self.mode != 3:
+                    try:
+                        fn = cube_dir + cube_file
 
-                    if key == cube_in_dir:
-                        fn = check_output(["zenity", "--file-selection", "--filename", os.path.expanduser(cube_dir)])
+                        if key == cube_in_dir:
+                            fn = check_output(["zenity", "--file-selection", "--filename", os.path.expanduser(cube_dir)])
 
-                    with open(os.path.expanduser(fn).strip()) as filein:
-                        nrdict = eval(filein.read())
+                        with open(os.path.expanduser(fn).strip()) as filein:
+                            nrdict = eval(filein.read())
 
-                    self.scramble(nrdict)
-                    self.msg_buf = 'restored'
-                except:
-                    self.msg_buf = 'Error In'
-                    pass
+                        self.scramble(nrdict)
+                        self.msg_buf = 'restored'
+                    except:
+                        self.msg_buf = 'Error In'
+                        pass
 
-                self.solve_stat = time.time() + 7
+                    self.solve_stat = time.time() + 7
 
             # trace buffer
             if key in moves and not dismiss:
