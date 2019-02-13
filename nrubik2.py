@@ -20,6 +20,8 @@
 #
 #######################################################################
 
+from __future__ import with_statement
+
 import sys
 import curses
 import copy
@@ -27,7 +29,8 @@ import random
 import time
 import os
 from subprocess import check_output
-import pickle
+
+sys.tracebacklimit = 1
 
 # lowercase chars for moves
 up    = 'u'
@@ -69,7 +72,7 @@ gtimer = 't'
 cube_out = 'o'
 cube_in  = 'i'
 cube_file = 'nrubik2.save'
-cube_dir = '/tmp/d1/'
+cube_dir = '~/'
 outf = "init"
 
 # solver
@@ -1230,7 +1233,8 @@ class Cube:
                 picdic = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo}
 
                 try:
-                    pickle.dump(picdic, open(cube_dir + cube_file, "wb"))
+                    with open(os.path.expanduser(cube_dir + cube_file), 'w') as fileout:
+                        fileout.write(str(picdic))
 
                     outf = "saved"
                 except:
@@ -1241,7 +1245,8 @@ class Cube:
 
             elif key == cube_in:
                 try:
-                    picdic = pickle.load(open(cube_dir + cube_file, "rb"))
+                    with open(os.path.expanduser(cube_dir + cube_file)) as filein:
+                        picdic = eval(filein.read())
 
                     self.scramble(picdic)
                     outf = "restored"
