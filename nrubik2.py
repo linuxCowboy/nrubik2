@@ -1086,14 +1086,14 @@ class Cube:
 
                 self.solve_moves += 8
 
-    def scramble(self, picdic={}):
+    def scramble(self, nrdict={}):
         global buf_undo, buf_redo
 
         if self.mode != 3:
-            if picdic:
-                self.cube = picdic["cube"]
-                buf_undo  = picdic["undo"]
-                buf_redo  = picdic["redo"]
+            if nrdict:
+                self.cube = nrdict["cube"]
+                buf_undo  = nrdict["undo"]
+                buf_redo  = nrdict["redo"]
             else:
                 self.cube = copy.deepcopy(self.solved_cube)
 
@@ -1223,11 +1223,11 @@ class Cube:
                 self.show_gt = not self.show_gt
 
             elif key == cube_out:
-                picdic = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo}
+                nrdict = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo}
 
                 try:
                     with open(os.path.expanduser(cube_dir + cube_file), 'w') as fileout:
-                        fileout.write(str(picdic))
+                        fileout.write(str(nrdict))
 
                     self.msg_buf = 'saved'
                 except:
@@ -1241,9 +1241,9 @@ class Cube:
             elif key == cube_in:
                 try:
                     with open(os.path.expanduser(cube_dir + cube_file)) as filein:
-                        picdic = eval(filein.read())
+                        nrdict = eval(filein.read())
 
-                    self.scramble(picdic)
+                    self.scramble(nrdict)
                     self.msg_buf = 'restored'
                 except:
                     self.msg_buf = 'Error In'
