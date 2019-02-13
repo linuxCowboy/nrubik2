@@ -68,11 +68,15 @@ marker = '_'
 # game timer
 gtimer = 't'
 
-# save/load cube
-cube_out = 'o'
-cube_in  = 'i'
+# save/load default file
+cube_out  = 'o'
+cube_in   = 'i'
 cube_file = 'nrubik2.save'
-cube_dir = '~/'
+
+# save/load selected file
+cube_out_dir = 'O'
+cube_in_dir  = 'I'
+cube_dir     = '~/'
 
 # solver
 solve_1 = '1'
@@ -1222,11 +1226,17 @@ class Cube:
             elif key == gtimer:
                 self.show_gt = not self.show_gt
 
-            elif key == cube_out:
+            elif key in (cube_out, cube_out_dir):
                 nrdict = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo}
 
                 try:
-                    with open(os.path.expanduser(cube_dir + cube_file), 'w') as fileout:
+                    fn = cube_dir + cube_file
+
+                    if key == cube_out_dir:
+                        fn = check_output(["zenity", 
+                            "--file-selection", "--filename", os.path.expanduser(cube_dir), "--save", "--confirm-overwrite"])
+
+                    with open(os.path.expanduser(fn).strip(), 'w') as fileout:
                         fileout.write(str(nrdict))
 
                     self.msg_buf = 'saved'
@@ -1235,8 +1245,6 @@ class Cube:
                     pass
 
                 self.solve_stat = time.time() + 7
-
-# check_output(["zenity", "--file-selection", "--filename=/tmp/", "--file-filter=nrubik2*"])
 
             elif key == cube_in:
                 try:
