@@ -73,7 +73,6 @@ cube_out = 'o'
 cube_in  = 'i'
 cube_file = 'nrubik2.save'
 cube_dir = '~/'
-outf = "init"
 
 # solver
 solve_1 = '1'
@@ -178,11 +177,12 @@ class Cube:
     previous_time = 0  # buffer for timer
 
     solve_moves   = 0  # moves in brute force solver
-    solve_time    = 0  # time in brute force solver
     solve_stat    = 0  # duration viewing brute force results
     solve_cheat   = False
 
     tick          = 0  # index in speedcube timer chimes list
+
+    msg_buf = ""  # status message
 
     solved_cube = [
         [
@@ -444,12 +444,7 @@ class Cube:
 
             # solve statistic
             if self.solve_stat > self.previous_time:
-                if self.solve_cheat:
-                    buf = "*cheat"
-                else:
-                    buf = "{} moves in {:.2f}s".format(self.solve_moves, self.solve_time)
-
-                self.stdscr.addstr(int(y / 2 + 7), int(x / 2 - len(buf) / 2 - 1), buf)
+                self.stdscr.addstr(int(y / 2 + 7), int(x / 2 - len(self.msg_buf) / 2 - 1), self.msg_buf)
 
             # trace redo
             max = int(x - 13 - 6)
@@ -469,10 +464,6 @@ class Cube:
                 buf = "... " + buf
 
             self.stdscr.addstr(int(y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
-
-
-            self.stdscr.addstr(int(y / 2 + 7), int(x / 2 - len(outf) / 2 - 1), outf)
-
 
     def turn_top(self):
         backup_cube = copy.deepcopy(self.cube)
@@ -1119,7 +1110,7 @@ class Cube:
             self.pausing = False
 
     def get_input(self):
-        global buf_undo, buf_redo, outf
+        global buf_undo, buf_redo
         key = None
         dismiss = False  # dont save key in trace buffer
 
@@ -1163,10 +1154,11 @@ class Cube:
                 self.cube = copy.deepcopy(self.solved_cube)
                 self.solve_cheat = True
                 self.solve_stat = time.time() + 7
+                self.msg_buf = '*cheat'
 
             elif key in (solve_1, solve_2, solve_3):
                 self.solve_moves = 0
-                self.solve_time = time.time()
+                solve_time = time.time()
 
                 self.solve_1()
 
@@ -1177,8 +1169,9 @@ class Cube:
                     self.solve_3()
 
                 self.solve_stat = time.time()
-                self.solve_time = self.solve_stat - self.solve_time  # call time.time() only once
+                solve_time = self.solve_stat - solve_time  # call time.time() only once
                 self.solve_stat += 7  # display stat 7s
+                self.msg_buf = "{} moves in {:.2f}s".format(self.solve_moves, solve_time)
 
             elif key == layout:
                 self.mode = (self.mode + 1) % 4
@@ -1236,10 +1229,12 @@ class Cube:
                     with open(os.path.expanduser(cube_dir + cube_file), 'w') as fileout:
                         fileout.write(str(picdic))
 
-                    outf = "saved"
+                    self.msg_buf = 'saved'
                 except:
-                    outf = "Error out!"
+                    self.msg_buf = 'Error Out'
                     pass
+
+                self.solve_stat = time.time() + 7
 
 # check_output(["zenity", "--file-selection", "--filename=/tmp/", "--file-filter=nrubik2*"])
 
@@ -1249,10 +1244,12 @@ class Cube:
                         picdic = eval(filein.read())
 
                     self.scramble(picdic)
-                    outf = "restored"
+                    self.msg_buf = 'restored'
                 except:
-                    outf = "Error in!"
+                    self.msg_buf = 'Error In'
                     pass
+
+                self.solve_stat = time.time() + 7
 
             # trace buffer
             if key in moves and not dismiss:
