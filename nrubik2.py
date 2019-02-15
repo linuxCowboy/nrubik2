@@ -76,7 +76,7 @@ cube_file = 'nrubik2.save'
 # save/load selected file
 cube_out_dir = 'O'
 cube_in_dir  = 'I'
-cube_dir     = '~/nrubik2/'
+cube_dir     = '~/nrubik2/'  # trailing slash!
 
 # solver
 solve_1 = '1'
@@ -138,6 +138,11 @@ if sys.argv[1:]:
             tick_times += (int(second), int(index)),
 
         tick_times = sorted(tick_times)
+
+cube_dir = os.path.expanduser(cube_dir)
+
+if not os.access(cube_dir, os.F_OK):
+    os.makedirs(cube_dir)
 
 # Checks: if problems with player or files - simply no sound
 timer_ticks = ()
