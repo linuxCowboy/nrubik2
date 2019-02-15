@@ -28,7 +28,6 @@ import copy
 import random
 import time
 import os
-from subprocess import check_output
 
 sys.tracebacklimit = 1
 
@@ -1239,10 +1238,9 @@ class Cube:
                         fn = cube_dir + cube_file
 
                         if key == cube_out_dir:
-                            fn = check_output(["zenity", 
-                                "--file-selection", "--filename", os.path.expanduser(cube_dir), "--save", "--confirm-overwrite"])
+                            fn = os.popen("zenity --file-selection --filename %s --save --confirm-overwrite" % cube_dir).read()
 
-                        with open(os.path.expanduser(fn).strip(), 'w') as fileout:
+                        with open(fn.strip(), 'w') as fileout:
                             fileout.write(str(nrdict))
 
                         self.msg_buf = 'saved'
@@ -1258,9 +1256,9 @@ class Cube:
                         fn = cube_dir + cube_file
 
                         if key == cube_in_dir:
-                            fn = check_output(["zenity", "--file-selection", "--filename", os.path.expanduser(cube_dir)])
+                            fn = os.popen("zenity --file-selection --filename %s" % cube_dir).read()
 
-                        with open(os.path.expanduser(fn).strip()) as filein:
+                        with open(fn.strip()) as filein:
                             nrdict = eval(filein.read())
 
                         self.scramble(nrdict)
