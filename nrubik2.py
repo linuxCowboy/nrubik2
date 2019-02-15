@@ -76,7 +76,7 @@ cube_file = 'nrubik2.save'
 # save/load selected file
 cube_out_dir = 'O'
 cube_in_dir  = 'I'
-cube_dir     = '~/'
+cube_dir     = '~/nrubik2/'
 
 # solver
 solve_1 = '1'
