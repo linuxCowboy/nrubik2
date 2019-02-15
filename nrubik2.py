@@ -1102,6 +1102,8 @@ class Cube:
                 self.cube = nrdict["cube"]
                 buf_undo  = nrdict["undo"]
                 buf_redo  = nrdict["redo"]
+
+                self.speed_timer = self.game_timer = nrdict["time"]
             else:
                 self.cube = copy.deepcopy(self.solved_cube)
 
@@ -1109,8 +1111,8 @@ class Cube:
                     self.functions[random.randint(0, 11)]()
 
                 buf_undo = buf_redo = ""
+                self.speed_timer = self.game_timer = 0
 
-            self.speed_timer = self.game_timer = 0
             self.previous_time = time.time()
 
             self.solve_cheat = False
@@ -1232,7 +1234,7 @@ class Cube:
 
             elif key in (cube_out, cube_out_dir):
                 if self.mode != 3:
-                    nrdict = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo}
+                    nrdict = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo, "time": self.game_timer}
 
                     try:
                         fn = cube_dir + cube_file
