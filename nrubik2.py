@@ -1262,16 +1262,26 @@ class Cube:
             elif key in (cube_in, cube_in_dir):
                 if self.mode != 3:
                     try:
-                        fn = cube_dir + cube_file
+                        if key == cube_in:
+                            flist = sorted(os.listdir(cube_dir))
 
-                        if key == cube_in_dir:
+                            fn = os.path.join(cube_dir, flist[self.load_index])
+
+                            self.msg_buf = "load %d. %s" % (self.load_index + 1, os.path.basename(fn))
+
+                            if not self.load_index:
+                                self.load_index = len(os.listdir(cube_dir))
+
+                            self.load_index -= 1
+                        else:
                             fn = os.popen("zenity --file-selection --filename %s" % cube_dir).read()
+
+                            self.msg_buf = "load %s" % os.path.basename(fn)
 
                         with open(fn.strip()) as filein:
                             nrdict = eval(filein.read())
 
                         self.scramble(nrdict)
-                        self.msg_buf = 'restored'
                     except:
                         self.msg_buf = 'Error In'
                         pass
