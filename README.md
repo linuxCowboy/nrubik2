@@ -1,18 +1,24 @@
 # nrubik2
 An N-Curses Based, Virtual Rubik's Cube (complete)
 
-![Nrubik2](nrubik2.jpg?raw=true)
+![Nrubik2](image/nrubik2.jpg?raw=true)
 
  - Full movements implemented
  - Full undo/redo support
  - Game timer
 
-![Solved](nrubik2-solved.jpg?raw=true)
+![Solved](image/nrubik2-solved.jpg?raw=true)
 
  - Optimized for an 80x24 screen
  - Best played with big font sizes (e.g. Monospace 20)
 
+![New](image/nrubik2-new.jpg?raw=true)
+
 This new version was inspired by the original **nrubik**.
+
+![Nrubik-bw](image/nrubik-bw-solved.jpg?raw=true)
+
+![Nrubik-color](image/nrubik-color-solved.jpg?raw=true)
 
 -----
 
@@ -52,10 +58,10 @@ Cheats:
 -----
 Patterns:
 
-![Nest](nest.jpg?raw=true)
+![Nest](image/nest.jpg?raw=true)
 
-![Z-Line](z-line.jpg?raw=true)
+![Z-Line](image/z-line.jpg?raw=true)
 
-![Zigzag](zigzag.jpg?raw=true)
+![Zigzag](image/zigzag.jpg?raw=true)
 
-![Checkerboard](checkerboard.jpg?raw=true)
+![Checkerboard](image/checkerboard.jpg?raw=true)
