@@ -67,15 +67,14 @@ marker = '_'
 # game timer
 gtimer = 't'
 
-# save/load default file
-cube_out  = 'o'
-cube_in   = 'i'
-cube_file = 'nrubik2.save'
-
-# save/load selected file
-cube_out_dir = 'O'
+# save/load status
+cube_out     = 'o'
+cube_in      = 'i'
+cube_out_dir = 'O'  # choose with zenity
 cube_in_dir  = 'I'
-cube_dir     = '~/nrubik2/'  # trailing slash!
+
+cube_file = "%y%m%d-%H%M%S"
+cube_dir  = "~/nrubik2"
 
 # solver
 solve_1 = '1'
