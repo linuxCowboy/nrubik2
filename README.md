@@ -16,7 +16,7 @@ An N-Curses Based, Virtual Rubik's Cube (complete)
 
 This new version was inspired by the original **nrubik**.
 
-![Nrubik-bw](image/nrubik-bw-solved.jpg?raw=true)
+![Nrubik-bw](image/nrubik-bw.jpg?raw=true)
 
 ![Nrubik-color](image/nrubik-color-solved.jpg?raw=true)
 
