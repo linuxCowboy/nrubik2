@@ -85,7 +85,7 @@ player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
 
 tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'  # chimes
-tick_paths = './', '~/Music/'                       # trailing slash!
+tick_paths = './', '~/Music'
 tick_times = (0, 0), (5, 0), (10, 1), (15, 2), (40, 0), (90, 1), (120, 2)  # (seconds, index)
 
 # profiling_solve_1.py
@@ -137,7 +137,7 @@ if sys.argv[1:]:
 
         tick_times = sorted(tick_times)
 
-cube_dir = os.path.expanduser(cube_dir)
+cube_dir = os.path.join(os.path.expanduser(cube_dir), "")  # zenity needs trailing slash
 
 if not os.path.isdir(cube_dir):
     os.makedirs(cube_dir)
@@ -152,12 +152,12 @@ if os.access(player, os.X_OK):
         path = os.path.expanduser(tick_paths[i])
 
         for j in range(len(tick_files)):
-            if not os.path.isfile(path + tick_files[j]):
+            if not os.path.isfile(os.path.join(path, tick_files[j])):
                 absent = True
 
         if not absent:
             for j in range(len(tick_times)):
-                timer_ticks += (tick_times[j][0], path + tick_files[tick_times[j][1]]),
+                timer_ticks += (tick_times[j][0], os.path.join(path, tick_files[tick_times[j][1]])),
             break
         else:
             i += 1
