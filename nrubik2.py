@@ -191,6 +191,8 @@ class Cube:
 
     msg_buf = ""  # status message
 
+    load_index = len(os.listdir(cube_dir)) - 1  # last saved status file
+
     solved_cube = [
         [
             ['W', 'W', 'W'],
