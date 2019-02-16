@@ -139,7 +139,7 @@ if sys.argv[1:]:
 
 cube_dir = os.path.expanduser(cube_dir)
 
-if not os.access(cube_dir, os.F_OK):
+if not os.path.isdir(cube_dir):
     os.makedirs(cube_dir)
 
 # Checks: if problems with player or files - simply no sound
