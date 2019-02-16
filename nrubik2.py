@@ -1238,7 +1238,10 @@ class Cube:
                     nrdict = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo, "time": self.game_timer}
 
                     try:
-                        fn = cube_dir + cube_file
+                        fn = os.path.join(cube_dir, time.strftime(cube_file))
+
+                        if self.solved():
+                            fn += '+'
 
                         if key == cube_out_dir:
                             fn = os.popen("zenity --file-selection --filename %s --save --confirm-overwrite" % cube_dir).read()
@@ -1246,7 +1249,10 @@ class Cube:
                         with open(fn.strip(), 'w') as fileout:
                             fileout.write(str(nrdict))
 
-                        self.msg_buf = 'saved'
+                        self.load_index = len(os.listdir(cube_dir)) - 1
+
+                        self.msg_buf = 'save %s' % os.path.basename(fn)
+
                     except:
                         self.msg_buf = 'Error Out'
                         pass
