@@ -1114,10 +1114,10 @@ class Cube:
                 buf_undo = buf_redo = ""
                 self.speed_timer = self.game_timer = 0
 
-            self.previous_time = time.time()
-
-            self.solve_cheat = False
             self.solve_stat = 0
+            self.solve_cheat = False
+
+            self.previous_time = time.time()
             self.pausing = False
 
     def get_input(self):
