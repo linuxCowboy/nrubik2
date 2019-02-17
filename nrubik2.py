@@ -81,7 +81,7 @@ solve_1 = '1'
 solve_2 = '2'
 solve_3 = '3'
 
-player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
+player = 'aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
 
 tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'  # chimes
@@ -142,10 +142,21 @@ cube_dir = os.path.join(os.path.expanduser(cube_dir), "")  # zenity needs traili
 if not os.path.isdir(cube_dir):
     os.makedirs(cube_dir)
 
+def find_exe(execname):
+    path = os.environ['PATH'].split(os.pathsep)
+
+    for p in path:
+        exe = os.path.join(p, execname)
+
+        if os.path.isfile(exe):
+            return exe
+    else:
+        return False
+
 # Checks: if problems with player or files - simply no sound
 timer_ticks = ()
 
-if os.access(player, os.X_OK):
+if find_exe(player):
     i = 0
     while tick_paths[i:]:
         absent = False
