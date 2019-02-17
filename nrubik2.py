@@ -485,6 +485,8 @@ class Cube:
 
             self.stdscr.addstr(int(y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
 
+### start rotations
+
     def turn_top(self):
         backup_cube = copy.deepcopy(self.cube)
         # turn top only
@@ -766,6 +768,8 @@ class Cube:
         self.turn_front_rev()
         self.turn_standing_rev()
         self.turn_back()
+
+### start solver
 
     def search_edge(self, cubie1, cubie2):
         found = []
@@ -1106,6 +1110,8 @@ class Cube:
 
                 self.solve_moves += 8
 
+### start rest of stuff
+
     def scramble(self, nrdict={}):
         global buf_undo, buf_redo
 
@@ -1284,7 +1290,7 @@ class Cube:
                             self.msg_buf = "load %d. %s" % (self.load_index + 1, os.path.basename(fn))
 
                             if not self.load_index:
-                                self.load_index = len(os.listdir(cube_dir))
+                                self.load_index = len(os.listdir(cube_dir))  # circular load
 
                             self.load_index -= 1
                         else:
