@@ -157,21 +157,18 @@ def find_exe(execname):
 timer_ticks = ()
 
 if find_exe(player):
-    i = 0
-    while tick_paths[i:]:
+    for tp in tick_paths:
         absent = False
-        path = os.path.expanduser(tick_paths[i])
+        path = os.path.expanduser(tp)
 
-        for t in tick_files:
-            if not os.path.isfile(os.path.join(path, t)):
+        for tf in tick_files:
+            if not os.path.isfile(os.path.join(path, tf)):
                 absent = True
 
         if not absent:
             for sec,idx in tick_times:
                 timer_ticks += (sec, os.path.join(path, tick_files[idx])),
             break
-        else:
-            i += 1
 
 moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x, cube_y, cube_z]
 
