@@ -107,8 +107,8 @@ if sys.argv[1:]:
         print("option:   replace [or add to] timer ticks list\n")
 
         default = 'default:  '
-        for i in range(len(tick_times)):
-            (second, index) = tick_times[i]
+        for t in tick_times:
+            second, index = t
 
             default += str(second) + "," + str(index) + " "
 
