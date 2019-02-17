@@ -131,7 +131,7 @@ if sys.argv[1:]:
             tick_times = ()
 
         for i in range(start, len(sys.argv)):
-            (second, index) = sys.argv[i].split(',')
+            second, index = sys.argv[i].split(',')
 
             tick_times += (int(second), int(index)),
 
@@ -162,8 +162,8 @@ if find_exe(player):
         absent = False
         path = os.path.expanduser(tick_paths[i])
 
-        for j in range(len(tick_files)):
-            if not os.path.isfile(os.path.join(path, tick_files[j])):
+        for t in tick_files:
+            if not os.path.isfile(os.path.join(path, t)):
                 absent = True
 
         if not absent:
