@@ -167,8 +167,8 @@ if find_exe(player):
                 absent = True
 
         if not absent:
-            for j in range(len(tick_times)):
-                timer_ticks += (tick_times[j][0], os.path.join(path, tick_files[tick_times[j][1]])),
+            for sec,idx in tick_times:
+                timer_ticks += (sec, os.path.join(path, tick_files[idx])),
             break
         else:
             i += 1
