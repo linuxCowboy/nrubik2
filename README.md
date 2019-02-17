@@ -6,6 +6,7 @@ An N-Curses Based, Virtual Rubik's Cube (complete)
  - Full movements implemented
  - Full undo/redo support
  - Game timer
+ - Savegames
 
 ![Solved](image/nrubik2-solved.jpg?raw=true)
 
@@ -21,7 +22,6 @@ This new version was inspired by the original **nrubik**.
 ![Nrubik-color](image/nrubik-color.jpg?raw=true)
 
 -----
-
 New Feature: to redo + to null
 
 ```
@@ -53,7 +53,21 @@ Cheats:
  3) second layer
 ```
 
- \+ Profiler
+-----
+Savegames:
+
+ - auto timestamp
+ - manual naming
+ - circular restore
+ - uses **zenity**
+
+-----
+Profiler:
+
+```
+ 1) search_deep_1 and scramble_moves
+ 2) search_deep_2 and reset_point
+```
 
 -----
 Patterns:
