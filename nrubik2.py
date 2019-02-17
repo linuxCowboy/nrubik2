@@ -73,7 +73,7 @@ cube_in      = 'i'
 cube_out_dir = 'O'  # choose with zenity
 cube_in_dir  = 'I'
 
-cube_file = "%y%m%d-%H%M%S"
+cube_file = "%y%m%d-%H%M%S"  # time.strftime
 cube_dir  = "~/nrubik2"
 
 # solver
@@ -1255,12 +1255,15 @@ class Cube:
                             fn += '+'
 
                         if key == cube_out_dir:
-                            fn = os.popen("zenity --file-selection --filename %s --save --confirm-overwrite" % cube_dir).read()
+                            if find_exe('zenity'):
+                                fn = os.popen("zenity --file-selection --filename %s --save --confirm-overwrite" % cube_dir).read()
+                            else:
+                                raise
 
                         with open(fn.strip(), 'w') as fileout:
                             fileout.write(str(nrdict))
 
-                        self.load_index = len(os.listdir(cube_dir)) - 1
+                        self.load_index = len(os.listdir(cube_dir)) - 1  # reset index
 
                         self.msg_buf = 'save %s' % os.path.basename(fn)
 
@@ -1285,9 +1288,12 @@ class Cube:
 
                             self.load_index -= 1
                         else:
-                            fn = os.popen("zenity --file-selection --filename %s" % cube_dir).read()
+                            if find_exe('zenity'):
+                                fn = os.popen("zenity --file-selection --filename %s" % cube_dir).read()
 
-                            self.msg_buf = "load %s" % os.path.basename(fn)
+                                self.msg_buf = "load %s" % os.path.basename(fn)
+                            else:
+                                raise
 
                         with open(fn.strip()) as filein:
                             nrdict = eval(filein.read())
