@@ -158,14 +158,12 @@ timer_ticks = ()
 
 if find_exe(player):
     for tp in tick_paths:
-        absent = False
         path = os.path.expanduser(tp)
 
         for tf in tick_files:
             if not os.path.isfile(os.path.join(path, tf)):
-                absent = True
-
-        if not absent:
+                break
+        else:
             for sec,idx in tick_times:
                 timer_ticks += (sec, os.path.join(path, tick_files[idx])),
             break
