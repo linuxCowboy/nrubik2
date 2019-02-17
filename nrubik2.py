@@ -85,7 +85,7 @@ player = '/usr/bin/aplay'  # cmdline audio player (alsa-utils)
 option = '--quiet'         # suppress any output
 
 tick_files = 'tick1.wav', 'tick2.wav', 'tick3.wav'  # chimes
-tick_paths = './', '~/Music'
+tick_paths = './', 'sound', '~/Music'
 tick_times = (0, 0), (5, 0), (10, 1), (15, 2), (40, 0), (90, 1), (120, 2)  # (seconds, index)
 
 # profiling_solve_1.py
