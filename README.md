@@ -41,7 +41,7 @@ New Timer-Mode:
  - optional acoustic feedback
  - program different chimes for different times
  - needs cmdline audio player
- - default: "/usr/bin/aplay"
+ - default: "aplay" (alsa-utils)
  - cmdline option for timer ticks
 
 -----
