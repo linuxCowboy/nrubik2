@@ -445,7 +445,7 @@ class Cube:
             self.timer()
 
             if timer_ticks:
-                buf = "  ".join("%d" % timer_ticks[i][0] for i in range(len(timer_ticks)))
+                buf = "  ".join("%d" % t[0] for t in timer_ticks)
 
                 self.stdscr.addstr(int(y / 2 - 5), int(x / 2 - 6), "Timer Ticks:")
                 self.stdscr.addstr(int(y / 2 - 3), int(x / 2 - len(buf) / 2), buf)
