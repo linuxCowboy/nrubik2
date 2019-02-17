@@ -284,9 +284,9 @@ class Cube:
 
             self.stdscr.addstr(start_y + 16, start_x - 1, "1,2,3,End - Solve")
 
-            self.stdscr.addstr(start_y + 3,  end_x + 6, "o/O - Save")
-            self.stdscr.addstr(start_y + 4,  end_x + 6, "i/I - Load")
-            self.stdscr.addstr(start_y + 5,  end_x + 6, "t   - Timer")
+            self.stdscr.addstr(start_y + 3,  end_x + 6, cube_out + "/" + cube_out_dir + " - Save")
+            self.stdscr.addstr(start_y + 4,  end_x + 6, cube_in + "/"  + cube_in_dir  + " - Load")
+            self.stdscr.addstr(start_y + 5,  end_x + 6, gtimer + " "   + " "          + " - Timer")
 
             self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
             self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
