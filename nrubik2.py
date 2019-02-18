@@ -76,6 +76,8 @@ cube_in_dir  = 'I'
 cube_file = "%y%m%d-%H%M%S"  # time.strftime
 cube_dir  = "~/nrubik2"
 
+### free letters (11):  a c g  h j k  n p q  v w 
+
 # solver
 solve_1 = '1'
 solve_2 = '2'
