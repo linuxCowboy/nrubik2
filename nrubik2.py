@@ -1310,7 +1310,7 @@ class Cube:
                                 raise
 
                         with open(fn.strip()) as filein:
-                            nrdict = eval(filein.read())
+                            nrdict = eval(filein.read(), {'__builtins__': None}, {})
 
                         self.scramble(nrdict)
                     except:
