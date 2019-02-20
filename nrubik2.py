@@ -204,7 +204,7 @@ class Cube:
 
     msg_buf = ""  # status message
 
-    load_index = len(os.listdir(cube_dir)) - 1  # last saved status file
+    load_index = 0  # last saved status file
 
     solved_cube = [
         [
@@ -1282,20 +1282,25 @@ class Cube:
 
                     self.solve_stat = time.time() + 7
 
-            elif key in (cube_in, cube_in_dir):
+            elif key in (cube_in, cube_in_zen, circular):
                 if self.mode != 3:
                     try:
+                        flist = sorted(os.listdir(cube_dir))
+
                         if key == cube_in:
-                            flist = sorted(os.listdir(cube_dir))
+                            fn = os.path.join(cube_dir, flist[-1])
+
+                            self.msg_buf = "load %s" % os.path.basename(fn)
+
+                        elif key == circular:
+                            if not self.load_index:
+                                self.load_index = len(flist)  # circular load
+
+                            self.load_index -= 1
 
                             fn = os.path.join(cube_dir, flist[self.load_index])
 
                             self.msg_buf = "load %d. %s" % (self.load_index + 1, os.path.basename(fn))
-
-                            if not self.load_index:
-                                self.load_index = len(os.listdir(cube_dir))  # circular load
-
-                            self.load_index -= 1
                         else:
                             if find_exe('zenity'):
                                 fn = os.popen("zenity --file-selection --filename %s" % cube_dir).read()
