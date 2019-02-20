@@ -1253,7 +1253,7 @@ class Cube:
             elif key == gtimer:
                 self.show_gt = not self.show_gt
 
-            elif key in (cube_out, cube_out_dir):
+            elif key in (cube_out, cube_out_zen):
                 if self.mode != 3:
                     nrdict = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo, "time": self.game_timer}
 
@@ -1263,16 +1263,16 @@ class Cube:
                         if self.solved():
                             fn += '+'
 
-                        if key == cube_out_dir:
+                        if key == cube_out_zen:
                             if find_exe('zenity'):
                                 fn = os.popen("zenity --file-selection --filename %s --save --confirm-overwrite" % cube_dir).read()
                             else:
                                 raise
 
+                        assert fn.startswith(cube_dir)  # security check
+
                         with open(fn.strip(), 'w') as fileout:
                             fileout.write(str(nrdict))
-
-                        self.load_index = len(os.listdir(cube_dir)) - 1  # reset index
 
                         self.msg_buf = 'save %s' % os.path.basename(fn)
 
