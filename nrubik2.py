@@ -67,16 +67,21 @@ marker = '_'
 # game timer
 gtimer = 't'
 
-# save/load status
-cube_out     = 'o'
-cube_in      = 'i'
-cube_out_dir = 'O'  # choose with zenity
-cube_in_dir  = 'I'
+# savegames
+cube_out  = 'o'  # save with timestamp
+cube_in   = 'i'  # load last saved
+cube_kill = 'k'  # delete saved
+circular  = 'c'  # circular restore
+
+# savegames with zenity
+cube_out_zen  = 'O'  # name
+cube_in_zen   = 'I'  # choose
+cube_kill_zen = 'K'  # delete
 
 cube_file = "%y%m%d-%H%M%S"  # time.strftime
 cube_dir  = "~/nrubik2"
 
-### free letters (11):  a c g  h j k  n p q  v w 
+### free letters (9):  a g h  j n p  q v w
 
 # solver
 solve_1 = '1'
