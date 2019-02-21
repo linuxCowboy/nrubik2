@@ -1325,6 +1325,32 @@ class Cube:
 
                     self.solve_stat = time.time() + msg_time
 
+            elif key in (cube_kill, cube_kill_zen):
+                if self.mode != 3:
+                    try:
+                        if key == cube_kill:
+                            assert self.savegame.startswith(cube_dir)
+                            os.remove(self.savegame)
+
+                            self.msg_buf = "kill %s" % os.path.basename(self.savegame)
+                            self.savegame = ""
+                        else:
+                            if find_exe('zenity'):
+                                fs = (os.popen("zenity --file-selection --filename %s --multiple" %
+                                        cube_dir).read().strip().split('|'))
+
+                                self.msg_buf = "kill %d file(s)" % len(fs)
+
+                                for f in fs:
+                                    assert f.startswith(cube_dir)
+                                    os.remove(f)
+                            else:
+                                raise
+                    except:
+                        self.msg_buf = 'Error Del'
+                        pass
+
+                    self.solve_stat = time.time() + msg_time
 
             # trace buffer
             if key in moves and not dismiss:
