@@ -1268,13 +1268,14 @@ class Cube:
 
                         if key == cube_out_zen:
                             if find_exe('zenity'):
-                                fn = os.popen("zenity --file-selection --filename %s --save --confirm-overwrite" % cube_dir).read()
+                                fn = (os.popen("zenity --file-selection --filename %s --save --confirm-overwrite" %
+                                        cube_dir).read().strip())
                             else:
                                 raise
 
                         assert fn.startswith(cube_dir)  # security check
 
-                        with open(fn.strip(), 'w') as fileout:
+                        with open(fn, 'w') as fileout:
                             fileout.write(str(nrdict))
 
                         self.msg_buf = 'save %s' % os.path.basename(fn)
@@ -1306,13 +1307,13 @@ class Cube:
                             self.msg_buf = "load %d. %s" % (self.load_index + 1, os.path.basename(fn))
                         else:
                             if find_exe('zenity'):
-                                fn = os.popen("zenity --file-selection --filename %s" % cube_dir).read()
+                                fn = os.popen("zenity --file-selection --filename %s" % cube_dir).read().strip()
 
                                 self.msg_buf = "load %s" % os.path.basename(fn)
                             else:
                                 raise
 
-                        with open(fn.strip()) as filein:
+                        with open(fn) as filein:
                             nrdict = eval(filein.read(), {'__builtins__': None}, {})
 
                         self.scramble(nrdict)
