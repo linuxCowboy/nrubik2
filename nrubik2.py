@@ -203,6 +203,7 @@ class Cube:
     tick          = 0  # index in speedcube timer chimes list
 
     msg_buf = ""  # status message
+    savegame      = ""  # last loaded file name
 
     load_index = 0  # last saved status file
 
@@ -1313,6 +1314,8 @@ class Cube:
                             nrdict = eval(filein.read(), {'__builtins__': None}, {})
 
                         self.scramble(nrdict)
+
+                        self.savegame = fn
                     except:
                         self.msg_buf = 'Error In'
                         pass
