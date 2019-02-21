@@ -88,6 +88,8 @@ solve_3 = '3'
 
 ### free letters (9):  a g h  j n p  q v w
 
+msg_time = 7  # display duration
+
 player = 'aplay'    # cmdline audio player (alsa-utils)
 option = '--quiet'  # suppress any output
 
@@ -200,12 +202,11 @@ class Cube:
     solve_stat    = 0  # duration viewing brute force results
     solve_cheat   = False
 
-    tick          = 0  # index in speedcube timer chimes list
-
-    msg_buf = ""  # status message
+    msg_buf       = ""  # status message
     savegame      = ""  # last loaded file name
+    load_index    = 0   # last saved file index
 
-    load_index = 0  # last saved status file
+    tick          = 0  # index in speedcube timer chimes list
 
     solved_cube = [
         [
@@ -1185,7 +1186,7 @@ class Cube:
             elif key == cheat:
                 self.cube = copy.deepcopy(self.solved_cube)
                 self.solve_cheat = True
-                self.solve_stat = time.time() + 7
+                self.solve_stat = time.time() + msg_time
                 self.msg_buf = '*cheat'
 
             elif key in (solve_1, solve_2, solve_3):
@@ -1202,7 +1203,8 @@ class Cube:
 
                 self.solve_stat = time.time()
                 solve_time = self.solve_stat - solve_time  # call time.time() only once
-                self.solve_stat += 7  # display stat 7s
+                self.solve_stat += msg_time
+
                 self.msg_buf = "{} moves in {:.2f}s".format(self.solve_moves, solve_time)
 
             elif key == layout:
@@ -1281,7 +1283,7 @@ class Cube:
                         self.msg_buf = 'Error Out'
                         pass
 
-                    self.solve_stat = time.time() + 7
+                    self.solve_stat = time.time() + msg_time
 
             elif key in (cube_in, cube_in_zen, circular):
                 if self.mode != 3:
@@ -1320,7 +1322,8 @@ class Cube:
                         self.msg_buf = 'Error In'
                         pass
 
-                    self.solve_stat = time.time() + 7
+                    self.solve_stat = time.time() + msg_time
+
 
             # trace buffer
             if key in moves and not dismiss:
