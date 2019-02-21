@@ -1339,7 +1339,7 @@ class Cube:
                                 fs = (os.popen("zenity --file-selection --filename %s --multiple" %
                                         cube_dir).read().strip().split('|'))
 
-                                self.msg_buf = "kill %d file(s)" % len(fs)
+                                self.msg_buf = "kill %d file" % len(fs) + ('s', '')[len(fs) == 1]
 
                                 for f in fs:
                                     assert f.startswith(cube_dir)
