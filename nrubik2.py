@@ -48,24 +48,10 @@ cube_x = 'x'  # r
 cube_y = 'y'  # u
 cube_z = 'z'  # f
 
-########################
-
-undo   = 'KEY_BACKSPACE'
-redo   = chr(10)
-delete = 'KEY_DC'
-toredo = 'KEY_PPAGE'
-tonull = 'KEY_NPAGE'
-
-reset  = 'KEY_HOME'
-cheat  = 'KEY_END'
-layout = 'KEY_IC'
-quit   = chr(27)
-
-pause  = ' '
-marker = '_'
-
-# game timer
-gtimer = 't'
+# solver
+solve_1 = '1'
+solve_2 = '2'
+solve_3 = '3'
 
 # savegames
 cube_out  = 'o'  # save with timestamp
@@ -78,15 +64,27 @@ cube_out_zen  = 'O'  # name
 cube_in_zen   = 'I'  # choose
 cube_kill_zen = 'K'  # delete (multiple)
 
-cube_file = "%y%m%d-%H%M%S"  # time.strftime
-cube_dir  = "~/nrubik2"
+pause  = ' '  # speedcube timer
+marker = '_'  # key buffer
+gtimer = 't'  # game timer
 
-# solver
-solve_1 = '1'
-solve_2 = '2'
-solve_3 = '3'
+# history
+undo   = 'KEY_BACKSPACE'
+redo   = chr(10)
+delete = 'KEY_DC'
+toredo = 'KEY_PPAGE'
+tonull = 'KEY_NPAGE'
+
+reset  = 'KEY_HOME'
+cheat  = 'KEY_END'
+
+layout = 'KEY_IC'
+quit   = chr(27)
 
 ### free letters (9):  a g h  j n p  q v w
+
+cube_file = "%y%m%d-%H%M%S"  # time.strftime
+cube_dir  = "~/nrubik2"
 
 msg_time = 7  # display duration
 
