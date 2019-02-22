@@ -76,7 +76,7 @@ circular  = 'c'  # circular restore
 # savegames with zenity
 cube_out_zen  = 'O'  # name
 cube_in_zen   = 'I'  # choose
-cube_kill_zen = 'K'  # delete
+cube_kill_zen = 'K'  # delete (multiple)
 
 cube_file = "%y%m%d-%H%M%S"  # time.strftime
 cube_dir  = "~/nrubik2"
@@ -204,7 +204,7 @@ class Cube:
 
     msg_buf       = ""  # status message
     savegame      = ""  # last loaded file name
-    load_index    = 0   # last saved file index
+    load_index    = 0   # last saved file index         ###check
 
     tick          = 0  # index in speedcube timer chimes list
 
@@ -248,6 +248,8 @@ class Cube:
         curses.use_default_colors()
         curses.curs_set(False)
 
+        self.max_y = self.max_x = 0
+
         self.cube = copy.deepcopy(self.solved_cube)
 
         self.functions = (self.turn_top, self.turn_top_rev, self.turn_bottom, self.turn_bottom_rev,
@@ -275,10 +277,10 @@ class Cube:
     def helper(self):
         start_y = 2
         start_x = 2
-        end_x   = max_x - 2 - 18
+        end_x   = self.max_x - 2 - 18
 
         head = "nrubik2 - An N-Curses Based, Virtual Rubik's Cube"
-        self.stdscr.addstr(0, int(max_x / 2 - len(head) / 2 - 1), head)
+        self.stdscr.addstr(0, int(self.max_x / 2 - len(head) / 2 - 1), head)
 
         self.stdscr.addstr(start_y + 0, start_x, "Keybindings:")
 
@@ -323,7 +325,7 @@ class Cube:
 
     # fullspeed timer, but displayed only in 1/10s
     def timer(self):
-        self.stdscr.addstr(int(max_y / 2), int(max_x / 2 - 4),
+        self.stdscr.addstr(int(self.max_y / 2), int(self.max_x / 2 - 4),
             '{:02}:{:05.2f}'.format(int(self.speed_timer / 60 % 60), self.speed_timer % 60),
                 curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
@@ -354,7 +356,7 @@ class Cube:
         else:
             head = "Speedcube Timer"
 
-        self.stdscr.addstr(int(max_y / 2 - 10), int(max_x / 2 - len(head) / 2 - 1), head)
+        self.stdscr.addstr(int(self.max_y / 2 - 10), int(self.max_x / 2 - len(head) / 2 - 1), head)
 
     def display_cubie(self, y, x, cubie):
         colors = {'W': 1, 'Y': 2, 'M': 3, 'R': 4, 'G': 5, 'B': 6}
@@ -369,7 +371,8 @@ class Cube:
         else:
             self.stdscr.addstr(int(y), int(x), cub, curses.color_pair(colors[cubie]))
 
-    def display_cube(self, y, x):
+    def display_cube(self):
+        y, x = self.max_y, self.max_x
         # nrubik + b/w
         if self.mode <= 1:
             # top
@@ -1118,7 +1121,7 @@ class Cube:
 ### start rest of stuff
 
     def scramble(self, nrdict={}):
-        global buf_undo, buf_redo
+        global buf_undo, buf_redo       ###check
 
         if self.mode != 3:
             if nrdict:
@@ -1425,8 +1428,6 @@ class Cube:
             pass
 
     def loop(self):
-        global max_y, max_x
-
         loop_counter = 0  # dividend for timer refresh
 
         while self.looping:
@@ -1446,14 +1447,14 @@ class Cube:
             self.get_input()
 
             if self.refresh:
-                max_y, max_x = self.stdscr.getmaxyx()
+                self.max_y, self.max_x = self.stdscr.getmaxyx()
 
                 self.stdscr.erase()
 
                 self.helper()
                 self.headline()
 
-                self.display_cube(max_y, max_x)
+                self.display_cube()
 
                 self.stdscr.refresh()
 
