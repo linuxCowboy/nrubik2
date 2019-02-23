@@ -1298,7 +1298,7 @@ class Cube:
                             self.msg_buf = "load %s" % os.path.basename(fn)
 
                         elif key == circular:
-                            if not self.load_index:
+                            if not self.load_index or self.load_index > len(flist):
                                 self.load_index = len(flist)  # circular load
 
                             self.load_index -= 1
