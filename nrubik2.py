@@ -180,8 +180,6 @@ moves = [up, down, left, right, front, back,  middle, equator, standing,  cube_x
 for m in moves[:]:
     moves.append(m.upper())
 
-buf_undo = buf_redo = ""  # trace buffer
-
 class Cube:
 
     # mode 0: nrubik b/w  mode 1: nrubik  mode 2: nrubik2  mode 3: timer
@@ -196,15 +194,18 @@ class Cube:
     speed_timer   = 0  # accurate to the 1/100s
     previous_time = 0  # buffer for timer
 
-    solve_moves   = 0  # moves in brute force solver
-    solve_stat    = 0  # duration viewing brute force results
-    solve_cheat   = False
+    solve_moves = 0  # moves in brute force solver
+    solve_stat  = 0  # duration viewing brute force results
+    solve_cheat = False
 
-    msg_buf       = ""  # status message
-    savegame      = ""  # last loaded file name
-    load_index    = 0   # last saved file index         ###check
+    buf_undo = ""  # trace buffer
+    buf_redo = ""  # redo buffer
+    msg_buf  = ""  # status message
 
-    tick          = 0  # index in speedcube timer chimes list
+    savegame   = ""  # last loaded file name
+    load_index = 0   # last saved file index
+
+    tick = 0  # index in speedcube timer chimes list
 
     solved_cube = [
         [
@@ -342,7 +343,7 @@ class Cube:
     def headline(self):
         if self.mode <= 2:
             if self.solved() or self.solve_cheat:
-                if self.solved() and len(buf_undo) and not self.solve_cheat:
+                if self.solved() and len(self.buf_undo) and not self.solve_cheat:
                     head = "Solved. Congrats!"
                 else:
                     head = "'Home' for Start!"
@@ -474,22 +475,22 @@ class Cube:
 
             # trace redo
             max = int(x - 13 - 6)
-            buf = buf_redo[::-1]
+            buf = self.buf_redo[::-1]
 
             if len(buf) > max:
                 buf = buf[:max]
                 buf += " ...  "
 
-            self.stdscr.addstr(int(y / 2 + 8), 0, "Redo ({}): {}".format(len(buf_redo), buf))
+            self.stdscr.addstr(int(y / 2 + 8), 0, "Redo ({}): {}".format(len(self.buf_redo), buf))
 
             # trace undo
             max = int(x + x / 2 - 14 - 4)
-            buf = buf_undo[-max:]
+            buf = self.buf_undo[-max:]
 
-            if len(buf_undo) > max:
+            if len(self.buf_undo) > max:
                 buf = "... " + buf
 
-            self.stdscr.addstr(int(y / 2 + 9), 0, "Trace ({}): {}".format(len(buf_undo), buf))
+            self.stdscr.addstr(int(y / 2 + 9), 0, "Trace ({}): {}".format(len(self.buf_undo), buf))
 
 ### start rotations
 
@@ -1119,22 +1120,22 @@ class Cube:
 ### start rest of stuff
 
     def scramble(self, nrdict={}):
-        global buf_undo, buf_redo       ###check
-
         if self.mode != 3:
+            # restore savegame
             if nrdict:
-                self.cube = nrdict["cube"]
-                buf_undo  = nrdict["undo"]
-                buf_redo  = nrdict["redo"]
+                self.cube     = nrdict["cube"]
+                self.buf_undo = nrdict["undo"]
+                self.buf_redo = nrdict["redo"]
 
                 self.speed_timer = self.game_timer = nrdict["time"]
+            # new game
             else:
                 self.cube = copy.deepcopy(self.solved_cube)
 
                 for i in range(scramble_moves):
                     self.functions[random.randint(0, 11)]()
 
-                buf_undo = buf_redo = ""
+                self.buf_undo = self.buf_redo = ""
                 self.speed_timer = self.game_timer = 0
 
             self.solve_stat = 0
@@ -1144,7 +1145,6 @@ class Cube:
             self.pausing = False
 
     def get_input(self):
-        global buf_undo, buf_redo
         key = None
         dismiss = False  # dont save key in trace buffer
 
@@ -1153,33 +1153,33 @@ class Cube:
 
             # control
             if key == undo:
-                key = buf_undo[-1:]
-                buf_redo += key
-                buf_undo = buf_undo[:-1]
+                key = self.buf_undo[-1:]
+                self.buf_redo += key
+                self.buf_undo = self.buf_undo[:-1]
 
                 key = key.upper() if key.islower() else key.lower()
                 dismiss = True
 
             elif key == redo:
-                key = buf_redo[-1:]
-                buf_redo = buf_redo[:-1]
+                key = self.buf_redo[-1:]
+                self.buf_redo = self.buf_redo[:-1]
 
                 if key == marker:
-                    buf_undo += key
+                    self.buf_undo += key
 
             elif key == delete:
-                key = buf_undo[-1:]
-                buf_undo = buf_undo[:-1]
+                key = self.buf_undo[-1:]
+                self.buf_undo = self.buf_undo[:-1]
 
                 key = key.upper() if key.islower() else key.lower()
                 dismiss = True
 
             elif key == toredo:
-                buf_redo += buf_undo[-1:]
-                buf_undo = buf_undo[:-1]
+                self.buf_redo += self.buf_undo[-1:]
+                self.buf_undo = self.buf_undo[:-1]
 
             elif key == tonull:
-                buf_undo = buf_undo[:-1]
+                self.buf_undo = self.buf_undo[:-1]
 
             elif key == reset:
                 self.scramble()
@@ -1249,7 +1249,7 @@ class Cube:
                         self.previous_time = time.time()
                 # insert a gap/marker in trace buffer
                 else:
-                    buf_undo += marker
+                    self.buf_undo += marker
 
             elif key == quit:
                 self.looping = False
@@ -1259,7 +1259,7 @@ class Cube:
 
             elif key in (cube_out, cube_out_zen):
                 if self.mode != 3:
-                    nrdict = {"cube": self.cube, "undo": buf_undo, "redo": buf_redo, "time": self.game_timer}
+                    nrdict = {"cube": self.cube, "undo": self.buf_undo, "redo": self.buf_redo, "time": self.game_timer}
 
                     try:
                         fn = os.path.join(cube_dir, time.strftime(cube_file))
@@ -1355,7 +1355,7 @@ class Cube:
 
             # trace buffer
             if key in moves and not dismiss:
-                buf_undo += key
+                self.buf_undo += key
 
             # moves
             if key == up:
