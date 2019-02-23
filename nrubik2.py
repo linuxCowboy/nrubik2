@@ -54,10 +54,13 @@ solve_2 = '2'
 solve_3 = '3'
 
 # savegames
-cube_out  = 'o'  # save with timestamp
-cube_in   = 'i'  # load last saved
-cube_kill = 'k'  # delete last loaded
-circular  = 'c'  # circular restore
+cube_out   = 'o'  # save with timestamp
+cube_in    = 'i'  # load last saved
+cube_kill  = 'k'  # delete last loaded
+
+# circular restore
+cycle_down = '-'
+cycle_up   = '+'
 
 # savegames with zenity
 cube_out_zen  = 'O'  # name
@@ -300,10 +303,10 @@ class Cube:
             self.stdscr.addstr(start_y + 15, start_x, "End   - Cheat")
             self.stdscr.addstr(start_y + 16, start_x, "Home  - Reset")
 
-            self.stdscr.addstr(start_y + 2,  end_x + 6, cube_out + "/"  + cube_out_zen  + " - Save")
-            self.stdscr.addstr(start_y + 3,  end_x + 6, cube_in + "/"   + cube_in_zen   + " - Load")
-            self.stdscr.addstr(start_y + 4,  end_x + 6, cube_kill + "/" + cube_kill_zen + " - Kill")
-            self.stdscr.addstr(start_y + 5,  end_x + 6, circular + " "  + " "           + " - Cycle")
+            self.stdscr.addstr(start_y + 2,  end_x + 6, cube_out + "/"   + cube_out_zen  + " - Save")
+            self.stdscr.addstr(start_y + 3,  end_x + 6, cube_in + "/"    + cube_in_zen   + " - Load")
+            self.stdscr.addstr(start_y + 4,  end_x + 6, cube_kill + "/"  + cube_kill_zen + " - Kill")
+            self.stdscr.addstr(start_y + 5,  end_x + 6, cycle_down + "/" + cycle_up      + " - Cycle")
 
             self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
             self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
@@ -1287,7 +1290,7 @@ class Cube:
 
                     self.solve_stat = time.time() + msg_time
 
-            elif key in (cube_in, cube_in_zen, circular):
+            elif key in (cube_in, cycle_down, cycle_up, cube_in_zen):
                 if self.mode != 3:
                     try:
                         flist = sorted(os.listdir(cube_dir))
@@ -1297,11 +1300,17 @@ class Cube:
 
                             self.msg_buf = "load %s" % os.path.basename(fn)
 
-                        elif key == circular:
-                            if not self.load_index or (self.load_index > len(flist)):
-                                self.load_index = len(flist)  # circular load
+                        elif key in (cycle_down, cycle_up):
+                            if key == cycle_down:
+                                if not self.load_index or (self.load_index > len(flist)):
+                                    self.load_index = len(flist)  # circular load
 
-                            self.load_index -= 1
+                                self.load_index -= 1
+                            else:
+                                self.load_index += 1
+
+                                if self.load_index >= len(flist):
+                                    self.load_index = 0
 
                             fn = os.path.join(cube_dir, flist[self.load_index])
 
