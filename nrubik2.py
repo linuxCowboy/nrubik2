@@ -205,8 +205,8 @@ class Cube:
     buf_redo = ""  # redo buffer
     msg_buf  = ""  # status message
 
-    savegame   = ""  # last loaded file name
-    load_index = 0   # last saved file index
+    savegame   = ""  # last loaded file
+    load_index = 0   # index in file list
 
     tick = 0  # index in speedcube timer chimes list
 
@@ -1324,11 +1324,11 @@ class Cube:
                                 raise
 
                         with open(fn) as filein:
-                            nrdict = eval(filein.read(), {'__builtins__': None}, {})
+                            nrdict = eval(filein.read(), {'__builtins__': None}, {})  # str to dict
 
                         self.scramble(nrdict)
 
-                        self.savegame = fn
+                        self.savegame = fn  # successful loaded game may be kicked
                     except:
                         self.msg_buf = 'Error In'
                         pass
@@ -1470,7 +1470,7 @@ class Cube:
             if self.mode == 3 and not loop_counter % 25:  # display timer every 0.1s
                 self.timer()
 
-                if timer_ticks[self.tick:] and not self.pausing and self.speed_timer > timer_ticks[self.tick][0]:
+                if timer_ticks[self.tick:] and not self.pausing and (self.speed_timer > timer_ticks[self.tick][0]):
                     os.spawnlp(os.P_NOWAIT, player, player, option, timer_ticks[self.tick][1])
 
                     self.tick += 1
