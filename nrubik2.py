@@ -184,9 +184,8 @@ for m in moves[:]:
     moves.append(m.upper())
 
 class Cube:
-
-    # mode 0: nrubik b/w  mode 1: nrubik  mode 2: nrubik2  mode 3: timer
-    mode = 2
+    modes = {"nrubik_bw": 0, "nrubik": 1, "nrubik2": 2, "timer": 3}
+    mode  = modes["nrubik2"]  # startmode
 
     looping = True  # False == exit
     pausing = True  # pause timer
@@ -259,7 +258,7 @@ class Cube:
                           self.turn_front, self.turn_front_rev, self.turn_back, self.turn_back_rev)
 
         if curses.has_colors():
-            if self.mode == 2:
+            if self.mode == self.modes["nrubik2"]:
                 curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
                 curses.init_pair(2, curses.COLOR_YELLOW,  curses.COLOR_YELLOW)
                 curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)
@@ -274,7 +273,7 @@ class Cube:
                 curses.init_pair(5, curses.COLOR_GREEN,   -1)
                 curses.init_pair(6, curses.COLOR_BLUE,    -1)
         else:
-            self.mode = 0
+            self.mode = self.modes["nrubik_bw"]
 
     def helper(self):
         start_y = 2
@@ -286,7 +285,7 @@ class Cube:
 
         self.stdscr.addstr(start_y + 0, start_x, "Keybindings:")
 
-        if self.mode <= 2:
+        if self.mode != self.modes["timer"]:
             self.stdscr.addstr(start_y + 2,  start_x, up + ","    + up.upper()    + " - Up")
             self.stdscr.addstr(start_y + 3,  start_x, down + ","  + down.upper()  + " - Down")
             self.stdscr.addstr(start_y + 4,  start_x, left + ","  + left.upper()  + " - Left")
@@ -338,20 +337,20 @@ class Cube:
                 == self.cube[i][2][0] == self.cube[i][2][1] == self.cube[i][2][2]:
                     return False
 
-        if not self.mode == 3:
+        if self.mode != self.modes["timer"]:
             self.pausing = True
 
         return True
 
     def headline(self):
-        if self.mode <= 2:
+        if self.mode != self.modes["timer"]:
             if self.solved() or self.solve_cheat:
                 if self.solved() and len(self.buf_undo) and not self.solve_cheat:
                     head = "Solved. Congrats!"
                 else:
                     head = "'Home' for Start!"
             else:
-                if self.mode <= 1:
+                if self.mode in (self.modes["nrubik_bw"], self.modes["nrubik"]):
                     head = "nrubik"
                 else:
                     head = "nrubik2"
@@ -363,12 +362,12 @@ class Cube:
     def display_cubie(self, y, x, cubie):
         colors = {'W': 1, 'Y': 2, 'M': 3, 'R': 4, 'G': 5, 'B': 6}
 
-        if self.mode == 2:
+        if self.mode == self.modes["nrubik2"]:
             cub = cubie * 2
         else:
             cub = cubie
 
-        if not curses.has_colors() or self.mode == 0:
+        if not curses.has_colors() or self.mode == self.modes["nrubik_bw"]:
             self.stdscr.addstr(int(y), int(x), cub)
         else:
             self.stdscr.addstr(int(y), int(x), cub, curses.color_pair(colors[cubie]))
@@ -376,7 +375,7 @@ class Cube:
     def display_cube(self):
         y, x = self.max_y, self.max_x
         # nrubik + b/w
-        if self.mode <= 1:
+        if self.mode in (self.modes["nrubik_bw"], self.modes["nrubik"]):
             # top
             for i, line in enumerate(self.cube[0]):
                 for j in range(3):
@@ -402,7 +401,7 @@ class Cube:
                 for j in range(3):
                     self.display_cubie(y / 2 - 7 + i, x / 2 + 3 + j, line[j])
         # nrubik2
-        elif self.mode == 2:
+        elif self.mode == self.modes["nrubik2"]:
             # bars
             self.stdscr.addstr(int(y / 2 - 9), int(x / 2 - 1),  " __________________")
             self.stdscr.addstr(int(y / 2 - 8), int(x / 2 + 17), "||")
@@ -465,7 +464,7 @@ class Cube:
                 self.stdscr.addstr(int(y / 2 - 5), int(x / 2 - 6), "Timer Ticks:")
                 self.stdscr.addstr(int(y / 2 - 3), int(x / 2 - len(buf) / 2), buf)
 
-        if self.mode <= 2:
+        if self.mode != self.modes["timer"]:
             # game timer - displayed in 1s
             if self.show_gt:
                 self.stdscr.addstr(int(2), int(x - 2 - 8), '{:02}:{:02}:{:02}'.format(
@@ -1123,7 +1122,7 @@ class Cube:
 ### start rest of stuff
 
     def scramble(self, nrdict={}):
-        if self.mode != 3:
+        if self.mode != self.modes["timer"]:
             # restore savegame
             if nrdict:
                 self.cube     = nrdict["cube"]
@@ -1214,19 +1213,19 @@ class Cube:
             elif key == layout:
                 self.mode = (self.mode + 1) % 4
 
-                if self.mode == 3:
+                if self.mode == self.modes["timer"]:
                     self.speed_timer = self.tick = 0
                     self.pausing = True
 
                     if timer_ticks:
                         os.spawnlp(os.P_NOWAIT, player, player, option, timer_ticks[0][1])
 
-                elif self.mode == 0:
+                elif self.mode == self.modes["nrubik_bw"]:
                     self.speed_timer = self.game_timer
 
                     self.pausing = False
 
-                if self.mode == 2:
+                if self.mode == self.modes["nrubik2"]:
                     curses.init_pair(1, curses.COLOR_WHITE,   curses.COLOR_WHITE)
                     curses.init_pair(2, curses.COLOR_YELLOW,  curses.COLOR_YELLOW)
                     curses.init_pair(3, curses.COLOR_MAGENTA, curses.COLOR_MAGENTA)
@@ -1243,7 +1242,7 @@ class Cube:
 
             elif key == pause:
                 # pause speedcube timer only
-                if self.mode == 3:
+                if self.mode == self.modes["timer"]:
                     self.pausing = not self.pausing
 
                     if not self.pausing:
@@ -1261,7 +1260,7 @@ class Cube:
                 self.show_gt = not self.show_gt
 
             elif key in (cube_out, cube_out_zen):
-                if self.mode != 3:
+                if self.mode != self.modes["timer"]:
                     nrdict = {"cube": self.cube, "undo": self.buf_undo, "redo": self.buf_redo, "time": self.game_timer}
 
                     try:
@@ -1291,7 +1290,7 @@ class Cube:
                     self.solve_stat = time.time() + msg_time
 
             elif key in (cube_in, cycle_down, cycle_up, cube_in_zen):
-                if self.mode != 3:
+                if self.mode != self.modes["timer"]:
                     try:
                         flist = sorted(os.listdir(cube_dir))
 
@@ -1336,7 +1335,7 @@ class Cube:
                     self.solve_stat = time.time() + msg_time
 
             elif key in (cube_kill, cube_kill_zen):
-                if self.mode != 3:
+                if self.mode != self.modes["timer"]:
                     try:
                         if key == cube_kill:
                             assert self.savegame.startswith(cube_dir)
@@ -1443,7 +1442,7 @@ class Cube:
             if not self.pausing:
                 self.speed_timer += current_time - self.previous_time
 
-                if not self.mode == 3:
+                if self.mode != self.modes["timer"]:
                     if int(self.speed_timer) > self.game_timer:
                         self.game_timer = int(self.speed_timer)
 
@@ -1467,7 +1466,7 @@ class Cube:
 
                 self.refresh = False
 
-            if self.mode == 3 and not loop_counter % 25:  # display timer every 0.1s
+            if self.mode == self.modes["timer"] and not loop_counter % 25:  # display timer every 0.1s
                 self.timer()
 
                 if timer_ticks[self.tick:] and not self.pausing and (self.speed_timer > timer_ticks[self.tick][0]):
