@@ -8,12 +8,12 @@ An N-Curses Based, Virtual Rubik's Cube (complete)
  - Game timer
  - Savegames
 
-![Solved](image/nrubik2-solved.jpg?raw=true)
+![New](image/nrubik2-new.jpg?raw=true)
 
  - Optimized for an 80x24 screen
  - Best played with big font sizes (e.g. Monospace 20)
 
-![New](image/nrubik2-new.jpg?raw=true)
+![Solved](image/nrubik2-solved.jpg?raw=true)
 
 This new version was inspired by the original **nrubik**.
 
@@ -59,6 +59,7 @@ Savegames:
  - auto timestamp
  - manual naming
  - circular restore
+ - in-game delete
  - uses **zenity**
 
 -----
@@ -73,9 +74,13 @@ Profiler:
 Patterns:
 
 ![Nest](image/nest.jpg?raw=true)
+nest
 
 ![Z-Line](image/z-line.jpg?raw=true)
+z-line
 
 ![Zigzag](image/zigzag.jpg?raw=true)
+zigzag
 
 ![Checkerboard](image/checkerboard.jpg?raw=true)
+checkerboard
