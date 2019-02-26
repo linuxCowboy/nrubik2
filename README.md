@@ -45,7 +45,7 @@ New Timer-Mode:
  - cmdline option for timer ticks
 
 -----
-Cheats:
+Solver:
 
 ```
  1) white cross + edges
@@ -74,13 +74,13 @@ Profiler:
 Patterns:
 
 ![Nest](image/nest.jpg?raw=true)
-nest
+Nest
 
 ![Z-Line](image/z-line.jpg?raw=true)
-z-line
+Z-line
 
 ![Zigzag](image/zigzag.jpg?raw=true)
-zigzag
+Zigzag
 
 ![Checkerboard](image/checkerboard.jpg?raw=true)
-checkerboard
+Checkerboard
