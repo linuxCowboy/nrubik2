@@ -1291,7 +1291,8 @@ class Cube:
             elif key in (cube_in, cycle_down, cycle_up, cube_in_zen):
                 if self.mode != self.modes["timer"]:
                     try:
-                        flist = sorted(os.listdir(cube_dir))
+                        flist = [f for f in sorted(os.listdir(cube_dir)) if
+                                    os.path.isfile(os.path.join(cube_dir, f))]
 
                         if key == cube_in:
                             fn = os.path.join(cube_dir, flist[-1])
