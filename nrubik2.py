@@ -345,7 +345,7 @@ class Cube:
     def headline(self):
         if self.mode != self.modes["timer"]:
             if self.solved() or self.solve_cheat:
-                if self.solved() and len(self.buf_undo) and not self.solve_cheat:
+                if self.solved() and self.buf_undo and not self.solve_cheat:
                     head = "Solved. Congrats!"
                 else:
                     head = "'Home' for Start!"
@@ -839,7 +839,7 @@ class Cube:
                 funcs += [10, 11]
 
         elif cubie[0] == 2:
-            funcs = [4, 5, 10 ,11]
+            funcs = [4, 5, 10, 11]
 
         elif cubie[0] == 3:
             funcs = [6, 7, 8, 9]
@@ -1134,7 +1134,7 @@ class Cube:
             else:
                 self.cube = copy.deepcopy(self.solved_cube)
 
-                for i in range(scramble_moves):
+                for _ in range(scramble_moves):
                     self.functions[random.randint(0, 11)]()
 
                 self.buf_undo = self.buf_redo = ""
@@ -1285,7 +1285,6 @@ class Cube:
 
                     except:
                         self.msg_buf = 'Error Out'
-                        pass
 
                     self.solve_stat = time.time() + msg_time
 
@@ -1330,7 +1329,6 @@ class Cube:
                         self.savegame = fn  # successful loaded game may be kicked
                     except:
                         self.msg_buf = 'Error In'
-                        pass
 
                     self.solve_stat = time.time() + msg_time
 
@@ -1357,7 +1355,6 @@ class Cube:
                                 raise
                     except:
                         self.msg_buf = 'Error Del'
-                        pass
 
                     self.solve_stat = time.time() + msg_time
 
