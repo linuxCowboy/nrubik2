@@ -84,7 +84,15 @@ cheat  = 'KEY_END'
 layout = 'KEY_IC'
 quit   = chr(27)
 
-### free letters (9):  a g h  j n p  q v w
+# auto play
+auto_play = {
+    5: 'rururRURUR',
+    6: 'RURURururu',
+    7: 'fruRUF',
+    8: 'ruRuruuR',
+    9: 'DRdrDRdr'}
+
+### free letters:  a g h  j n p  q v w
 
 cube_file = "%y%m%d-%H%M%S"  # time.strftime
 cube_dir  = "~/nrubik2"
@@ -203,6 +211,7 @@ class Cube:
     buf_undo = ""  # trace buffer
     buf_redo = ""  # redo buffer
     msg_buf  = ""  # status message
+    auto_buf = ""  # play keys
 
     savegame   = ""  # last loaded file
     load_index = 0   # index in file list
@@ -1161,7 +1170,11 @@ class Cube:
         dismiss = False  # dont save key in trace buffer
 
         try:
-            key = self.stdscr.getkey()
+            if self.auto_buf:
+                key = self.stdscr.getch()
+                self.auto_buf = self.auto_buf[1:]
+            else:
+                key = self.stdscr.getkey()
 
             # control
             if key == undo:
@@ -1369,6 +1382,10 @@ class Cube:
 
                     self.solve_stat = time.time() + msg_time
 
+            # auto play
+            elif key in auto_play:
+                self.auto_buf = auto_play[key]
+
             # trace buffer
             if key in moves and not dismiss:
                 self.buf_undo += key
@@ -1459,6 +1476,9 @@ class Cube:
             self.previous_time = current_time
 
             self.get_input()
+
+            if self.auto_buf and not loop_counter % 200:
+                curses.ungetch(self.auto_buf[0])
 
             if self.refresh:
                 self.max_y, self.max_x = self.stdscr.getmaxyx()
