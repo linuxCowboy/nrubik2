@@ -272,6 +272,16 @@ class Cube:
                 curses.init_pair(4, curses.COLOR_RED,     -1)
                 curses.init_pair(5, curses.COLOR_GREEN,   -1)
                 curses.init_pair(6, curses.COLOR_BLUE,    -1)
+
+            # vivid colors (RGB)
+            # 0:black  1:red  2:green  3:yellow  4:blue  5:magenta  6:cyan  7:white
+            if curses.can_change_color():
+                curses.init_color(7, 800, 800, 800)
+                curses.init_color(3, 800, 800,   0)
+                curses.init_color(5, 800,   0, 800)
+                curses.init_color(1, 800,   0,   0)
+                curses.init_color(2,   0, 800,   0)
+                curses.init_color(4,   0,   0, 800)
         else:
             self.mode = self.modes["nrubik_bw"]
 
