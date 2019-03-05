@@ -86,11 +86,11 @@ quit   = chr(27)
 
 # auto play
 auto_play = {
-    5: 'rururRURUR',
-    6: 'RURURururu',
-    7: 'fruRUF',
-    8: 'ruRuruuR',
-    9: 'DRdrDRdr'}
+    '5': '_rururURURU',
+    '6': '_RURURururu',
+    '7': '_fruRUF',
+    '8': '_ruRuruuR',
+    '9': '_DRdrDRdr'}
 
 ### free letters:  a g h  j n p  q v w
 
@@ -1165,15 +1165,11 @@ class Cube:
             self.previous_time = time.time()
             self.pausing = False
 
-    def get_input(self):
-        key = None
+    def get_input(self, key=""):
         dismiss = False  # dont save key in trace buffer
 
         try:
-            if self.auto_buf:
-                key = self.stdscr.getch()
-                self.auto_buf = self.auto_buf[1:]
-            else:
+            if not key:
                 key = self.stdscr.getkey()
 
             # control
@@ -1188,9 +1184,6 @@ class Cube:
             elif key == redo:
                 key = self.buf_redo[-1:]
                 self.buf_redo = self.buf_redo[:-1]
-
-                if key == marker:
-                    self.buf_undo += key
 
             elif key == delete:
                 key = self.buf_undo[-1:]
@@ -1387,7 +1380,7 @@ class Cube:
                 self.auto_buf = auto_play[key]
 
             # trace buffer
-            if key in moves and not dismiss:
+            if (key in moves or key == marker) and not dismiss:
                 self.buf_undo += key
 
             # moves
@@ -1477,8 +1470,9 @@ class Cube:
 
             self.get_input()
 
-            if self.auto_buf and not loop_counter % 200:
-                curses.ungetch(self.auto_buf[0])
+            if self.auto_buf and not loop_counter % 75:
+                self.get_input(self.auto_buf[0])
+                self.auto_buf = self.auto_buf[1:]
 
             if self.refresh:
                 self.max_y, self.max_x = self.stdscr.getmaxyx()
