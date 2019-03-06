@@ -1267,7 +1267,7 @@ class Cube:
                         self.previous_time = time.time()
                 # insert a gap/marker in trace buffer
                 else:
-                    self.buf_undo += marker
+                    key = marker
 
             elif key == quit:
                 self.looping = False
