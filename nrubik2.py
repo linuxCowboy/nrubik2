@@ -86,8 +86,8 @@ quit   = chr(27)
 
 # auto play
 auto_play = {
-    '5': '_rururURURU',
-    '6': '_RURURururu',
+    '5': '_RURURururu',
+    '6': '_rururURURU',
     '7': '_fruRUF',
     '8': '_ruRuruuR',
     '9': '_DRdrDRdr'}
