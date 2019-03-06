@@ -86,11 +86,11 @@ quit   = chr(27)
 
 # auto play
 auto_play = {
-    '5': '_RURURurur',
-    '6': '_rururURUR',
-    '7': '_fruRUF',
-    '8': '_ruRuruuR',
-    '9': '_DRdrDRdr'}
+    '5': '_RURURurur_',
+    '6': '_rururURUR_',
+    '7': '_fruRUF_',
+    '8': '_ruRuruuR_',
+    '9': '_DRdrDRdr_'}
 
 ### free letters:  a g h  j n p  q v w
 
