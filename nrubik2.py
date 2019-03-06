@@ -1379,6 +1379,8 @@ class Cube:
             elif key in auto_play:
                 self.auto_buf = auto_play[key]
 
+            ### reset key loop
+
             # trace buffer
             if (key in moves or key == marker) and not dismiss:
                 self.buf_undo += key
