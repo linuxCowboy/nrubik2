@@ -88,13 +88,13 @@ quit   = chr(27)
 auto_zen = 'A'
 auto     = 'a'  # ditto (free)
 auto_play = {
-    '4': 'second_left'   + " " + '_RURURurur_',
-    '5': 'second_right'  + " " + '_rururURUR_',
-    '6': 'yellow_cross'  + " " + '_fruRUF_',
-    '7': 'yellow_edge'   + " " + '_ruRuruuR_',
-    '8': 'corner_front'  + " " + '_DRdrDRdr_',
-    '9': 'corner_side'   + " " + '_RDrdRDrd_'}
-#   '0': 'free'          + " " + '__'  # curly!
+    '4': 'left'  + " " + '_RURURurur_',
+    '5': 'right' + " " + '_rururURUR_',
+    '6': 'cross' + " " + '_fruRUF_',
+    '7': 'edge'  + " " + '_ruRuruuR_',
+    '8': 'front' + " " + '_DRdrDRdr_',
+    '9': 'side'  + " " + '_RDrdRDrd_'}
+#   '0': 'free'  + " " + '__'  # curly!
 
 ### free letters:  g h j n p q v w
 
