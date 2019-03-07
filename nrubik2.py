@@ -1380,6 +1380,27 @@ class Cube:
                     self.solve_stat = time.time() + msg_time
 
             # auto play
+            elif key in (auto, auto_zen):
+                if self.mode != self.modes["timer"]:
+                    try:
+                        if find_exe('zenity'):
+                            cmd = ("zenity --list --width 400 --height 300 --title 'auto generate' "
+                                   "--print-column ALL --column Hotkey --column Hint --column Sequence")
+
+                            for i in sorted(auto_play):
+                                cmd += " " + i + " " + auto_play[i]
+
+                            self.msg_buf = os.popen(cmd).read().strip().split('|')
+
+                            self.auto_buf = self.msg_buf[2]
+                            self.msg_buf  = self.msg_buf[1]
+                        else:
+                            raise
+                    except:
+                        self.msg_buf = 'Error Auto'
+
+                    self.solve_stat = time.time() + msg_time
+
             elif key in auto_play:
                 self.auto_buf = auto_play[key]
 
