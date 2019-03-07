@@ -329,7 +329,7 @@ class Cube:
             self.stdscr.addstr(start_y + 3,  end_x + 6, cube_in + "/"    + cube_in_zen   + " - Load")
             self.stdscr.addstr(start_y + 4,  end_x + 6, cube_kill + "/"  + cube_kill_zen + " - Kill")
             self.stdscr.addstr(start_y + 5,  end_x + 6, cycle_down + "/" + cycle_up      + " - Cycle")
-
+            self.stdscr.addstr(start_y + 6,  end_x + 6, auto + "/"       + auto_zen      + " - Auto")
             self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
             self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
             self.stdscr.addstr(start_y + 9,  end_x, "Delete    - Delete")
