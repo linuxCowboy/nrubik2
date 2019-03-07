@@ -86,7 +86,7 @@ quit   = chr(27)
 
 # auto play / macros
 auto_zen = 'A'
-auto     = 'a'  # free (dito)
+auto     = 'a'  # ditto (free)
 auto_play = {
 #   '4': 'free'   + " " + '__',
     '5': 'left'   + " " + '_RURURurur_',
@@ -214,8 +214,8 @@ class Cube:
 
     buf_undo = ""  # trace buffer
     buf_redo = ""  # redo buffer
+    auto_buf = ""  # macro buffer
     msg_buf  = ""  # status message
-    auto_buf = ""  # play keys
 
     savegame   = ""  # last loaded file
     load_index = 0   # index in file list
