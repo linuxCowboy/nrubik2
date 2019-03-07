@@ -7,6 +7,7 @@ An N-Curses Based, Virtual Rubik's Cube (complete)
  - Full undo/redo support
  - Game timer
  - Savegames
+ - Macros
 
 ![New](image/nrubik2-new.jpg?raw=true)
 
@@ -61,6 +62,13 @@ Savegames:
  - circular restore
  - in-game delete
  - uses **zenity**
+
+-----
+Macros:
+
+ - auto generate keys
+ - up to 7 macros
+ - Hints with *zenity*
 
 -----
 Profiler:
