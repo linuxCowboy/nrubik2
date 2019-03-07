@@ -84,15 +84,19 @@ cheat  = 'KEY_END'
 layout = 'KEY_IC'
 quit   = chr(27)
 
-# auto play
+# auto play / macros
+auto_zen = 'A'
+auto     = 'a'  # free (dito)
 auto_play = {
-    '5': '_RURURurur_',
-    '6': '_rururURUR_',
-    '7': '_fruRUF_',
-    '8': '_ruRuruuR_',
-    '9': '_DRdrDRdr_'}
+#   '4': 'free'   + " " + '__',
+    '5': 'left'   + " " + '_RURURurur_',
+    '6': 'right'  + " " + '_rururURUR_',
+    '7': 'cross'  + " " + '_fruRUF_',
+    '8': 'edge'   + " " + '_ruRuruuR_',
+    '9': 'corner' + " " + '_DRdrDRdr_'}
+#   '0': 'free'   + " " + '__'  # curly!
 
-### free letters:  a g h  j n p  q v w
+### free letters:  g h j n p q v w
 
 cube_file = "%y%m%d-%H%M%S"  # time.strftime
 cube_dir  = "~/nrubik2"
