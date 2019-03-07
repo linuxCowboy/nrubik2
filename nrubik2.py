@@ -1402,7 +1402,10 @@ class Cube:
                     self.solve_stat = time.time() + msg_time
 
             elif key in auto_play:
-                self.auto_buf = auto_play[key]
+                self.auto_buf = auto_play[key].split()[1]
+                self.msg_buf  = auto_play[key].split()[0]
+
+                self.solve_stat = time.time() + msg_time
 
             ### reset key loop
 
