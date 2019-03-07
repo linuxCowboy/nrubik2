@@ -1500,7 +1500,7 @@ class Cube:
 
             self.get_input()
 
-            if self.auto_buf and not loop_counter % 75:
+            if self.auto_buf and not loop_counter % 63:  # delay 0.25s
                 self.get_input(self.auto_buf[0])
                 self.auto_buf = self.auto_buf[1:]
 
