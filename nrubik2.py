@@ -1257,7 +1257,7 @@ class Cube:
 
             elif key == reset:
                 if self.mode == self.modes["timer"]:
-                    self.place_1 = self.place_2 = self.place_3 = 0
+                    self.place_1 = self.place_2 = self.place_3 = self.solve_stat = 0
                 else:
                     self.scramble()
 
@@ -1287,6 +1287,7 @@ class Cube:
 
             elif key == layout:
                 self.mode = (self.mode + 1) % 4
+                self.solve_stat = 0
 
                 if self.mode == self.modes["timer"]:
                     self.speed_timer = self.tick = 0
@@ -1321,8 +1322,7 @@ class Cube:
                     self.pausing = not self.pausing
 
                     if not self.pausing:
-                        self.speed_timer = self.tick = 0
-                        self.msg_buf = ""
+                        self.speed_timer = self.tick = self.solve_stat = 0
 
                         self.previous_time = time.time()
                 # insert a gap/marker in trace buffer
