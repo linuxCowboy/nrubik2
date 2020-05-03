@@ -1206,7 +1206,13 @@ class Cube:
             elif key == redo:
                 if self.mode == self.modes["timer"]:
                     if self.pausing:
-                        if not self.place_1:
+                        if (self.speed_timer and
+                            (self.speed_timer  == self.place_1 or
+                             self.speed_timer  == self.place_2 or
+                             self.speed_timer  == self.place_3)):
+                                pass
+
+                        elif not self.place_1:
                             self.place_1 = self.speed_timer
 
                         elif self.speed_timer < self.place_1:
