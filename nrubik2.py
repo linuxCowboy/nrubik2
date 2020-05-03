@@ -480,7 +480,16 @@ class Cube:
 
         # timer mode
         else:
+            start_y = int(y / 2) + 5
+            start_x = int(x / 2) - 19
+
             self.timer()
+
+            self.stdscr.addstr(start_y + 1, start_x, "              _________")
+            self.stdscr.addstr(start_y + 2, start_x, "    _________|    1    |")
+            self.stdscr.addstr(start_y + 3, start_x, "   |    2    |         |_________")
+            self.stdscr.addstr(start_y + 4, start_x, "   |         |         |    3    |")
+            self.stdscr.addstr(start_y + 5, start_x, "-------------------------------------")
 
             if timer_ticks:
                 buf = "  ".join("%d" % t[0] for t in timer_ticks)
