@@ -1207,10 +1207,10 @@ class Cube:
             elif key == redo:
                 if self.mode == self.modes["timer"]:
                     if self.pausing:
-                        if (self.speed_timer and
-                            (self.speed_timer  == self.place_1 or
-                             self.speed_timer  == self.place_2 or
-                             self.speed_timer  == self.place_3)):
+                        if (not self.speed_timer or
+                            self.speed_timer == self.place_1 or
+                            self.speed_timer == self.place_2 or
+                            self.speed_timer == self.place_3):
                                 pass
 
                         elif not self.place_1:
