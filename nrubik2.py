@@ -1210,12 +1210,11 @@ class Cube:
             elif key == redo:
                 if self.mode == self.modes["timer"]:
                     if self.pausing:
-                        rank = 0
                         if (not self.speed_timer or
                             self.speed_timer == self.place_1 or
                             self.speed_timer == self.place_2 or
                             self.speed_timer == self.place_3):
-                                pass
+                                self.msg_buf = ""
 
                         elif not self.place_1 or self.speed_timer < self.place_1:
                             if self.speed_timer < self.place_1:
@@ -1223,22 +1222,20 @@ class Cube:
                                 self.place_2 = self.place_1
 
                             self.place_1 = self.speed_timer
-                            rank = 1
+                            self.msg_buf = "*** 1. Place ***"
 
                         elif not self.place_2 or self.speed_timer < self.place_2:
                             if self.speed_timer < self.place_2:
                                 self.place_3 = self.place_2
 
                             self.place_2 = self.speed_timer
-                            rank = 2
+                            self.msg_buf = "** 2. Place **"
 
                         elif not self.place_3 or self.speed_timer < self.place_3:
                             self.place_3 = self.speed_timer
-                            rank = 3
+                            self.msg_buf = "* 3. Place *"
 
-                        if rank:
-                            self.msg_buf = "* %d. Place *" % rank
-                            self.solve_stat = time.time() + msg_time
+                        self.solve_stat = time.time() + msg_time
 
                 else:
                     key = self.buf_redo[-1:]
