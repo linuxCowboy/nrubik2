@@ -343,9 +343,10 @@ class Cube:
 
         else:
             self.stdscr.addstr(start_y + 2, start_x, "Space  - Start/Stop")
+            self.stdscr.addstr(start_y + 3, start_x, "Enter  - Rate")
 
-            self.stdscr.addstr(start_y + 4, start_x, "Insert - Mode")
-            self.stdscr.addstr(start_y + 5, start_x, "Escape - Quit")
+            self.stdscr.addstr(start_y + 5, start_x, "Insert - Mode")
+            self.stdscr.addstr(start_y + 6, start_x, "Escape - Quit")
 
     # fullspeed timer, but displayed only in 1/10s
     def timer(self):
