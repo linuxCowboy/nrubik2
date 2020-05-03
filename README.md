@@ -22,7 +22,6 @@ This new version was inspired by the original **nrubik**.
 
 ![Nrubik-color](image/nrubik-color.jpg?raw=true)
 
------
 New Feature: to redo + to null
 
 ```
@@ -35,7 +34,8 @@ Delete:  delete from undo, play reverse move
 Space:   insert marker
 ```
 
------
+![Nrubik-timer](image/timer.jpg?raw=true)
+
 New Timer-Mode:
 
  - Speedcubing Timer 1/100s
