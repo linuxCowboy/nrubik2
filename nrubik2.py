@@ -208,6 +208,10 @@ class Cube:
     speed_timer   = 0  # accurate to the 1/100s
     previous_time = 0  # buffer for timer
 
+    place_1 = 0
+    place_2 = 0
+    place_3 = 0
+
     solve_moves = 0  # moves in brute force solver
     solve_stat  = 0  # duration viewing brute force results
     solve_cheat = False
@@ -1196,8 +1200,32 @@ class Cube:
                 dismiss = True
 
             elif key == redo:
-                key = self.buf_redo[-1:]
-                self.buf_redo = self.buf_redo[:-1]
+                if self.mode == self.modes["timer"]:
+                    if self.pausing:
+                        if not self.place_1:
+                            self.place_1 = self.speed_timer
+
+                        elif self.speed_timer < self.place_1:
+                            self.place_3 = self.place_2
+                            self.place_2 = self.place_1
+                            self.place_1 = self.speed_timer
+
+                        elif not self.place_2:
+                            self.place_2 = self.speed_timer
+
+                        elif self.speed_timer < self.place_2:
+                            self.place_3 = self.place_2
+                            self.place_2 = self.speed_timer
+
+                        elif not self.place_3:
+                            self.place_3 = self.speed_timer
+
+                        elif self.speed_timer < self.place_3:
+                            self.place_3 = self.speed_timer
+
+                else:
+                    key = self.buf_redo[-1:]
+                    self.buf_redo = self.buf_redo[:-1]
 
             elif key == delete:
                 key = self.buf_undo[-1:]
