@@ -486,8 +486,8 @@ class Cube:
 
         # timer mode
         else:
-            start_y = int(y / 2) + 5
-            start_x = int(x / 2) - 19
+            start_y = int(y / 2 + 5)
+            start_x = int(x / 2 - 19)
 
             self.timer()
 
@@ -500,6 +500,9 @@ class Cube:
             self.stdscr.addstr(start_y + 0, start_x + 15, '{:1}:{:05.2f}'.format(int(self.place_1 / 60), self.place_1 % 60))
             self.stdscr.addstr(start_y + 1, start_x +  5, '{:1}:{:05.2f}'.format(int(self.place_2 / 60), self.place_2 % 60))
             self.stdscr.addstr(start_y + 2, start_x + 25, '{:1}:{:05.2f}'.format(int(self.place_3 / 60), self.place_3 % 60))
+
+            if self.solve_stat > self.previous_time:
+                self.stdscr.addstr(int(y / 2 + 3), int(x / 2 - len(self.msg_buf) / 2 - 1), self.msg_buf)
 
             if timer_ticks:
                 buf = "  ".join("%d" % t[0] for t in timer_ticks)
@@ -1207,32 +1210,35 @@ class Cube:
             elif key == redo:
                 if self.mode == self.modes["timer"]:
                     if self.pausing:
+                        rank = 0
                         if (not self.speed_timer or
                             self.speed_timer == self.place_1 or
                             self.speed_timer == self.place_2 or
                             self.speed_timer == self.place_3):
                                 pass
 
-                        elif not self.place_1:
+                        elif not self.place_1 or self.speed_timer < self.place_1:
+                            if self.speed_timer < self.place_1:
+                                self.place_3 = self.place_2
+                                self.place_2 = self.place_1
+
                             self.place_1 = self.speed_timer
+                            rank = 1
 
-                        elif self.speed_timer < self.place_1:
-                            self.place_3 = self.place_2
-                            self.place_2 = self.place_1
-                            self.place_1 = self.speed_timer
+                        elif not self.place_2 or self.speed_timer < self.place_2:
+                            if self.speed_timer < self.place_2:
+                                self.place_3 = self.place_2
 
-                        elif not self.place_2:
                             self.place_2 = self.speed_timer
+                            rank = 2
 
-                        elif self.speed_timer < self.place_2:
-                            self.place_3 = self.place_2
-                            self.place_2 = self.speed_timer
-
-                        elif not self.place_3:
+                        elif not self.place_3 or self.speed_timer < self.place_3:
                             self.place_3 = self.speed_timer
+                            rank = 3
 
-                        elif self.speed_timer < self.place_3:
-                            self.place_3 = self.speed_timer
+                        if rank:
+                            self.msg_buf = "* %d. Place *" % rank
+                            self.solve_stat = time.time() + msg_time
 
                 else:
                     key = self.buf_redo[-1:]
@@ -1319,6 +1325,7 @@ class Cube:
 
                     if not self.pausing:
                         self.speed_timer = self.tick = 0
+                        self.msg_buf = ""
 
                         self.previous_time = time.time()
                 # insert a gap/marker in trace buffer
