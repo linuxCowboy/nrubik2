@@ -495,6 +495,10 @@ class Cube:
             self.stdscr.addstr(start_y + 4, start_x, "   |         |         |    3    |")
             self.stdscr.addstr(start_y + 5, start_x, "-------------------------------------")
 
+            self.stdscr.addstr(start_y + 0, start_x + 15, '{:1}:{:05.2f}'.format(int(self.place_1 / 60), self.place_1 % 60))
+            self.stdscr.addstr(start_y + 1, start_x +  5, '{:1}:{:05.2f}'.format(int(self.place_2 / 60), self.place_2 % 60))
+            self.stdscr.addstr(start_y + 2, start_x + 25, '{:1}:{:05.2f}'.format(int(self.place_3 / 60), self.place_3 % 60))
+
             if timer_ticks:
                 buf = "  ".join("%d" % t[0] for t in timer_ticks)
 
