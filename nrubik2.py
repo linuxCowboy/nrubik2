@@ -351,7 +351,7 @@ class Cube:
     # fullspeed timer, but displayed only in 1/10s
     def timer(self):
         self.stdscr.addstr(int(self.max_y / 2), int(self.max_x / 2 - 4),
-            '{:02}:{:05.2f}'.format(int(self.speed_timer / 60 % 60), self.speed_timer % 60),
+            '{:1}:{:05.2f}'.format(int(self.speed_timer / 60), self.speed_timer % 60),
                 curses.color_pair(0) | curses.A_STANDOUT | curses.A_DIM if self.pausing else curses.A_NORMAL)
 
     def solved(self):
