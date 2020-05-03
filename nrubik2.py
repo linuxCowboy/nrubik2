@@ -346,11 +346,13 @@ class Cube:
             self.stdscr.addstr(start_y + 16, end_x,         "Escape - Quit")
 
         else:
-            self.stdscr.addstr(start_y + 2, start_x, "Space  - Start/Stop")
-            self.stdscr.addstr(start_y + 3, start_x, "Enter  - Rate")
+            self.stdscr.addstr(start_y + 2, start_x, "Space - Start/Stop")
 
-            self.stdscr.addstr(start_y + 5, start_x, "Insert - Mode")
-            self.stdscr.addstr(start_y + 6, start_x, "Escape - Quit")
+            self.stdscr.addstr(start_y + 4, start_x, "Enter - Rate")
+            self.stdscr.addstr(start_y + 5, start_x, "Home  - Reset")
+
+            self.stdscr.addstr(start_y + 7, start_x, "Insert - Mode")
+            self.stdscr.addstr(start_y + 8, start_x, "Escape - Quit")
 
     # fullspeed timer, but displayed only in 1/10s
     def timer(self):
@@ -1163,29 +1165,28 @@ class Cube:
 ### start rest of stuff
 
     def scramble(self, nrdict={}):
-        if self.mode != self.modes["timer"]:
-            # restore savegame
-            if nrdict:
-                self.cube     = nrdict["cube"]
-                self.buf_undo = nrdict["undo"]
-                self.buf_redo = nrdict["redo"]
+        # restore savegame
+        if nrdict:
+            self.cube     = nrdict["cube"]
+            self.buf_undo = nrdict["undo"]
+            self.buf_redo = nrdict["redo"]
 
-                self.speed_timer = self.game_timer = nrdict["time"]
-            # new game
-            else:
-                self.cube = copy.deepcopy(self.solved_cube)
+            self.speed_timer = self.game_timer = nrdict["time"]
+        # new game
+        else:
+            self.cube = copy.deepcopy(self.solved_cube)
 
-                for _ in range(scramble_moves):
-                    self.functions[random.randint(0, 11)]()
+            for _ in range(scramble_moves):
+                self.functions[random.randint(0, 11)]()
 
-                self.buf_undo = self.buf_redo = ""
-                self.speed_timer = self.game_timer = 0
+            self.buf_undo = self.buf_redo = ""
+            self.speed_timer = self.game_timer = 0
 
-            self.solve_stat = 0
-            self.solve_cheat = False
+        self.solve_stat = 0
+        self.solve_cheat = False
 
-            self.previous_time = time.time()
-            self.pausing = False
+        self.previous_time = time.time()
+        self.pausing = False
 
     def get_input(self, key=""):
         dismiss = False  # dont save key in trace buffer
@@ -1252,7 +1253,10 @@ class Cube:
                 self.buf_undo = self.buf_undo[:-1]
 
             elif key == reset:
-                self.scramble()
+                if self.mode == self.modes["timer"]:
+                    self.place_1 = self.place_2 = self.place_3 = 0
+                else:
+                    self.scramble()
 
             elif key == cheat:
                 self.cube = copy.deepcopy(self.solved_cube)
