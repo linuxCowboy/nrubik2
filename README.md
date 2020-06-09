@@ -84,11 +84,14 @@ Patterns:
 ![Nest](image/nest.jpg?raw=true)
 Nest
 
+![Zigzag](image/zigzag.jpg?raw=true)
+Zigzag
+
 ![Z-Line](image/z-line.jpg?raw=true)
 Z-line
 
-![Zigzag](image/zigzag.jpg?raw=true)
-Zigzag
+![Cross](image/cross.jpg?raw=true)
+Cross
 
 ![Checkerboard](image/checkerboard.jpg?raw=true)
 Checkerboard
