@@ -85,16 +85,17 @@ layout = 'KEY_IC'
 quit   = chr(27)
 
 # auto play / macros
-auto_zen = 'A'
-auto     = 'a'  # ditto (free)
+auto     = 'a'
+auto_rec = 'A'
+
 auto_play = {
     '4': 'left'  + " " + '_RURURurur_',
     '5': 'right' + " " + '_rururURUR_',
     '6': 'cross' + " " + '_fruRUF_',
     '7': 'edge'  + " " + '_ruRuruuR_',
     '8': 'front' + " " + '_DRdrDRdr_',
-    '9': 'side'  + " " + '_RDrdRDrd_'}
-#   '0': 'free'  + " " + '__'  # curly!
+    '9': 'side'  + " " + '_RDrdRDrd_',
+    '0': 'macro' + " " + '__'}
 
 ### free letters:  g h j n p q v w
 
@@ -333,7 +334,7 @@ class Cube:
             self.stdscr.addstr(start_y + 3,  end_x + 6, cube_in + "/"    + cube_in_zen   + " - Load")
             self.stdscr.addstr(start_y + 4,  end_x + 6, cube_kill + "/"  + cube_kill_zen + " - Kill")
             self.stdscr.addstr(start_y + 5,  end_x + 6, cycle_down + "/" + cycle_up      + " - Cycle")
-            self.stdscr.addstr(start_y + 6,  end_x + 6, auto + "/"       + auto_zen      + " - Auto")
+            self.stdscr.addstr(start_y + 6,  end_x + 6, auto + "/"       + auto_rec      + " - Auto")
             self.stdscr.addstr(start_y + 7,  end_x, "Backspace - Undo")
             self.stdscr.addstr(start_y + 8,  end_x, "Enter     - Redo")
             self.stdscr.addstr(start_y + 9,  end_x, "Delete    - Delete")
@@ -1436,20 +1437,37 @@ class Cube:
                     self.solve_stat = time.time() + msg_time
 
             # auto play
-            elif key in (auto, auto_zen):
+            elif key in (auto, auto_rec):
                 if self.mode != self.modes["timer"]:
                     try:
                         if find_exe('zenity'):
-                            cmd = ("zenity --list --width 400 --height 300 --title 'auto generate' "
-                                   "--print-column ALL --column Hotkey --column Hint --column Sequence")
+                            if key == auto:
+                                cmd = ("zenity --list --width 400 --height 300 --title 'auto generate' "
+                                       "--print-column ALL --column Hotkey --column Hint --column Sequence")
 
-                            for i in sorted(auto_play):
-                                cmd += " " + i + " " + auto_play[i]
+                                for i in sorted(auto_play):
+                                    cmd += " " + i + " " + auto_play[i]
 
-                            self.msg_buf = os.popen(cmd).read().strip().split('|')
+                                self.msg_buf = os.popen(cmd).read().strip().split('|')
 
-                            self.auto_buf = self.msg_buf[2]
-                            self.msg_buf  = self.msg_buf[1]
+                                self.auto_buf = self.msg_buf[2]
+                                self.msg_buf  = self.msg_buf[1]
+
+                            else:
+                                self.msg_buf  = auto_play['0'].split()[1]
+
+                                cmd = "zenity --entry --title 'record Macro' --text 'Enter keys for 0' --entry-text "
+
+                                self.msg_buf = os.popen(cmd + self.msg_buf).read().strip()
+
+                                if self.msg_buf:
+                                    auto_play['0'] = 'macro '
+
+                                    for i in self.msg_buf:
+                                        if i in moves or i == marker:
+                                            auto_play['0'] += i
+
+                                    self.msg_buf = auto_play['0']
                         else:
                             raise
                     except:
