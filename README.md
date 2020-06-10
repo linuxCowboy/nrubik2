@@ -69,6 +69,7 @@ Macros:
  - auto generate keys
  - up to 7 macros
  - Hints with *zenity*
+ - New: record Macro 0
 
 -----
 Profiler:
