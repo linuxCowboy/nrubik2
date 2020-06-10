@@ -1466,6 +1466,8 @@ class Cube:
                                     for i in self.msg_buf:
                                         if i in moves or i == marker:
                                             auto_play['0'] += i
+                                        else:
+                                            auto_play['0'] += '_'
 
                                     self.msg_buf = auto_play['0']
                         else:
